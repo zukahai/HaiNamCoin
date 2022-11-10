@@ -15,5 +15,5 @@ export class Block extends Model<Block> {
     value: number;
 
     @Column({ allowNull: false })
-    hash: string;
+    hashcode: string;
 }

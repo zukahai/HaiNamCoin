@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CreateBlockDto } from './dto/create-block.dto';
 import { UpdateBlockDto } from './dto/update-block.dto';
 import {InjectModel} from "@nestjs/sequelize";
-import {User} from "../user/entities/user.entity";
 import {Block} from "./entities/block.entity";
+import {User} from "../user/entities/user.entity";
 
 @Injectable()
 export class BlockService {
+
   constructor(@InjectModel(Block) private blockModel: typeof Block) {}
 
   create(createBlockDto: CreateBlockDto) {
