@@ -1,18 +1,39 @@
-import { prop, getModelForClass, modelOptions } from '@typegoose/typegoose';
+import { Sequelize, DataTypes, Model, Optional } from 'sequelize';
+import { User } from '@interfaces/users.interface';
 
-@modelOptions({ schemaOptions: { collection: 'users', timestamps: true } })
-class User {
-  @prop({ type: String, required: true, unique: true })
+export type UserCreationAttributes = Optional<User, 'id' | 'email' | 'password'>;
+
+export class UserModel extends Model<User, UserCreationAttributes> implements User {
+  public id: number;
   public email: string;
-
-  @prop({ type: String, required: true })
   public password: string;
 
-  public createdAt?: Date;
-
-  public updatedAt?: Date;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
-const UserModel = getModelForClass(User);
+export default function (sequelize: Sequelize): typeof UserModel {
+  UserModel.init(
+    {
+      id: {
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      email: {
+        allowNull: false,
+        type: DataTypes.STRING(45),
+      },
+      password: {
+        allowNull: false,
+        type: DataTypes.STRING(255),
+      },
+    },
+    {
+      tableName: 'users',
+      sequelize,
+    },
+  );
 
-export default UserModel;
+  return UserModel;
+}
