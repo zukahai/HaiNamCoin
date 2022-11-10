@@ -13,4 +13,7 @@ export class Block extends Model<Block> {
 
     @Column({ allowNull: false })
     value: number;
+
+    @Column({ allowNull: false })
+    hash: string;
 }
