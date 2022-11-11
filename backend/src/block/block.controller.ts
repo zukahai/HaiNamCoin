@@ -26,6 +26,11 @@ export class BlockController {
     return this.blockService.findAll();
   }
 
+  @Get('/hashcode')
+  findHashCode() {
+    return this.blockService.findHashCode();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.blockService.findOne(+id);

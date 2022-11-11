@@ -11,7 +11,7 @@ export class Block extends Model<Block> {
     @Column({ allowNull: false })
     to: number;
 
-    @Column({ allowNull: false })
+    @Column({ type: 'float', allowNull: false })
     value: number;
 
     @Column({ allowNull: false })

@@ -32,4 +32,5 @@ export class UserService {
       await this.userModel.destroy({ where: { id } });
     } else throw new HttpException('User not found', HttpStatus.NOT_FOUND);
   }
+
 }
