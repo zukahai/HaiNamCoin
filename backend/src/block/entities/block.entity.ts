@@ -15,5 +15,8 @@ export class Block extends Model<Block> {
     value: number;
 
     @Column({ allowNull: false })
+    prehashcode: string;
+
+    @Column({ allowNull: false })
     hashcode: string;
 }

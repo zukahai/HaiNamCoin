@@ -16,6 +16,7 @@ export class BlockService {
     const hash = (await this.findHashCode()).hashcode;
     const text = createBlockDto.from + createBlockDto.to + createBlockDto.value + new Date().toTimeString() + hash;
 
+    createBlockDto.prehashcode = hash;
     createBlockDto.hashcode = this.hash256(text);
     return await this.blockModel.create(createBlockDto);
   }

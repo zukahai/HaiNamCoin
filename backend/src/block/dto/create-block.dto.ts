@@ -18,5 +18,7 @@ export class CreateBlockDto {
 
     value: number;
 
+    prehashcode: string;
+
     hashcode: string;
 }
