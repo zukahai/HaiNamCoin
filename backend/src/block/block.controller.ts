@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { BlockService } from './block.service';
 import { CreateBlockDto } from './dto/create-block.dto';
 import { UpdateBlockDto } from './dto/update-block.dto';
@@ -14,35 +6,40 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('block')
 @Controller('block')
 export class BlockController {
-  constructor(private readonly blockService: BlockService) {}
+    constructor(private readonly blockService: BlockService) {}
 
-  @Post()
-  create(@Body() createBlockDto: CreateBlockDto) {
-    return this.blockService.create(createBlockDto);
-  }
+    @Post()
+    create(@Body() createBlockDto: CreateBlockDto) {
+        return this.blockService.create(createBlockDto);
+    }
 
-  @Get()
-  findAll() {
-    return this.blockService.findAll();
-  }
+    @Get()
+    findAll() {
+        return this.blockService.findAll();
+    }
 
-  @Get('/hashcode')
-  findHashCode() {
-    return this.blockService.findHashCode();
-  }
+    @Get('/hashcode')
+    findHashCode() {
+        return this.blockService.findHashCode();
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.blockService.findOne(+id);
-  }
+    @Get('/checkcheate')
+    checkCheate() {
+        return this.blockService.checkCheat();
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBlockDto: UpdateBlockDto) {
-    return this.blockService.update(+id, updateBlockDto);
-  }
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        return this.blockService.findOne(+id);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.blockService.remove(+id);
-  }
+    @Patch(':id')
+    update(@Param('id') id: string, @Body() updateBlockDto: UpdateBlockDto) {
+        return this.blockService.update(+id, updateBlockDto);
+    }
+
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.blockService.remove(+id);
+    }
 }
