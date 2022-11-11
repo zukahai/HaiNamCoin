@@ -5,18 +5,28 @@ import {InjectModel} from "@nestjs/sequelize";
 import {Block} from "./entities/block.entity";
 import {QueryTypes} from "sequelize";
 
+// import crypto from 'crypto';
+var crypto = require('crypto');
 @Injectable()
 export class BlockService {
 
   constructor(@InjectModel(Block) private blockModel: typeof Block) {}
 
   async create(createBlockDto: CreateBlockDto) {
-    console.log(CreateBlockDto);
+    const hash = (await this.findHashCode()).hashcode;
+    const text = createBlockDto.from + createBlockDto.to + createBlockDto.value + new Date().toTimeString() + hash;
+
+    createBlockDto.hashcode = this.hash256(text);
     return await this.blockModel.create(createBlockDto);
   }
 
   async findAll() {
     return await this.blockModel.findAll();
+  }
+
+  hash256(text){
+    const hashCode = crypto.createHash('sha256').update(text).digest('hex');
+    return hashCode;
   }
 
   async findOne(id: number) {
@@ -35,9 +45,13 @@ export class BlockService {
     const lastBlock = await this.blockModel.sequelize.query('SELECT * FROM blocks ' +
         'WHERE createdAt = (SELECT max(createdAt) FROM blocks) LIMIT 1',
         { type: QueryTypes.SELECT });
+
+    const hashcode = (lastBlock.length > 0) ? lastBlock[0]['hashcode'] : "HaiNamCoin";
+    const createdAt = (lastBlock.length > 1) ? lastBlock[0]['createdAt'] : new Date().toTimeString();
+
     return {
-      "hashcode": lastBlock[0]['hashcode'],
-      "createdAt": lastBlock[0]['createdAt']
+      "hashcode": hashcode,
+      "createdAt": createdAt
     }
   }
 
