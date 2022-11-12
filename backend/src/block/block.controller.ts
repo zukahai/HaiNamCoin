@@ -28,6 +28,11 @@ export class BlockController {
         return this.blockService.checkCheat();
     }
 
+    @Get('/checkCheatByHash')
+    checkCheatByHash() {
+        return this.blockService.checkCheatByHash();
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.blockService.findOne(+id);

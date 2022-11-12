@@ -23,8 +23,14 @@ export class BlockService {
 
     async findAll() {
         return await this.blockModel.findAll({
-            // order by id
             order: [['createdAt', 'ASC']],
+        });
+    }
+
+    // findAll order by createdAt DESC
+    async findAllDESC() {
+        return await this.blockModel.findAll({
+            order: [['createdAt', 'DESC']],
         });
     }
 
@@ -45,6 +51,23 @@ export class BlockService {
                 };
             }
             preHash = hash;
+        }
+        return {
+            message: 'No cheat',
+        };
+    }
+
+    async checkCheatByHash() {
+        const blocks = await this.findAll();
+        for (let i = 1; i < blocks.length; i++) {
+            if (blocks[i].prehashcode !== blocks[i - 1].hashcode) {
+                return {
+                    message: 'Cheat',
+                    blockcheat: blocks[i],
+                    prehash: blocks[i].prehashcode,
+                    hash: blocks[i - 1].hashcode,
+                };
+            }
         }
         return {
             message: 'No cheat',
