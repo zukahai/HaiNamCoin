@@ -6,8 +6,8 @@ import { UserModule } from './user/user.module';
 import { BlockModule } from './block/block.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, BlockModule],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [BlockModule, UserModule, DatabaseModule],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}
