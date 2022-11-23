@@ -14,7 +14,7 @@ export class AutoBankController {
 
     @Get()
     findAll() {
-        return this.autoBankService.findAll();
+        return this.autoBankService.callApi();
     }
 
     @Get(':id')

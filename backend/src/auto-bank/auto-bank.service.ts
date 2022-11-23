@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAutoBankDto } from './dto/create-auto-bank.dto';
 import { UpdateAutoBankDto } from './dto/update-auto-bank.dto';
-import axios from 'axios';
+const axios = require('axios');
 
 @Injectable()
 export class AutoBankService {
@@ -17,18 +17,34 @@ export class AutoBankService {
         return `This action returns a #${id} autoBank`;
     }
 
-    getHistory(bankName: string, token: string) {
+    async getHistory(bankName: string, token: string) {
         const password = 'Zuka030203';
         const numberBank = '5563331';
         const apiPath = [];
         apiPath['ACB'] = `https://api.web2m.com/historyapiacb/${password}/${numberBank}/${token}`;
 
-        const listTransactions = axios.get(apiPath[bankName]).then((response) => {
-            console.log(response);
-            return response.data;
-        });
+        console.log(apiPath[bankName]);
+
+        const listTransactions = await axios
+            .get(apiPath[bankName], {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((response) => {
+                console.log(response.data);
+                return response.data;
+            });
 
         return listTransactions;
+    }
+
+    async callApi() {
+        const { data } = await axios.get(
+            'https://api.web2m.com/historyapiacb/Zuka030203/5563331/FE419019-6E72-16AC-6535-5353729292CA',
+        );
+        return data;
     }
 
     update(id: number, updateAutoBankDto: UpdateAutoBankDto) {
