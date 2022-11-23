@@ -15,7 +15,7 @@ export class BlockController {
 
     @Get()
     findAll() {
-        this.blockService.dispersionData();
+        // this.blockService.dispersionData();
         return this.blockService.findAll();
     }
 
