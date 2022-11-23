@@ -4,6 +4,8 @@ import { UpdateBlockDto } from './dto/update-block.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Block } from './entities/block.entity';
 import { QueryTypes } from 'sequelize';
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
 
 // import crypto from 'crypto';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -104,5 +106,10 @@ export class BlockService {
             hashcode: hashcode,
             createdAt: createdAt,
         };
+    }
+
+    async dispersionData() {
+        const blocks = await this.findAllDESC();
+        await writeFile('G:\\transactions.txt', JSON.stringify(blocks));
     }
 }
