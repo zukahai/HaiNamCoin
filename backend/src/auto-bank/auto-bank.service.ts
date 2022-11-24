@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAutoBankDto } from './dto/create-auto-bank.dto';
 import { UpdateAutoBankDto } from './dto/update-auto-bank.dto';
-const axios = require('axios');
+import axios from 'axios';
 
 @Injectable()
 export class AutoBankService {
