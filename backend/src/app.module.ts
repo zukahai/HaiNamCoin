@@ -5,10 +5,19 @@ import { DatabaseModule } from './modules/database/database.module';
 import { UserModule } from './user/user.module';
 import { BlockModule } from './block/block.module';
 import { AutoBankModule } from './auto-bank/auto-bank.module';
+import { AuthModule } from './auth/auth.module';
+import { AtGuard } from './auth/guards/at.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
-    imports: [AutoBankModule, BlockModule, UserModule, DatabaseModule],
+    imports: [AutoBankModule, BlockModule, UserModule, DatabaseModule, AuthModule],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: APP_GUARD,
+            useClass: AtGuard,
+        },
+    ],
 })
 export class AppModule {}

@@ -14,6 +14,7 @@ import {Block} from "../../block/entities/block.entity";
       database: 'hainamcoin',
       models: [User, Block],
       autoLoadModels: true,
+      logging: false,
     }),
   ],
 })
