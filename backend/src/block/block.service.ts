@@ -5,7 +5,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Block } from './entities/block.entity';
 import { QueryTypes } from 'sequelize';
 import { writeFile } from 'fs/promises';
-import { join } from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fs = require('fs');
 
 // import crypto from 'crypto';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -110,6 +111,17 @@ export class BlockService {
 
     async dispersionData() {
         const blocks = await this.findAllDESC();
-        await writeFile('G:\\transactions.txt', JSON.stringify(blocks));
+
+        const folderName = 'G:\\HaiNamCoin_Data';
+        const fileName = 'transactions.txt';
+        const path = folderName + '\\' + fileName;
+        try {
+            if (!fs.existsSync(folderName)) {
+                fs.mkdirSync(folderName);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+        await writeFile(path, JSON.stringify(blocks));
     }
 }

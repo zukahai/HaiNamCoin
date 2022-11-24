@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { BlockService } from './block/block.service';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
+    constructor(@Inject(forwardRef(() => BlockService)) private readonly blockService: BlockService) {}
+
+    getHello(): string {
+        return 'Hello World!';
+    }
 }
