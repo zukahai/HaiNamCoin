@@ -39,7 +39,7 @@ export class BlockService {
 
     async checkCheat() {
         const blocks = await this.findAll();
-        if (blocks.length == 0) return true;
+        if (blocks.length == 0) return { message: 'No cheat' };
         let preHash = blocks[0].prehashcode;
         for (let i = 0; i < blocks.length; i++) {
             const block = blocks[i];
@@ -55,9 +55,7 @@ export class BlockService {
             }
             preHash = hash;
         }
-        return {
-            message: 'No cheat',
-        };
+        return { message: 'No cheat' };
     }
 
     async checkCheatByHash() {
@@ -113,7 +111,7 @@ export class BlockService {
         const blocks = await this.findAllDESC();
 
         const folderName = 'G:\\HaiNamCoin_Data';
-        const fileName = 'transactions.txt';
+        const fileName = 'transactions.json';
         const path = folderName + '\\' + fileName;
         try {
             if (!fs.existsSync(folderName)) {
