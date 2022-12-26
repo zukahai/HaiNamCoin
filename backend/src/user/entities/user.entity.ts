@@ -11,6 +11,9 @@ export class User {
     @Column({type: "varchar", length: 255, comment: "Name of user"})
     name: string;
 
+    @Column({type: "float", comment: "Balance of user"})
+    balance: number;
+
     @Column({type: "varchar", length: 255, comment: "Email of user", unique: true,})
     email: string;
 

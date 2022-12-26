@@ -10,7 +10,7 @@ import {Block} from "../../block/entities/block.entity";
             host: 'localhost',
             port: 3306,
             username: 'root',
-            password: 'namnam',
+            password: '',
             database: 'hainamcoin',
             entities: [User, Block],
             autoLoadEntities: true,

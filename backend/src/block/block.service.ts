@@ -20,14 +20,15 @@ export class BlockService {
 
     async create(createBlockDto: CreateBlockDto) {
         const hash = (await this.findHashCode()).hashcode;
+        console.log(await this.findHashCode());
         const text = createBlockDto.from + createBlockDto.to + createBlockDto.value + new Date().toTimeString() + hash;
         createBlockDto.preHashCode = hash;
         const userFrom = await this.userService.findOne(createBlockDto.from);
-        if (!userFrom.block_from) {
+        if (!userFrom) {
             throw new HttpException('User from not found', HttpStatus.NOT_FOUND);
         }
         const userTo = await this.userService.findOne(createBlockDto.to);
-        if (!userTo.block_to) {
+        if (!userTo) {
             throw new HttpException('User to not found', HttpStatus.NOT_FOUND);
         }
         createBlockDto.hashCode = this.hash256(text);
@@ -120,11 +121,12 @@ export class BlockService {
         //     {type: QueryTypes.SELECT},
         // );
 
-        const hashcode = block ? block.hashCode : 'HaiNamCoin';
-        const createdAt = block ? block.createdAt : new Date();
+        const hashcode = block.length ? block[0].hash_code : 'HaiNamCoin';
+        const createdAt = block.length ? block[0].created_at : new Date();
 
         return {
             hashcode: hashcode,
+            block: block,
             createdAt: createdAt,
         };
     }

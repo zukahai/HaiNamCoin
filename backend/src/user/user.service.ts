@@ -61,6 +61,7 @@ export class UserService {
     async register(registerDto: RegisterDto): Promise<string> {
         const createDto: CreateUserDto = {
             ...registerDto,
+            balance: 0,
             role: 'user',
             isActivated: false,
         };
