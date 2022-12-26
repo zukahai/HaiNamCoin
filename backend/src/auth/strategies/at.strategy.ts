@@ -2,8 +2,6 @@ import {ExtractJwt, Strategy} from 'passport-jwt';
 import {PassportStrategy} from '@nestjs/passport';
 import {AuthService} from "../auth.service";
 import {ForbiddenException, Inject} from "@nestjs/common";
-import {UserService} from "../../user/user.service";
-import {JwtService} from "@nestjs/jwt";
 
 export interface JwtPayload {
     email: string;
@@ -28,6 +26,7 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
         if (await this.authService.validateUser(payload)) {
             return payload;
         }
-        throw new ForbiddenException({ message: 'Invalid token' });
+        throw new ForbiddenException({message: 'Invalid token'});
     }
 }
+

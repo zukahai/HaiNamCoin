@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBlockDto } from './dto/create-block.dto';
-import { UpdateBlockDto } from './dto/update-block.dto';
-import { InjectModel } from '@nestjs/sequelize';
-import { Block } from './entities/block.entity';
-import { QueryTypes } from 'sequelize';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {CreateBlockDto} from './dto/create-block.dto';
+import {UpdateBlockDto} from './dto/update-block.dto';
+import {Block} from './entities/block.entity';
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
+import {UserService} from "../user/user.service";
 
 // import crypto from 'crypto';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -11,41 +12,61 @@ const crypto = require('crypto');
 
 @Injectable()
 export class BlockService {
-    constructor(@InjectModel(Block) private blockModel: typeof Block) {}
+    constructor(
+        @InjectRepository(Block) private blockRepository: Repository<Block>,
+        private readonly userService: UserService,
+    ) {
+    }
 
     async create(createBlockDto: CreateBlockDto) {
         const hash = (await this.findHashCode()).hashcode;
         const text = createBlockDto.from + createBlockDto.to + createBlockDto.value + new Date().toTimeString() + hash;
         createBlockDto.prehashcode = hash;
+        const userFrom = await this.userService.findOne(createBlockDto.from);
+        if (!userFrom.block_from) {
+            throw new HttpException('User from not found', HttpStatus.NOT_FOUND);
+        }
+        const userTo = await this.userService.findOne(createBlockDto.to);
+        if (!userTo.block_to) {
+            throw new HttpException('User to not found', HttpStatus.NOT_FOUND);
+        }
         createBlockDto.hashcode = this.hash256(text);
-        return await this.blockModel.create(createBlockDto);
+
+        return await this.blockRepository.save({
+            from: userFrom,
+            to: userTo,
+            preHashCode: createBlockDto.prehashcode,
+            hashCode: createBlockDto.hashcode,
+            value: createBlockDto.value,
+        });
     }
 
     async findAll() {
-        return await this.blockModel.findAll({
-            order: [['createdAt', 'ASC']],
-        });
+        return await this.blockRepository.find();
     }
 
     // findAll order by createdAt DESC
     async findAllDESC() {
-        return await this.blockModel.findAll({
-            order: [['createdAt', 'DESC']],
-        });
+        return await this.blockRepository.find({
+                order: {
+                    id: "DESC"
+                }
+            }
+        );
     }
 
     async checkCheat() {
         const blocks = await this.findAll();
         if (blocks.length == 0) return true;
-        let preHash = blocks[0].prehashcode;
+        let preHash = blocks[0].preHashCode;
         for (let i = 0; i < blocks.length; i++) {
             const block = blocks[i];
-            const text = block.from + block.to + block.value + new Date(block.createdAt).toTimeString() + preHash;
+            const text = block.from.id + block.to.id + block.value + new Date(block.createdAt).toTimeString() + preHash;
             const hash = this.hash256(text);
-            if (hash !== block.hashcode) {
+            if (hash !== block.hashCode) {
                 return {
                     message: 'Cheat',
-                    blockcheat: block,
+                    blockCheat: block,
                     hash: hash,
                     text: text,
                 };
@@ -60,12 +81,12 @@ export class BlockService {
     async checkCheatByHash() {
         const blocks = await this.findAll();
         for (let i = 1; i < blocks.length; i++) {
-            if (blocks[i].prehashcode !== blocks[i - 1].hashcode) {
+            if (blocks[i].preHashCode !== blocks[i - 1].hashCode) {
                 return {
                     message: 'Cheat',
-                    blockcheat: blocks[i],
-                    prehash: blocks[i].prehashcode,
-                    hash: blocks[i - 1].hashcode,
+                    blockCheat: blocks[i],
+                    preHash: blocks[i].preHashCode,
+                    hash: blocks[i - 1].hashCode,
                 };
             }
         }
@@ -80,7 +101,7 @@ export class BlockService {
     }
 
     async findOne(id: number) {
-        return await this.blockModel.findByPk(id);
+        return await this.blockRepository.findOneBy({id: id});
     }
 
     update(id: number, updateBlockDto: UpdateBlockDto) {
@@ -92,13 +113,20 @@ export class BlockService {
     }
 
     async findHashCode() {
-        const lastBlock = await this.blockModel.sequelize.query(
-            'SELECT * FROM blocks ' + 'WHERE createdAt = (SELECT max(createdAt) FROM blocks) LIMIT 1',
-            { type: QueryTypes.SELECT },
-        );
+        // find last block in database by createdAt DESC
+        const block = await this.blockRepository.findOne({
+            order: {
+                id: "DESC"
+            }
+        });
 
-        const hashcode = lastBlock.length > 0 ? lastBlock[0]['hashcode'] : 'HaiNamCoin';
-        const createdAt = lastBlock.length > 1 ? lastBlock[0]['createdAt'] : new Date().toTimeString();
+        // const lastBlock = await this.blockModel.sequelize.query(
+        //     'SELECT * FROM blocks ' + 'WHERE createdAt = (SELECT max(createdAt) FROM blocks) LIMIT 1',
+        //     {type: QueryTypes.SELECT},
+        // );
+
+        const hashcode = block ? block.hashCode : 'HaiNamCoin';
+        const createdAt = block ? block.createdAt : new Date();
 
         return {
             hashcode: hashcode,

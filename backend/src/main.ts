@@ -17,9 +17,9 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, options);
 
     SwaggerModule.setup('api', app, document);
-    await app.listen(3000);
+    await app.listen(process.env.PORT );
 }
 bootstrap().then(() => {
-    console.log('Server started: http://localhost:3000');
-    console.log('API started: http://localhost:3000/api');
+    console.log('Server started: http://localhost:' + process.env.PORT);
+    console.log('API started: http://localhost:' + process.env.PORT + '/api');
 });
