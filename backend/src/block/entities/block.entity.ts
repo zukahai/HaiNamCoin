@@ -4,7 +4,6 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
-    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
@@ -23,13 +22,13 @@ export class Block {
     @JoinColumn({name: "to"})
     to: User;
 
-    @Column({ type: 'float', comment: "Amount of block"})
+    @Column({type: 'float', comment: "Amount of block"})
     value: number;
 
-    @Column({type: "varchar", length: 255, comment: "PreHashCode of block"})
+    @Column({type: "varchar", name: "pre_hash_code", length: 255, comment: "PreHashCode of block"})
     preHashCode: string;
 
-    @Column({type: "varchar", length: 255, comment: "HashCode of block"})
+    @Column({type: "varchar", name: "hash_code", length: 255, comment: "HashCode of block"})
     hashCode: string;
 
     @CreateDateColumn({name: "created_at", comment: "Created at"})

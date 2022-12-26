@@ -1,14 +1,20 @@
 import {
-    registerDecorator,
+    registerDecorator, validate,
     ValidationArguments,
     ValidationOptions,
     ValidatorConstraint,
     ValidatorConstraintInterface,
 } from 'class-validator';
 import { User } from '../user/entities/user.entity';
+import {async} from "rxjs";
+import {InjectRepository} from "@nestjs/typeorm";
+import any = jasmine.any;
+import {Repository} from "typeorm";
+import {Inject, Injectable} from "@nestjs/common";
+import {UserService} from "../user/user.service";
 
 export function Match(property: string, validationOptions?: ValidationOptions) {
-    return (object: Object, propertyName: string) => {
+    return (object: any, propertyName: string) => {
         registerDecorator({
             name: 'Match',
             target: object.constructor,
@@ -35,34 +41,4 @@ export class MatchConstraint implements ValidatorConstraintInterface {
     }
 }
 
-const checkIsUniqueEmail = async (email: string) => {
-    if (email) {
-        const user = await User.findOne({ where: { email } });
-        return !user;
-    }
-    return false;
-};
 
-export function IsUniqueEmail(validationOptions?: ValidationOptions) {
-    return (object: Object, propertyName: string) => {
-        registerDecorator({
-            name: 'IsUniqueEmail',
-            target: object.constructor,
-            propertyName: propertyName,
-            constraints: [],
-            options: validationOptions,
-            validator: {
-                async validate(value: any) {
-                    return await checkIsUniqueEmail(value);
-                },
-            },
-        });
-    };
-}
-
-@ValidatorConstraint({ name: 'IsUniqueEmail', async: true })
-export class IsUniqueEmailConstraint implements ValidatorConstraintInterface {
-    async validate(value: any) {
-        return await checkIsUniqueEmail(value);
-    }
-}
