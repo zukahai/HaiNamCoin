@@ -1,4 +1,4 @@
-import { IsString, MaxLength, IsNotEmpty, MinLength, Matches, IsEmail } from 'class-validator';
+import {IsString, MaxLength, IsNotEmpty, MinLength, Matches, IsEmail, IsBoolean} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
@@ -31,9 +31,8 @@ export class CreateUserDto {
     @Matches(/^(admin|user)$/, { message: 'Role is incorrect' })
     role: string;
 
-    @ApiProperty({ example: 'isActivated', description: 'User isActivated' })
+    @ApiProperty({ example: true, description: 'User isActivated' })
     @IsNotEmpty({ message: 'isActivated must not be empty' })
-    @IsString({ message: 'isActivated must be a string' })
-    @Matches(/^(true|false)$/, { message: 'isActivated is incorrect' })
+    @IsBoolean({ message: 'isActivated must be a boolean' })
     isActivated: boolean;
 }

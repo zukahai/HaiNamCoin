@@ -21,7 +21,7 @@ export class BlockService {
     async create(createBlockDto: CreateBlockDto) {
         const hash = (await this.findHashCode()).hashcode;
         const text = createBlockDto.from + createBlockDto.to + createBlockDto.value + new Date().toTimeString() + hash;
-        createBlockDto.prehashcode = hash;
+        createBlockDto.preHashCode = hash;
         const userFrom = await this.userService.findOne(createBlockDto.from);
         if (!userFrom.block_from) {
             throw new HttpException('User from not found', HttpStatus.NOT_FOUND);
@@ -30,13 +30,13 @@ export class BlockService {
         if (!userTo.block_to) {
             throw new HttpException('User to not found', HttpStatus.NOT_FOUND);
         }
-        createBlockDto.hashcode = this.hash256(text);
+        createBlockDto.hashCode = this.hash256(text);
 
         return await this.blockRepository.save({
             from: userFrom,
             to: userTo,
-            preHashCode: createBlockDto.prehashcode,
-            hashCode: createBlockDto.hashcode,
+            preHashCode: createBlockDto.preHashCode,
+            hashCode: createBlockDto.hashCode,
             value: createBlockDto.value,
         });
     }
@@ -96,8 +96,7 @@ export class BlockService {
     }
 
     hash256(text) {
-        const hashCode = crypto.createHash('sha256').update(text).digest('hex');
-        return hashCode;
+        return crypto.createHash('sha256').update(text).digest('hex');
     }
 
     async findOne(id: number) {
@@ -114,11 +113,7 @@ export class BlockService {
 
     async findHashCode() {
         // find last block in database by createdAt DESC
-        const block = await this.blockRepository.findOne({
-            order: {
-                id: "DESC"
-            }
-        });
+        const block = await this.blockRepository.query('SELECT * FROM blocks ORDER BY id DESC LIMIT 1');
 
         // const lastBlock = await this.blockModel.sequelize.query(
         //     'SELECT * FROM blocks ' + 'WHERE createdAt = (SELECT max(createdAt) FROM blocks) LIMIT 1',

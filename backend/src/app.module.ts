@@ -9,14 +9,8 @@ import {AuthModule} from './auth/auth.module';
 import {AtGuard} from './auth/guards/at.guard';
 import {APP_GUARD} from '@nestjs/core';
 import {ConfigModule} from "@nestjs/config";
-import databaseConfig from "./modules/database/database.config";
-
 @Module({
-    imports: [ConfigModule.forRoot({
-        envFilePath: '.env',
-        isGlobal: true,
-        load: [databaseConfig]
-    }), AutoBankModule, BlockModule, UserModule, DatabaseModule, AuthModule],
+    imports: [DatabaseModule, AutoBankModule, BlockModule, UserModule, AuthModule, ConfigModule.forRoot()],
     controllers: [AppController],
     providers: [
         AppService,

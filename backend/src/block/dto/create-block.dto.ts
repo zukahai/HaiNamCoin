@@ -1,24 +1,21 @@
-import {
-    IsString,
-    IsNumber,
-    MaxLength,
-    MinLength,
-    Matches,
-    IsEmail,
-} from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import {IsNumber,} from 'class-validator';
+import {ApiProperty} from '@nestjs/swagger';
 
 export class CreateBlockDto {
-    @ApiProperty({ example: 1, description: 'Id user' })
-    @IsNumber({}, { message: 'Form must be a number' })
+    @ApiProperty({example: 1, description: 'Id user'})
+    @IsNumber({}, {message: 'Form must be a number'})
     from: number;
 
-    @IsNumber({}, { message: 'To must be a number' })
+    @ApiProperty({example: 2, description: 'Id user'})
+    @IsNumber({}, {message: 'To must be a number'})
     to: number;
 
+    @ApiProperty({example: 100, description: 'Value'})
     value: number;
 
-    prehashcode: string;
+    @ApiProperty({example: 'hash', description: 'Hash code'})
+    preHashCode: string;
 
-    hashcode: string;
+    @ApiProperty({example: 'hash', description: 'Hash code'})
+    hashCode: string;
 }
