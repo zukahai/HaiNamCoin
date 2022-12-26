@@ -2,6 +2,8 @@ import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {User} from "../../user/entities/user.entity";
 import {Block} from "../../block/entities/block.entity";
+import {TransactionsWaiting} from "../../transactions_waiting/entities/transactions_waiting.entity";
+import {JoinConfirmTransaction} from "../../join_confirm_transactions/entities/join_confirm_transaction.entity";
 
 @Module({
     imports: [
@@ -12,7 +14,7 @@ import {Block} from "../../block/entities/block.entity";
             username: 'root',
             password: '',
             database: 'hainamcoin',
-            entities: [User, Block],
+            entities: [User, Block, TransactionsWaiting, JoinConfirmTransaction],
             autoLoadEntities: true,
             synchronize: true,
         }),

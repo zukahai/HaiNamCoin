@@ -1,0 +1,34 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { TransactionsWaitingService } from './transactions_waiting.service';
+import { CreateTransactionsWaitingDto } from './dto/create-transactions_waiting.dto';
+import { UpdateTransactionsWaitingDto } from './dto/update-transactions_waiting.dto';
+
+@Controller('transactions-waiting')
+export class TransactionsWaitingController {
+  constructor(private readonly transactionsWaitingService: TransactionsWaitingService) {}
+
+  @Post()
+  create(@Body() createTransactionsWaitingDto: CreateTransactionsWaitingDto) {
+    return this.transactionsWaitingService.create(createTransactionsWaitingDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.transactionsWaitingService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.transactionsWaitingService.findOne(+id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateTransactionsWaitingDto: UpdateTransactionsWaitingDto) {
+    return this.transactionsWaitingService.update(+id, updateTransactionsWaitingDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.transactionsWaitingService.remove(+id);
+  }
+}

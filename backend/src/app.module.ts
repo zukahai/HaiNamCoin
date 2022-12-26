@@ -9,9 +9,11 @@ import {AuthModule} from './auth/auth.module';
 import {AtGuard} from './auth/guards/at.guard';
 import {APP_GUARD} from '@nestjs/core';
 import {ConfigModule} from "@nestjs/config";
+import { TransactionsWaitingModule } from './transactions_waiting/transactions_waiting.module';
+import { JoinConfirmTransactionsModule } from './join_confirm_transactions/join_confirm_transactions.module';
 
 @Module({
-    imports: [AuthModule, DatabaseModule, AutoBankModule, BlockModule, UserModule, ConfigModule.forRoot()],
+    imports: [AuthModule, DatabaseModule, AutoBankModule, BlockModule, UserModule, ConfigModule.forRoot(), TransactionsWaitingModule, JoinConfirmTransactionsModule],
     controllers: [AppController],
     providers: [
         AppService,
