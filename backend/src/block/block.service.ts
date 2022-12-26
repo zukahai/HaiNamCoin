@@ -22,6 +22,7 @@ export class BlockService {
     }
 
     async findAll() {
+
         return await this.blockModel.findAll({
             order: [['createdAt', 'ASC']],
         });

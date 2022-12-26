@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from '../../user/entities/user.entity';
 import {Block} from "../../block/entities/block.entity";
+import {TransactionsWaiting} from "../../transactions_waiting/entities/transactions_waiting.entity";
+import {ComfirmTransaction} from "../../comfirm_transactions/entities/comfirm_transaction.entity";
 
 @Module({
   imports: [
@@ -12,7 +14,7 @@ import {Block} from "../../block/entities/block.entity";
       username: 'root',
       password: '',
       database: 'hainamcoin',
-      models: [User, Block],
+      models: [User, Block, TransactionsWaiting, ComfirmTransaction],
       autoLoadModels: true,
       logging: false,
     }),

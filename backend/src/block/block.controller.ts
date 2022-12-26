@@ -2,11 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { BlockService } from './block.service';
 import { CreateBlockDto } from './dto/create-block.dto';
 import { UpdateBlockDto } from './dto/update-block.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import {GetCurrentUser, GetCurrentUserId} from "../auth/decorators/custom.decarator";
 @ApiTags('block')
+@ApiBearerAuth()
 @Controller('block')
 export class BlockController {
     constructor(private readonly blockService: BlockService) {}
+
 
     @Post()
     create(@Body() createBlockDto: CreateBlockDto) {
@@ -14,7 +17,7 @@ export class BlockController {
     }
 
     @Get()
-    findAll() {
+    findAll(@GetCurrentUserId() userId: number) {
         return this.blockService.findAll();
     }
 
