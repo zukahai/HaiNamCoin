@@ -20,7 +20,11 @@ export class TransactionsWaitingService {
   }
 
   async findOne(id: number) {
-    return await this.transactionsWaitingRepository.findOneBy({id: id});
+    return await this.transactionsWaitingRepository.findOne({
+      where: {
+        id: id
+      },relations:{join_confirm_transaction: true}
+    });
   }
 
   update(id: number, updateTransactionsWaitingDto: UpdateTransactionsWaitingDto) {

@@ -3,11 +3,12 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
-    ManyToOne,
+    ManyToOne, OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import {User} from "../../user/entities/user.entity";
+import {JoinConfirmTransaction} from "../../join_confirm_transactions/entities/join_confirm_transaction.entity";
 
 @Entity({name: "transactions_waiting", orderBy: {id: "ASC"}, synchronize: true})
 export class TransactionsWaiting {
@@ -33,5 +34,8 @@ export class TransactionsWaiting {
 
     @UpdateDateColumn({name: "updated_at", comment: "Updated at"})
     updatedAt: Date;
+
+    @OneToMany(() => JoinConfirmTransaction, joinConfirmTransaction => joinConfirmTransaction.transaction_waiting)
+    join_confirm_transaction: JoinConfirmTransaction[];
 }
 

@@ -27,12 +27,16 @@ export class UserService {
     }
 
     async findOne(id: number): Promise<User> {
-        return await this.userRepository.findOneBy({id});
+        return await this.userRepository.findOne({
+            where: {
+                id: id
+            },relations:{join_confirm_transaction: true, block_from: true}
+        });
     }
 
     async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
         const userFind: User = await this.findOne(id);
-        if (userFind) {
+        if (userFind) { //
             if (updateUserDto.email && updateUserDto.email !== userFind.email) {
                 const user = await this.findByEmail(updateUserDto.email);
                 if (user) {

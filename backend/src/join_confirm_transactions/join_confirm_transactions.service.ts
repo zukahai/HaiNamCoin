@@ -18,22 +18,37 @@ export class JoinConfirmTransactionsService {
   async create(createJoinConfirmTransactionDto: CreateJoinConfirmTransactionDto) {
     const user = await this.userService.findOne(createJoinConfirmTransactionDto.user_id);
     const transaction_waiting = await this.transactionsWaitingService.findOne(createJoinConfirmTransactionDto.transaction_waiting_id);
+    const user_join_confirm_transaction = user.join_confirm_transaction;
+
+    console.log(user_join_confirm_transaction);
+    if (user_join_confirm_transaction) {
+      return this.update(user_join_confirm_transaction.id);
+    }
+
     return await this.joinConfirmTransactionsRepository.save({
-        user_id: user,
-        transaction_waiting_id: transaction_waiting,
+        user: user,
+        transaction_waiting: transaction_waiting,
     });
   }
 
   findAll() {
-    return `This action returns all joinConfirmTransactions`;
+    return this.joinConfirmTransactionsRepository.find();
+  }
+
+  async getNumberJoinConfirmTransaction(transaction_waiting_id: number) {
+    const transaction_waiting = await this.transactionsWaitingService.findOne(transaction_waiting_id);
+    return transaction_waiting.join_confirm_transaction.length;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} joinConfirmTransaction`;
+    return this.joinConfirmTransactionsRepository.findOneBy({id: id});
   }
 
-  async update(id: number, updateJoinConfirmTransactionDto: UpdateJoinConfirmTransactionDto) {
-    // return await this.joinConfirmTransactionsRepository.update(id, updateJoinConfirmTransactionDto);
+  async update(id: number) {
+    const joinConfirmTransaction = await this.joinConfirmTransactionsRepository.findOneBy({id: id});
+    joinConfirmTransaction.time_join = new Date();
+    this.joinConfirmTransactionsRepository.save(joinConfirmTransaction);
+    return joinConfirmTransaction;
   }
 
   remove(id: number) {

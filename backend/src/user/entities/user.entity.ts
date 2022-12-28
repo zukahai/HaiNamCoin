@@ -1,5 +1,6 @@
-import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {Block} from "../../block/entities/block.entity";
+import {JoinConfirmTransaction} from "../../join_confirm_transactions/entities/join_confirm_transaction.entity";
 
 
 
@@ -40,4 +41,8 @@ export class User {
 
     @OneToMany(() => Block, block => block.to)
     block_to: Block[];
+
+
+    @OneToOne(() => JoinConfirmTransaction, joinConfirmTransaction => joinConfirmTransaction.user)
+    join_confirm_transaction: JoinConfirmTransaction;
 }

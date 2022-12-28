@@ -26,9 +26,9 @@ export class JoinConfirmTransactionsController {
     return this.joinConfirmTransactionsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateJoinConfirmTransactionDto: UpdateJoinConfirmTransactionDto) {
-    return this.joinConfirmTransactionsService.update(+id, updateJoinConfirmTransactionDto);
+  @Get('transaction_wating/:id')
+  getNumberConfirmTransactionWaiting(@Param('id') id: string) {
+    return this.joinConfirmTransactionsService.getNumberJoinConfirmTransaction(+id);
   }
 
   @Delete(':id')
