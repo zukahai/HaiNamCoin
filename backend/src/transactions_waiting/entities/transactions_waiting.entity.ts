@@ -3,7 +3,7 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
-    ManyToOne, OneToMany,
+    ManyToOne, OneToMany, OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
@@ -15,11 +15,11 @@ export class TransactionsWaiting {
     @PrimaryGeneratedColumn({comment: "TransactionsWaiting ID"})
     id: number;
 
-    @ManyToOne(() => User, user => user.block_from)
+    @ManyToOne(() => User, user => user.transactions_waiting_from)
     @JoinColumn({name: "from"})
     from: User;
 
-    @ManyToOne(() => User, user => user.block_to)
+    @ManyToOne(() => User, user => user.transactions_waiting_to)
     @JoinColumn({name: "to"})
     to: User;
 

@@ -1,6 +1,7 @@
 import {Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {Block} from "../../block/entities/block.entity";
 import {JoinConfirmTransaction} from "../../join_confirm_transactions/entities/join_confirm_transaction.entity";
+import {TransactionsWaiting} from "../../transactions_waiting/entities/transactions_waiting.entity";
 
 @Entity({name: "users", orderBy: {id: "ASC"}, synchronize: true})
 export class User {
@@ -43,6 +44,11 @@ export class User {
     @OneToMany(() => Block, block => block.to)
     block_to: Block[];
 
+    @OneToMany(() => TransactionsWaiting, transactionsWaiting => transactionsWaiting.from)
+    transactions_waiting_from: TransactionsWaiting[];
+
+    @OneToMany(() => TransactionsWaiting, transactionsWaiting => transactionsWaiting.to)
+    transactions_waiting_to: TransactionsWaiting[];
 
     @OneToOne(() => JoinConfirmTransaction, joinConfirmTransaction => joinConfirmTransaction.user)
     join_confirm_transaction: JoinConfirmTransaction;

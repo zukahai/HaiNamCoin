@@ -3,6 +3,7 @@ import { TransactionsWaitingService } from './transactions_waiting.service';
 import { CreateTransactionsWaitingDto } from './dto/create-transactions_waiting.dto';
 import { UpdateTransactionsWaitingDto } from './dto/update-transactions_waiting.dto';
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
+import {HashProvider} from "../providers/hash.provider";
 @ApiBearerAuth()
 @ApiTags('Transactions Waiting')
 @Controller('transactions-waiting')
@@ -22,6 +23,11 @@ export class TransactionsWaitingController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.transactionsWaitingService.findOne(+id);
+  }
+
+  @Get('test/:id/:nonce')
+  test(@Param('id') nonce: number, @Param('nonce') id: number) {
+    return this.transactionsWaitingService.test(nonce, id);
   }
 
   @Patch(':id')
