@@ -14,10 +14,16 @@ export class TransactionsWaitingService {
         private readonly userService: UserService,
     ) {}
 
-    async create(createTransactionsWaitingDto: CreateTransactionsWaitingDto) {
-        const user_form = await this.userService.findOne(createTransactionsWaitingDto.from);
+    async create(createTransactionsWaitingDto: CreateTransactionsWaitingDto, userId: number) {
+        const user_from = await this.userService.findOne(userId);
+        if (user_from.private_key != createTransactionsWaitingDto.private_key) {
+            return {
+                message: 'error',
+                error: 'Private key is not correct',
+            };
+        }
         const user_to = await this.userService.findOne(createTransactionsWaitingDto.to);
-        let totalValue = await this.userService.getTotalMoney(user_form.id);
+        let totalValue = await this.userService.getTotalMoney(user_from.id);
 
         if (totalValue < createTransactionsWaitingDto.value) {
             return {
@@ -29,7 +35,6 @@ export class TransactionsWaitingService {
         const user_by_public_key = await this.userService.findByPublicKey(createTransactionsWaitingDto.public_key);
 
         if (user_by_public_key != null && user_to != null && user_by_public_key.id == user_to.id) {
-            const user_from = await this.userService.findOne(createTransactionsWaitingDto.from);
             const user_to = await this.userService.findOne(createTransactionsWaitingDto.to);
             return {
                 message: 'ok',
