@@ -1,5 +1,6 @@
 import {IsNumber,} from 'class-validator';
 import {ApiProperty} from '@nestjs/swagger';
+import {User} from "../../user/entities/user.entity";
 
 export class CreateTransactionsWaitingDto {
     @ApiProperty({example: 1, description: 'Id TransactionsWaiting'})
@@ -15,4 +16,7 @@ export class CreateTransactionsWaitingDto {
 
     @ApiProperty({example: 'true', description: 'Status'})
     status: boolean
+
+    @ApiProperty({example: 'public_key', description: 'Public Kty'})
+    public_key: string;
 }

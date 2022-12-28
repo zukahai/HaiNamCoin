@@ -2,8 +2,6 @@ import {Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedC
 import {Block} from "../../block/entities/block.entity";
 import {JoinConfirmTransaction} from "../../join_confirm_transactions/entities/join_confirm_transaction.entity";
 
-
-
 @Entity({name: "users", orderBy: {id: "ASC"}, synchronize: true})
 export class User {
     @PrimaryGeneratedColumn({name: "id", comment: "User ID"})
@@ -12,11 +10,14 @@ export class User {
     @Column({type: "varchar", length: 255, comment: "Name of user"})
     name: string;
 
-    @Column({type: "float", comment: "Balance of user"})
-    balance: number;
-
     @Column({type: "varchar", length: 255, comment: "Email of user", unique: true,})
     email: string;
+
+    @Column({type: "varchar", length: 255, comment: "private key of user"})
+    private_key: string;
+
+    @Column({type: "varchar", length: 255, comment: "public key of user"})
+    public_key: string;
 
     @Column({type: "text", comment: "Password of user"})
     password: string;

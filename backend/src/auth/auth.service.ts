@@ -3,10 +3,15 @@ import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
+import {HashProvider} from "../providers/hash.provider";
 
 export class JwtPayload {
     email: string;
     sub: number;
+}
+export interface JwtResponse {
+    accessToken: string;
+    refreshToken: string;
 }
 
 @Injectable()
@@ -26,7 +31,13 @@ export class AuthService {
     }
 
     async register(registerDto: RegisterDto) {
-        return this.userService.register(registerDto);
+        const user = await this.userService.register(registerDto);
+        if (user) {
+           return {
+                ...await this.getTokens(user),
+                message: 'Registered',
+           }
+        }
     }
 
     async logout(id: number) {
@@ -60,7 +71,7 @@ export class AuthService {
         return refreshToken;
     }
 
-    async getTokens(user): Promise<any> {
+    async getTokens(user): Promise<JwtResponse> {
         const accessToken = await this.getAccessToken(user);
         const refreshToken = await this.getRefreshToken(user);
         return { accessToken, refreshToken };

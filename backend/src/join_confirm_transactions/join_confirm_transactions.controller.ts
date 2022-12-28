@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { JoinConfirmTransactionsService } from './join_confirm_transactions.service';
 import { CreateJoinConfirmTransactionDto } from './dto/create-join_confirm_transaction.dto';
 import { UpdateJoinConfirmTransactionDto } from './dto/update-join_confirm_transaction.dto';
-import {Public} from "../auth/decorators/custom.decarator";
+import {GetCurrentUser, GetCurrentUserId, Public} from "../auth/decorators/custom.decarator";
 import {ApiBearerAuth} from "@nestjs/swagger";
 
 @ApiBearerAuth()
@@ -11,8 +11,8 @@ export class JoinConfirmTransactionsController {
   constructor(private readonly joinConfirmTransactionsService: JoinConfirmTransactionsService) {}
 
   @Post()
-  create(@Body() createJoinConfirmTransactionDto: CreateJoinConfirmTransactionDto) {
-    return this.joinConfirmTransactionsService.create(createJoinConfirmTransactionDto);
+  create(@Body() createJoinConfirmTransactionDto: CreateJoinConfirmTransactionDto, @GetCurrentUserId() userId: number) {
+    return this.joinConfirmTransactionsService.create(createJoinConfirmTransactionDto, userId);
   }
 
   @Get()

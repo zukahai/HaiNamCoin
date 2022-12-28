@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TransactionsWaitingService } from './transactions_waiting.service';
 import { CreateTransactionsWaitingDto } from './dto/create-transactions_waiting.dto';
 import { UpdateTransactionsWaitingDto } from './dto/update-transactions_waiting.dto';
-
+import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
+@ApiBearerAuth()
+@ApiTags('Transactions Waiting')
 @Controller('transactions-waiting')
 export class TransactionsWaitingController {
   constructor(private readonly transactionsWaitingService: TransactionsWaitingService) {}
