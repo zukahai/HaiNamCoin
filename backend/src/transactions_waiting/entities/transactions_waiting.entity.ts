@@ -49,9 +49,6 @@ export class TransactionsWaiting {
     @OneToMany(() => JoinConfirmTransaction, (joinConfirmTransaction) => joinConfirmTransaction.transaction_waiting)
     join_confirm_transaction: JoinConfirmTransaction[];
 
-    @OneToMany(() => ConfirmTransactionUser, (confirmTransactionUser) => confirmTransactionUser.transaction_waiting)
-    confirm_transaction_user: ConfirmTransactionUser[];
-
     @OneToMany(() => ConfirmTransaction, (confirmTransaction) => confirmTransaction.transaction_waiting)
     confirm_transactions: ConfirmTransaction[];
 }

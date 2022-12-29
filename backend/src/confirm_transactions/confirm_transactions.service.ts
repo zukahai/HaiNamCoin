@@ -1,26 +1,51 @@
 import { Injectable } from '@nestjs/common';
 import { CreateConfirmTransactionDto } from './dto/create-confirm_transaction.dto';
 import { UpdateConfirmTransactionDto } from './dto/update-confirm_transaction.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ConfirmTransaction } from './entities/confirm_transaction.entity';
+import { JoinConfirmTransaction } from '../join_confirm_transactions/entities/join_confirm_transaction.entity';
+import { Repository } from 'typeorm';
+import { UserService } from '../user/user.service';
+import { TransactionsWaitingService } from '../transactions_waiting/transactions_waiting.service';
 
 @Injectable()
 export class ConfirmTransactionsService {
-  create(createConfirmTransactionDto: CreateConfirmTransactionDto) {
-    return 'This action adds a new confirmTransaction';
-  }
+    constructor(
+        @InjectRepository(ConfirmTransaction) private confirmTransactionRepository: Repository<ConfirmTransaction>,
+        private readonly userService: UserService,
+        private readonly transactionsWaitingService: TransactionsWaitingService,
+    ) {}
 
-  findAll() {
-    return `This action returns all confirmTransactions`;
-  }
+    async create(createConfirmTransactionDto: CreateConfirmTransactionDto, userId: number) {
+        const user = await this.userService.findOne(userId);
+        const transactionWaiting = await this.transactionsWaitingService.findOne(
+            createConfirmTransactionDto.transaction_waiting_id,
+        );
+        return this.confirmTransactionRepository.save({
+            nonce: createConfirmTransactionDto.nonce.toString(),
+            transaction_waiting: transactionWaiting,
+            user: user,
+        });
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} confirmTransaction`;
-  }
+    findAll() {
+        return this.confirmTransactionRepository.find();
+    }
 
-  update(id: number, updateConfirmTransactionDto: UpdateConfirmTransactionDto) {
-    return `This action updates a #${id} confirmTransaction`;
-  }
+    async findOne(id: number) {
+        return await this.confirmTransactionRepository.findOne({
+            where: {
+                id: id,
+            },
+            relations: ['user', 'transaction_waiting', 'confirm_transaction_user'],
+        });
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} confirmTransaction`;
-  }
+    update(id: number, updateConfirmTransactionDto: UpdateConfirmTransactionDto) {
+        return `This action updates a #${id} confirmTransaction`;
+    }
+
+    remove(id: number) {
+        return `This action removes a #${id} confirmTransaction`;
+    }
 }

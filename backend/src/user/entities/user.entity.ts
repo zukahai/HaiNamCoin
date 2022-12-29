@@ -65,4 +65,7 @@ export class User {
 
     @OneToMany(() => ConfirmTransactionUser, (confirmTransactionUser) => confirmTransactionUser.user)
     confirm_transaction_user: ConfirmTransactionUser[];
+
+    @OneToMany(() => ConfirmTransactionUser, (confirmTransactionUser) => confirmTransactionUser.user)
+    confirm_transactions: ConfirmTransactionUser[];
 }

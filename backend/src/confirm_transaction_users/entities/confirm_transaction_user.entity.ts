@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { TransactionsWaiting } from '../../transactions_waiting/entities/transactions_waiting.entity';
+import { ConfirmTransaction } from '../../confirm_transactions/entities/confirm_transaction.entity';
 
 @Entity({ name: 'confirm_transaction_users', orderBy: { id: 'ASC' }, synchronize: true })
 export class ConfirmTransactionUser {
@@ -24,9 +25,9 @@ export class ConfirmTransactionUser {
     @JoinColumn({ name: 'user' })
     user: User;
 
-    @ManyToOne(() => TransactionsWaiting, (transactionsWaiting) => transactionsWaiting.confirm_transaction_user)
-    @JoinColumn({ name: 'transaction_waiting' })
-    transaction_waiting: TransactionsWaiting;
+    @ManyToOne(() => ConfirmTransaction, (confirmTransaction) => confirmTransaction.confirm_transaction_user)
+    @JoinColumn({ name: 'confirm_transaction' })
+    confirmTransaction: ConfirmTransaction;
 
     @CreateDateColumn({ name: 'created_at', comment: 'Created at' })
     createdAt: Date;
