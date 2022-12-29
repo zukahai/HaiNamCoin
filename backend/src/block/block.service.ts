@@ -1,10 +1,10 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import {CreateBlockDto} from './dto/create-block.dto';
-import {UpdateBlockDto} from './dto/update-block.dto';
-import {Block} from './entities/block.entity';
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
-import {UserService} from "../user/user.service";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CreateBlockDto } from './dto/create-block.dto';
+import { UpdateBlockDto } from './dto/update-block.dto';
+import { Block } from './entities/block.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserService } from '../user/user.service';
 
 // import crypto from 'crypto';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -15,8 +15,7 @@ export class BlockService {
     constructor(
         @InjectRepository(Block) private blockRepository: Repository<Block>,
         private readonly userService: UserService,
-    ) {
-    }
+    ) {}
 
     async create(createBlockDto: CreateBlockDto) {
         const hash = (await this.findHashCode()).hashcode;
@@ -49,11 +48,27 @@ export class BlockService {
     // findAll order by createdAt DESC
     async findAllDESC() {
         return await this.blockRepository.find({
-                order: {
-                    id: "DESC"
-                }
+            order: {
+                id: 'DESC',
+            },
+        });
+    }
+
+    async findByFormOrTo(user_id: number) {
+        const user = await this.userService.findOne(user_id);
+        const blocks = await this.findAll();
+        let result = [];
+        for (let i = 0; i < blocks.length; i++) {
+            const block = await this.findOne(blocks[i].id);
+            if (block.from.id == user.id || block.to.id == user.id) {
+                result.push(block);
             }
-        );
+        }
+        return result;
+        // return blocks.filter(
+        //     async (block) =>
+        //         (await this.findOne(block.id)).from.id == user.id || (await this.findOne(block.id)).to.id == user.id,
+        // );
     }
 
     async checkCheat() {
@@ -101,15 +116,12 @@ export class BlockService {
     }
 
     async findOne(id: number) {
-        return await this.blockRepository.findOneBy({id: id});
-    }
-
-    update(id: number, updateBlockDto: UpdateBlockDto) {
-        return `This action updates a #${id} block`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} block`;
+        return await this.blockRepository.findOne({
+            where: {
+                id: id,
+            },
+            relations: { from: true, to: true },
+        });
     }
 
     async findHashCode() {

@@ -36,13 +36,22 @@ export class TransactionsWaitingService {
 
         if (user_by_public_key != null && user_to != null && user_by_public_key.id == user_to.id) {
             const user_to = await this.userService.findOne(createTransactionsWaitingDto.to);
+            let tw = await this.transactionsWaitingRepository.save({
+                from: user_from,
+                to: user_to,
+                value: createTransactionsWaitingDto.value,
+            });
+            const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + new Date(tw.createdAt).getTime() + ' ';
+            const nonce = HashProvider.findNonce(text);
+            tw.nonce = nonce.toString();
+            tw.permutation_nonce = HashProvider.randomPermutationNoce(nonce).toString();
+            await this.transactionsWaitingRepository.save(tw);
             return {
                 message: 'ok',
-                data: await this.transactionsWaitingRepository.save({
-                    from: user_from,
-                    to: user_to,
-                    value: createTransactionsWaitingDto.value,
-                }),
+                text: text,
+                nonce: nonce.toString(),
+                permutation_nonce: tw.permutation_nonce,
+                data: tw,
             };
         }
         return {
@@ -51,19 +60,22 @@ export class TransactionsWaitingService {
         };
     }
 
-    findAll() {
-        return `This action returns all transactionsWaiting`;
+    async findAll() {
+        return await this.transactionsWaitingRepository.find();
     }
 
-    async test(id: number, nonce: number) {
+    async checkNonce(id: number, nonce: number) {
         const tw = await this.findOne(id);
         console.log(tw.from);
         const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + new Date(tw.createdAt).getTime() + ' ' + nonce;
+        const hash = HashProvider.hash256(text);
+        const message = hash.startsWith(HashProvider.hard) ? 'ok' : 'error';
         return {
+            message: message,
             id: id,
             nonce: nonce,
             text: text,
-            hash: HashProvider.hash256(text),
+            hash: hash,
         };
     }
 

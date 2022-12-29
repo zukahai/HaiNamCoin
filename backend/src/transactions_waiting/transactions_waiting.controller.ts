@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TransactionsWaitingService } from './transactions_waiting.service';
 import { CreateTransactionsWaitingDto } from './dto/create-transactions_waiting.dto';
 import { UpdateTransactionsWaitingDto } from './dto/update-transactions_waiting.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HashProvider } from '../providers/hash.provider';
 import { GetCurrentUserId } from '../auth/decorators/custom.decarator';
 @ApiBearerAuth()
@@ -26,9 +26,10 @@ export class TransactionsWaitingController {
         return this.transactionsWaitingService.findOne(+id);
     }
 
-    @Get('test/:id/:nonce')
+    @ApiOperation({ summary: 'Check nonce' })
+    @Get('checkNonce/:id/:nonce')
     test(@Param('id') nonce: number, @Param('nonce') id: number) {
-        return this.transactionsWaitingService.test(nonce, id);
+        return this.transactionsWaitingService.checkNonce(nonce, id);
     }
 
     @Patch(':id')
