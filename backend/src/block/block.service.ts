@@ -73,7 +73,7 @@ export class BlockService {
         if (blocks.length == 0) return true;
         let preHash = blocks[0].preHashCode;
         for (let i = 0; i < blocks.length; i++) {
-            const block = blocks[i];
+            const block = await this.findOne(blocks[i].id);
             const text = block.from.id + block.to.id + block.value + new Date(block.createdAt).toTimeString() + preHash;
             const hash = this.hash256(text);
             if (hash !== block.hashCode) {
@@ -112,7 +112,7 @@ export class BlockService {
         return crypto.createHash('sha256').update(text).digest('hex');
     }
 
-    async findOne(id: number) {
+    async findOne(id: number): Promise<Block> {
         return await this.blockRepository.findOne({
             where: {
                 id: id,

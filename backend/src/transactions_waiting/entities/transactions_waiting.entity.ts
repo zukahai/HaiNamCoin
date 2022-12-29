@@ -3,6 +3,7 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     OneToOne,
@@ -11,6 +12,8 @@ import {
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { JoinConfirmTransaction } from '../../join_confirm_transactions/entities/join_confirm_transaction.entity';
+import { ConfirmTransaction } from '../../confirm_transactions/entities/confirm_transaction.entity';
+import { ConfirmTransactionUser } from '../../confirm_transaction_users/entities/confirm_transaction_user.entity';
 
 @Entity({ name: 'transactions_waiting', orderBy: { id: 'ASC' }, synchronize: true })
 export class TransactionsWaiting {
@@ -45,4 +48,10 @@ export class TransactionsWaiting {
 
     @OneToMany(() => JoinConfirmTransaction, (joinConfirmTransaction) => joinConfirmTransaction.transaction_waiting)
     join_confirm_transaction: JoinConfirmTransaction[];
+
+    @OneToMany(() => ConfirmTransactionUser, (confirmTransactionUser) => confirmTransactionUser.transaction_waiting)
+    confirm_transaction_user: ConfirmTransactionUser[];
+
+    @OneToMany(() => ConfirmTransaction, (confirmTransaction) => confirmTransaction.transaction_waiting)
+    confirm_transactions: ConfirmTransaction[];
 }
