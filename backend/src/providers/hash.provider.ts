@@ -2,6 +2,7 @@ import * as bcrypt from 'bcrypt';
 const crypto = require('crypto');
 export class HashProvider {
     static hard = '000000';
+    static min_client = 3;
 
     static async hash(password: string): Promise<string> {
         return await bcrypt.hash(password, 10);

@@ -39,7 +39,13 @@ export class BlockService {
     }
 
     async findAll() {
-        return await this.blockRepository.find();
+        const result = [];
+        const blocks = await this.blockRepository.find();
+        for (let i = 0; i < blocks.length; i++) {
+            const block = await this.findOne(blocks[i].id);
+            result.push(block);
+        }
+        return result;
     }
 
     // findAll order by createdAt DESC

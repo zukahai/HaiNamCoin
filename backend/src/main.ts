@@ -13,9 +13,10 @@ async function bootstrap() {
         .setVersion('1.0')
         .addBearerAuth()
         .build();
+    app.enableCors();
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('api', app, document);
-    await app.listen(process.env.PORT );
+    await app.listen(process.env.PORT);
 }
 bootstrap().then(() => {
     console.log('Server started: http://localhost:' + process.env.PORT);

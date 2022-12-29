@@ -6,6 +6,8 @@ import { ConfirmTransactionUser } from './entities/confirm_transaction_user.enti
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from '../user/user.service';
 import { ConfirmTransactionsService } from '../confirm_transactions/confirm_transactions.service';
+import { BlockService } from '../block/block.service';
+import { JoinConfirmTransactionsService } from '../join_confirm_transactions/join_confirm_transactions.service';
 
 @Injectable()
 export class ConfirmTransactionUsersService {
@@ -14,6 +16,8 @@ export class ConfirmTransactionUsersService {
         private confirmTransactionUserRepository: Repository<ConfirmTransactionUser>,
         private userService: UserService,
         private confirmTransactionService: ConfirmTransactionsService,
+        private blockService: BlockService,
+        private joinConfirmTransactionsService: JoinConfirmTransactionsService,
     ) {}
 
     async create(createConfirmTransactionUserDto: CreateConfirmTransactionUserDto, userId: number) {
@@ -21,6 +25,8 @@ export class ConfirmTransactionUsersService {
         const confirmTransaction = await this.confirmTransactionService.findOne(
             createConfirmTransactionUserDto.confirm_transaction_id,
         );
+        const transactionWaiting = confirmTransactionUser.transaction_waiting;
+        const numberPeople = await this.joinConfirmTransactionsService.getNumberJoinConfirmTransaction();
 
         const confirmTransactionUser = confirmTransaction.confirm_transaction_user;
 
