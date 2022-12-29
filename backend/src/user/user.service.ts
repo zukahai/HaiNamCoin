@@ -35,6 +35,13 @@ export class UserService {
         });
     }
 
+    async infomationUser(id: number): Promise<any> {
+        return {
+            user: await this.findOne(id),
+            totalMoney: await this.getTotalMoney(id),
+        };
+    }
+
     async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
         const userFind: User = await this.findOne(id);
         if (userFind) {

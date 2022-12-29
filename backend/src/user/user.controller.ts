@@ -1,15 +1,14 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common';
-import {UserService} from './user.service';
-import {CreateUserDto} from './dto/create-user.dto';
-import {UpdateUserDto} from './dto/update-user.dto';
-import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { UserService } from './user.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('User')
 @ApiBearerAuth()
 @Controller('user')
 export class UserController {
-    constructor(private readonly userService: UserService) {
-    }
+    constructor(private readonly userService: UserService) {}
 
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
@@ -21,9 +20,10 @@ export class UserController {
         return this.userService.findAll();
     }
 
+    @ApiOperation({ summary: 'InfomationUser user by id' })
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.userService.findOne(+id);
+    infomationUser(@Param('id') id: string) {
+        return this.userService.infomationUser(+id);
     }
 
     @Patch(':id')

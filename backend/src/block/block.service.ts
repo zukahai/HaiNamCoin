@@ -19,9 +19,7 @@ export class BlockService {
 
     async create(createBlockDto: CreateBlockDto) {
         const hash = (await this.findHashCode()).hashcode;
-        console.log(await this.findHashCode());
         const text = createBlockDto.from + createBlockDto.to + createBlockDto.value + new Date().toTimeString() + hash;
-        createBlockDto.preHashCode = hash;
         const userFrom = await this.userService.findOne(createBlockDto.from);
         if (!userFrom) {
             throw new HttpException('User from not found', HttpStatus.NOT_FOUND);
@@ -30,13 +28,12 @@ export class BlockService {
         if (!userTo) {
             throw new HttpException('User to not found', HttpStatus.NOT_FOUND);
         }
-        createBlockDto.hashCode = this.hash256(text);
 
         return await this.blockRepository.save({
             from: userFrom,
             to: userTo,
-            preHashCode: createBlockDto.preHashCode,
-            hashCode: createBlockDto.hashCode,
+            preHashCode: hash,
+            hashCode: this.hash256(text),
             value: createBlockDto.value,
         });
     }

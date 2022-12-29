@@ -28,8 +28,8 @@ export class TransactionsWaiting {
     @Column({ type: 'float', comment: 'Amount of block' })
     value: number;
 
-    @Column({ type: 'boolean', comment: 'Status of block' })
-    status: boolean;
+    @Column({ type: 'int', comment: 'Status of transaction' })
+    status: number;
 
     @Column({ type: 'varchar', length: 255, comment: 'nonce of block' })
     nonce: string;

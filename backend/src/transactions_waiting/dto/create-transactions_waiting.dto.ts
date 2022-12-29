@@ -10,9 +10,6 @@ export class CreateTransactionsWaitingDto {
     @ApiProperty({ example: 100, description: 'Value' })
     value: number;
 
-    @ApiProperty({ example: 'true', description: 'Status' })
-    status: boolean;
-
     @ApiProperty({ example: 'privateKey', description: 'Private key' })
     private_key: string;
 
