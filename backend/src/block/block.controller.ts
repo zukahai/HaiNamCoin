@@ -19,7 +19,7 @@ export class BlockController {
     @Get()
     @ApiOperation({ summary: 'Get all block' })
     findAll() {
-        return this.blockService.findAll();
+        return this.blockService.findAllDESC();
     }
 
     @Get('/hashcode')

@@ -21,6 +21,12 @@ export class ConfirmTransactionsService {
         const transactionWaiting = await this.transactionsWaitingService.findOne(
             createConfirmTransactionDto.transaction_waiting_id,
         );
+        if (transactionWaiting.status !== 0) {
+            return {
+                message: 'error',
+                error: 'The transaction has been processed',
+            };
+        }
         return this.confirmTransactionRepository.save({
             nonce: createConfirmTransactionDto.nonce.toString(),
             transaction_waiting: transactionWaiting,
@@ -39,6 +45,16 @@ export class ConfirmTransactionsService {
             },
             relations: ['user', 'transaction_waiting', 'confirm_transaction_user'],
         });
+    }
+
+    async getNumberAcceptTransaction(confirmTransactionId: number) {
+        const confirmTransaction = await this.findOne(confirmTransactionId);
+        const confirmTransactionUser = confirmTransaction.confirm_transaction_user;
+        let numberAcceptTransaction = 0;
+        confirmTransactionUser.forEach((confirmTransactionUser) => {
+            if (confirmTransactionUser.status === true) numberAcceptTransaction++;
+        });
+        return numberAcceptTransaction;
     }
 
     update(id: number, updateConfirmTransactionDto: UpdateConfirmTransactionDto) {

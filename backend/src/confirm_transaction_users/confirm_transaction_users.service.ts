@@ -8,6 +8,9 @@ import { UserService } from '../user/user.service';
 import { ConfirmTransactionsService } from '../confirm_transactions/confirm_transactions.service';
 import { BlockService } from '../block/block.service';
 import { JoinConfirmTransactionsService } from '../join_confirm_transactions/join_confirm_transactions.service';
+import { HashProvider } from '../providers/hash.provider';
+import { CreateBlockDto } from '../block/dto/create-block.dto';
+import { TransactionsWaitingService } from '../transactions_waiting/transactions_waiting.service';
 
 @Injectable()
 export class ConfirmTransactionUsersService {
@@ -18,6 +21,7 @@ export class ConfirmTransactionUsersService {
         private confirmTransactionService: ConfirmTransactionsService,
         private blockService: BlockService,
         private joinConfirmTransactionsService: JoinConfirmTransactionsService,
+        private transactionsWaitingService: TransactionsWaitingService,
     ) {}
 
     async create(createConfirmTransactionUserDto: CreateConfirmTransactionUserDto, userId: number) {
@@ -25,22 +29,48 @@ export class ConfirmTransactionUsersService {
         const confirmTransaction = await this.confirmTransactionService.findOne(
             createConfirmTransactionUserDto.confirm_transaction_id,
         );
-        const transactionWaiting = confirmTransactionUser.transaction_waiting;
-        const numberPeople = await this.joinConfirmTransactionsService.getNumberJoinConfirmTransaction();
-
-        const confirmTransactionUser = confirmTransaction.confirm_transaction_user;
-
-        console.log(confirmTransactionUser);
-        if (confirmTransactionUser.length > 0) {
-            confirmTransactionUser[0].status = createConfirmTransactionUserDto.status;
-            return await this.confirmTransactionUserRepository.save(confirmTransactionUser[0]);
+        const transactionWaiting = confirmTransaction.transaction_waiting;
+        if (transactionWaiting.status !== 0) {
+            return {
+                message: 'error',
+                error: 'The transaction has been processed',
+            };
         }
+        const numberPeople = await this.joinConfirmTransactionsService.getNumberJoinConfirmTransaction(
+            transactionWaiting.id,
+        );
+        const numberAcceptTransaction = await this.confirmTransactionService.getNumberAcceptTransaction(
+            confirmTransaction.id,
+        );
+        console.log('numberPeople', numberPeople.number_join_confirm_transaction);
+        console.log('numberAcceptTransaction', numberAcceptTransaction);
+        let confirmTransactionUsers = confirmTransaction.confirm_transaction_user;
+        let confirmTransactionUser = null;
+        if (confirmTransactionUsers.length > 0) {
+            confirmTransactionUsers[0].status = createConfirmTransactionUserDto.status;
+            confirmTransactionUser = await this.confirmTransactionUserRepository.save(confirmTransactionUsers[0]);
+        } else {
+            confirmTransactionUser = await this.confirmTransactionUserRepository.save({
+                status: createConfirmTransactionUserDto.status,
+                user: user,
+                confirmTransaction: confirmTransaction,
+            });
+        }
+        if (confirmTransactionUser.status === true) {
+            // if (numberPeople.number_join_confirm_transaction >= HashProvider.min_client) {
+            let createBlockDto = new CreateBlockDto();
+            let transactionwaiting = await this.transactionsWaitingService.findOne(transactionWaiting.id);
+            const from_id = transactionwaiting.from.id;
+            const to_id = transactionwaiting.to.id;
+            const value = transactionwaiting.value;
 
-        return await this.confirmTransactionUserRepository.save({
-            status: createConfirmTransactionUserDto.status,
-            user: user,
-            confirmTransaction: confirmTransaction,
-        });
+            await this.blockService.createByProperties(from_id, to_id, value);
+            transactionwaiting.status = 1;
+            await this.transactionsWaitingService.save(transactionwaiting);
+
+            // }
+        }
+        return confirmTransactionUser;
     }
 
     async findAll() {

@@ -7,6 +7,7 @@ import { UserModule } from '../user/user.module';
 import { ConfirmTransactionsModule } from '../confirm_transactions/confirm_transactions.module';
 import { BlockModule } from '../block/block.module';
 import { JoinConfirmTransactionsModule } from '../join_confirm_transactions/join_confirm_transactions.module';
+import { TransactionsWaitingModule } from '../transactions_waiting/transactions_waiting.module';
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import { JoinConfirmTransactionsModule } from '../join_confirm_transactions/join
         ConfirmTransactionsModule,
         BlockModule,
         JoinConfirmTransactionsModule,
+        TransactionsWaitingModule,
     ],
     controllers: [ConfirmTransactionUsersController],
     providers: [ConfirmTransactionUsersService],

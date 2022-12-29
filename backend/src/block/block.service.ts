@@ -38,6 +38,14 @@ export class BlockService {
         });
     }
 
+    async createByProperties(from: number, to: number, value: number) {
+        let createBlockDto = new CreateBlockDto();
+        createBlockDto.from = from;
+        createBlockDto.to = to;
+        createBlockDto.value = value;
+        return await this.create(createBlockDto);
+    }
+
     async findAll() {
         const result = [];
         const blocks = await this.blockRepository.find();

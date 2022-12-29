@@ -88,6 +88,10 @@ export class TransactionsWaitingService {
         });
     }
 
+    save(transactionWaiting: TransactionsWaiting) {
+        return this.transactionsWaitingRepository.save(transactionWaiting);
+    }
+
     update(id: number, updateTransactionsWaitingDto: UpdateTransactionsWaitingDto) {
         return `This action updates a #${id} transactionsWaiting`;
     }
