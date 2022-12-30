@@ -23,11 +23,23 @@ export class JoinConfirmTransactionsService {
         const transaction_waiting = await this.transactionsWaitingService.findOne(
             createJoinConfirmTransactionDto.transaction_waiting_id,
         );
-        const user_join_confirm_transaction = user.join_confirm_transaction;
-
+        const user_join_confirm_transaction = transaction_waiting.join_confirm_transaction;
         console.log(user_join_confirm_transaction);
-        if (user_join_confirm_transaction) {
-            return this.update(user_join_confirm_transaction.id);
+        let joinConfirmTransaction = null;
+        for (let i = 0; i < user_join_confirm_transaction.length; i++) {
+            const user_join_confirm_transaction_element = await this.findOne(user_join_confirm_transaction[i].id);
+            console.log(user_join_confirm_transaction_element);
+            if (
+                user_join_confirm_transaction_element.user.id == user.id &&
+                user_join_confirm_transaction_element.transaction_waiting.id == transaction_waiting.id
+            ) {
+                joinConfirmTransaction = user_join_confirm_transaction_element;
+                break;
+            }
+        }
+
+        if (joinConfirmTransaction != null) {
+            return this.update(joinConfirmTransaction.id);
         }
 
         return await this.joinConfirmTransactionsRepository.save({
@@ -45,15 +57,20 @@ export class JoinConfirmTransactionsService {
         let number_join_confirm_transaction = 0;
         for (const joinConfirmTransaction of transaction_waiting.join_confirm_transaction) {
             const sub = new Date().getTime() - joinConfirmTransaction.time_join.getTime();
-            if (sub < 1000 * 60 * 2) number_join_confirm_transaction++;
+            if (sub < 1000 * 60 * 3) number_join_confirm_transaction++;
         }
         return {
             number_join_confirm_transaction: number_join_confirm_transaction,
         };
     }
 
-    findOne(id: number) {
-        return this.joinConfirmTransactionsRepository.findOneBy({ id: id });
+    async findOne(id: number) {
+        return await this.joinConfirmTransactionsRepository.findOne({
+            where: {
+                id: id,
+            },
+            relations: { user: true, transaction_waiting: true },
+        });
     }
 
     async update(id: number) {

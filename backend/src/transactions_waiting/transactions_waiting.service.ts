@@ -16,10 +16,18 @@ export class TransactionsWaitingService {
 
     async create(createTransactionsWaitingDto: CreateTransactionsWaitingDto, userId: number) {
         const user_from = await this.userService.findOne(userId);
+        if (userId == createTransactionsWaitingDto.to) {
+            return {
+                message: 'error',
+                error: 'Unable to transfer money to yourself',
+            };
+        }
         if (user_from.private_key != createTransactionsWaitingDto.private_key) {
             return {
                 message: 'error',
                 error: 'Private key is not correct',
+                private_key: createTransactionsWaitingDto.private_key,
+                user_private_key: user_from.private_key,
             };
         }
         const user_to = await this.userService.findOne(createTransactionsWaitingDto.to);
@@ -84,7 +92,7 @@ export class TransactionsWaitingService {
             where: {
                 id: id,
             },
-            relations: { join_confirm_transaction: true, from: true, to: true },
+            relations: { from: true, to: true, join_confirm_transaction: true },
         });
     }
 

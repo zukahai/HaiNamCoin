@@ -60,8 +60,8 @@ export class User {
     @OneToMany(() => TransactionsWaiting, (transactionsWaiting) => transactionsWaiting.to)
     transactions_waiting_to: TransactionsWaiting[];
 
-    @OneToOne(() => JoinConfirmTransaction, (joinConfirmTransaction) => joinConfirmTransaction.user)
-    join_confirm_transaction: JoinConfirmTransaction;
+    @OneToMany(() => JoinConfirmTransaction, (joinConfirmTransaction) => joinConfirmTransaction.user)
+    join_confirm_transaction: JoinConfirmTransaction[];
 
     @OneToMany(() => ConfirmTransactionUser, (confirmTransactionUser) => confirmTransactionUser.user)
     confirm_transaction_user: ConfirmTransactionUser[];

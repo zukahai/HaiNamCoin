@@ -46,9 +46,17 @@ export class ConfirmTransactionUsersService {
         console.log('numberAcceptTransaction', numberAcceptTransaction);
         let confirmTransactionUsers = confirmTransaction.confirm_transaction_user;
         let confirmTransactionUser = null;
-        if (confirmTransactionUsers.length > 0) {
-            confirmTransactionUsers[0].status = createConfirmTransactionUserDto.status;
-            confirmTransactionUser = await this.confirmTransactionUserRepository.save(confirmTransactionUsers[0]);
+        console.log(confirmTransactionUsers);
+        for (let i = 0; i < confirmTransactionUsers.length; i++) {
+            const confirmTransactionUserTemp = await this.findOne(confirmTransactionUsers[i].id);
+            if (confirmTransactionUserTemp.user.id === user.id) {
+                confirmTransactionUser = confirmTransactionUserTemp;
+                break;
+            }
+        }
+        if (confirmTransactionUser !== null) {
+            confirmTransactionUser.status = createConfirmTransactionUserDto.status;
+            confirmTransactionUser = await this.confirmTransactionUserRepository.save(confirmTransactionUser);
         } else {
             confirmTransactionUser = await this.confirmTransactionUserRepository.save({
                 status: createConfirmTransactionUserDto.status,
@@ -57,18 +65,19 @@ export class ConfirmTransactionUsersService {
             });
         }
         if (confirmTransactionUser.status === true) {
-            // if (numberPeople.number_join_confirm_transaction >= HashProvider.min_client) {
-            let createBlockDto = new CreateBlockDto();
-            let transactionwaiting = await this.transactionsWaitingService.findOne(transactionWaiting.id);
-            const from_id = transactionwaiting.from.id;
-            const to_id = transactionwaiting.to.id;
-            const value = transactionwaiting.value;
+            if (
+                numberPeople.number_join_confirm_transaction >= HashProvider.min_client &&
+                2 * numberAcceptTransaction >= numberPeople.number_join_confirm_transaction
+            ) {
+                let transactionwaiting = await this.transactionsWaitingService.findOne(transactionWaiting.id);
+                const from_id = transactionwaiting.from.id;
+                const to_id = transactionwaiting.to.id;
+                const value = transactionwaiting.value;
 
-            await this.blockService.createByProperties(from_id, to_id, value);
-            transactionwaiting.status = 1;
-            await this.transactionsWaitingService.save(transactionwaiting);
-
-            // }
+                await this.blockService.createByProperties(from_id, to_id, value);
+                transactionwaiting.status = 1;
+                await this.transactionsWaitingService.save(transactionwaiting);
+            }
         }
         return confirmTransactionUser;
     }
