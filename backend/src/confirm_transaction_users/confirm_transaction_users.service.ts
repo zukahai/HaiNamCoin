@@ -36,14 +36,7 @@ export class ConfirmTransactionUsersService {
                 error: 'The transaction has been processed',
             };
         }
-        const numberPeople = await this.joinConfirmTransactionsService.getNumberJoinConfirmTransaction(
-            transactionWaiting.id,
-        );
-        const numberAcceptTransaction = await this.confirmTransactionService.getNumberAcceptTransaction(
-            confirmTransaction.id,
-        );
-        console.log('numberPeople', numberPeople.number_join_confirm_transaction);
-        console.log('numberAcceptTransaction', numberAcceptTransaction);
+
         let confirmTransactionUsers = confirmTransaction.confirm_transaction_user;
         let confirmTransactionUser = null;
         console.log(confirmTransactionUsers);
@@ -64,19 +57,34 @@ export class ConfirmTransactionUsersService {
                 confirmTransaction: confirmTransaction,
             });
         }
+        const numberPeople = await this.joinConfirmTransactionsService.getNumberJoinConfirmTransaction(
+            transactionWaiting.id,
+        );
+        const numberAcceptTransaction = await this.confirmTransactionService.getNumberAcceptTransaction(
+            confirmTransaction.id,
+        );
+        console.log('numberPeople', numberPeople.number_join_confirm_transaction);
+        console.log('numberAcceptTransaction', numberAcceptTransaction);
         if (confirmTransactionUser.status === true) {
             if (
                 numberPeople.number_join_confirm_transaction >= HashProvider.min_client &&
                 2 * numberAcceptTransaction >= numberPeople.number_join_confirm_transaction
             ) {
+                //Chuyen tien
                 let transactionwaiting = await this.transactionsWaitingService.findOne(transactionWaiting.id);
-                const from_id = transactionwaiting.from.id;
-                const to_id = transactionwaiting.to.id;
-                const value = transactionwaiting.value;
-
-                await this.blockService.createByProperties(from_id, to_id, value);
+                let from_id = transactionwaiting.from.id;
+                let to_id = transactionwaiting.to.id;
+                let value = transactionwaiting.value * (1 - HashProvider.percentageFee);
+                let description = 'Transfer';
+                await this.blockService.createByProperties(from_id, to_id, value, description);
                 transactionwaiting.status = 1;
                 await this.transactionsWaitingService.save(transactionwaiting);
+
+                //Chuyen chi phi xac nhan giao dich cho nguoi xac nhan dau tien
+                description = 'Transaction confirmation';
+                to_id = confirmTransaction.user.id;
+                value = transactionwaiting.value * HashProvider.percentageFee;
+                await this.blockService.createByProperties(from_id, to_id, value, description);
             }
         }
         return confirmTransactionUser;

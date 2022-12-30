@@ -12,4 +12,7 @@ export class CreateBlockDto {
 
     @ApiProperty({ example: 100, description: 'Value' })
     value: number;
+
+    @ApiProperty({ example: 'Description', description: 'Description' })
+    description: string;
 }

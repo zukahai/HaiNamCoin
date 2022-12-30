@@ -50,6 +50,7 @@ export class ConfirmTransactionsService {
     async getNumberAcceptTransaction(confirmTransactionId: number) {
         const confirmTransaction = await this.findOne(confirmTransactionId);
         const confirmTransactionUser = confirmTransaction.confirm_transaction_user;
+        console.log('confirmTransactionUser', confirmTransactionUser);
         let numberAcceptTransaction = 0;
         confirmTransactionUser.forEach((confirmTransactionUser) => {
             if (confirmTransactionUser.status === true) numberAcceptTransaction++;

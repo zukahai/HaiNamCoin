@@ -38,11 +38,12 @@ export class BlockService {
         });
     }
 
-    async createByProperties(from: number, to: number, value: number) {
+    async createByProperties(from: number, to: number, value: number, description: string) {
         let createBlockDto = new CreateBlockDto();
         createBlockDto.from = from;
         createBlockDto.to = to;
         createBlockDto.value = value;
+        createBlockDto.description = description;
         return await this.create(createBlockDto);
     }
 
