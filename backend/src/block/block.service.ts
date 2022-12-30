@@ -33,6 +33,7 @@ export class BlockService {
             from: userFrom,
             to: userTo,
             preHashCode: hash,
+            description: createBlockDto.description,
             hashCode: this.hash256(text),
             value: createBlockDto.value,
         });
