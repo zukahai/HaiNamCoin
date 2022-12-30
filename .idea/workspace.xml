@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="933ae6b8-1e5d-4c6f-a754-293a10eaf0fc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/HaiNamCoin.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_PhanDucHai_18IT319_NguyenVanNam_18IT340.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Flashloans" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/cms-keystonejs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/front-end-reactjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/.eslintrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/.prettierrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/nest-cli.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/app.controller.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/app.controller.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/app.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/app.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/auto-bank/auto-bank.controller.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/auto-bank/auto-bank.controller.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/auto-bank/auto-bank.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/auto-bank/auto-bank.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/auto-bank/auto-bank.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/auto-bank/dto/create-auto-bank.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/auto-bank/dto/update-auto-bank.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/auto-bank/entities/auto-bank.entity.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/block/block.controller.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/block/block.controller.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/block/block.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/block/block.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/block/block.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/block/dto/create-block.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/block/dto/update-block.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/block/entities/block.entity.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/confirm_transactions/confirm_transactions.controller.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/confirm_transactions/confirm_transactions.controller.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/confirm_transactions/confirm_transactions.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/confirm_transactions/confirm_transactions.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/confirm_transactions/confirm_transactions.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/confirm_transactions/dto/create-confirm_transaction.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/confirm_transactions/dto/update-confirm_transaction.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/confirm_transactions/entities/confirm_transaction.entity.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/modules/database/database.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/modules/database/database.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/user/dto/create-user.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/user/dto/update-user.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/user/entities/user.entity.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/user/user.controller.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/user/user.controller.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/user/user.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/user/user.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/src/user/user.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/test/app.e2e-spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/test/jest-e2e.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/tsconfig.build.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin/backend/tsconfig.json" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="merge_auth_and_block" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2JR3ATlT1qNtlIaLiG0nQnXSuGb" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "js.last.introduce.type": "CONST",
+    "last_opened_file_path": "G:/HaiNamCoin",
+    "nodejs_package_manager_path": "yarn",
+    "prettierjs.PrettierConfiguration.Package": "G:\\HaiNamCoin\\backend\\node_modules\\prettier",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "G:\\HaiNamCoin\\code\\front-end-reactjs\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="933ae6b8-1e5d-4c6f-a754-293a10eaf0fc" name="Changes" comment="" />
+      <created>1672026926988</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1672026926988</updated>
+      <workItem from="1672026931787" duration="2792000" />
+      <workItem from="1672032752622" duration="5506000" />
+      <workItem from="1672049970959" duration="11835000" />
+      <workItem from="1672078839685" duration="18422000" />
+      <workItem from="1672228614243" duration="7879000" />
+      <workItem from="1672298691263" duration="9388000" />
+      <workItem from="1672322302695" duration="18478000" />
+      <workItem from="1672387427010" duration="19853000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
