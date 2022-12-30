@@ -65,7 +65,7 @@ export class BlockService {
                 id: 'DESC',
             },
             relations: { from: true, to: true },
-            select: ['id', 'from', 'to', 'value', 'description', 'hashCode', 'preHashCode', 'createdAt'],
+            select: { from: { email: true, name: true }, to: { email: true, name: true } },
         });
     }
 
@@ -80,10 +80,6 @@ export class BlockService {
             }
         }
         return result;
-        // return blocks.filter(
-        //     async (block) =>
-        //         (await this.findOne(block.id)).from.id == user.id || (await this.findOne(block.id)).to.id == user.id,
-        // );
     }
 
     async checkCheat() {
