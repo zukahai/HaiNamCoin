@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 const crypto = require('crypto');
 export class HashProvider {
-    static hard = '0000';
+    static hard = '00000';
     static min_client = 3;
     static percentageFee = 0.01;
 

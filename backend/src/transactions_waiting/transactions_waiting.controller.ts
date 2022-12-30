@@ -21,24 +21,26 @@ export class TransactionsWaitingController {
         return this.transactionsWaitingService.findAll();
     }
 
+    @Get('status0')
+    @ApiOperation({ summary: 'Get all transactions waiting have status equal 0' })
+    findAllStatus() {
+        return this.transactionsWaitingService.getTransactionsWaiting();
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.transactionsWaitingService.findOne(+id);
+    }
+
+    @Get('/pre-text/:id')
+    @ApiOperation({ summary: 'Get getPreTextHash' })
+    preText(@Param('id') id: string) {
+        return this.transactionsWaitingService.getPreTextHash(+id);
     }
 
     @ApiOperation({ summary: 'Check nonce' })
     @Get('checkNonce/:id/:nonce')
     test(@Param('id') nonce: number, @Param('nonce') id: number) {
         return this.transactionsWaitingService.checkNonce(nonce, id);
-    }
-
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateTransactionsWaitingDto: UpdateTransactionsWaitingDto) {
-        return this.transactionsWaitingService.update(+id, updateTransactionsWaitingDto);
-    }
-
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.transactionsWaitingService.remove(+id);
     }
 }

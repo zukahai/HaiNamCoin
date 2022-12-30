@@ -70,21 +70,28 @@ export class ConfirmTransactionUsersService {
                 numberPeople.number_join_confirm_transaction >= HashProvider.min_client &&
                 2 * numberAcceptTransaction >= numberPeople.number_join_confirm_transaction
             ) {
-                //Chuyen tien
-                let transactionwaiting = await this.transactionsWaitingService.findOne(transactionWaiting.id);
-                let from_id = transactionwaiting.from.id;
-                let to_id = transactionwaiting.to.id;
-                let value = transactionwaiting.value * (1 - HashProvider.percentageFee);
-                let description = 'Transfer';
-                await this.blockService.createByProperties(from_id, to_id, value, description);
-                transactionwaiting.status = 1;
-                await this.transactionsWaitingService.save(transactionwaiting);
+                if (confirmTransaction.nonce !== '-1') {
+                    //Chuyen tien
+                    let transactionwaiting = await this.transactionsWaitingService.findOne(transactionWaiting.id);
+                    let from_id = transactionwaiting.from.id;
+                    let to_id = transactionwaiting.to.id;
+                    let value = transactionwaiting.value * (1 - HashProvider.percentageFee);
+                    let description = 'Transfer';
+                    await this.blockService.createByProperties(from_id, to_id, value, description);
+                    transactionwaiting.status = 1;
+                    await this.transactionsWaitingService.save(transactionwaiting);
 
-                //Chuyen chi phi xac nhan giao dich cho nguoi xac nhan dau tien
-                description = 'Transaction confirmation';
-                to_id = confirmTransaction.user.id;
-                value = transactionwaiting.value * HashProvider.percentageFee;
-                await this.blockService.createByProperties(from_id, to_id, value, description);
+                    //Chuyen chi phi xac nhan giao dich cho nguoi xac nhan dau tien
+                    description = 'Transaction confirmation';
+                    to_id = confirmTransaction.user.id;
+                    value = transactionwaiting.value * HashProvider.percentageFee;
+                    await this.blockService.createByProperties(from_id, to_id, value, description);
+                } else {
+                    // Cap nhap trang thai cua transaction waiting thanh 2 (Giao dich loi)
+                    let transactionwaiting = await this.transactionsWaitingService.findOne(transactionWaiting.id);
+                    transactionwaiting.status = 2;
+                    await this.transactionsWaitingService.save(transactionwaiting);
+                }
             }
         }
         return confirmTransactionUser;

@@ -23,6 +23,7 @@ export class TransactionsWaitingService {
             };
         }
         if (user_from.private_key != createTransactionsWaitingDto.private_key) {
+            console.log(user_from.private_key);
             return {
                 message: 'error',
                 error: 'Private key is not correct',
@@ -68,8 +69,29 @@ export class TransactionsWaitingService {
         };
     }
 
+    async getPreTextHash(tw_id: number) {
+        const tw = await this.findOne(tw_id);
+        const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + new Date(tw.createdAt).getTime() + ' ';
+        return {
+            message: 'ok',
+            text: text,
+        };
+    }
+
     async findAll() {
         return await this.transactionsWaitingRepository.find();
+    }
+
+    //get all transactionWaiting have status = 0 order by id desc
+    async getTransactionsWaiting() {
+        return await this.transactionsWaitingRepository.find({
+            where: {
+                status: 0,
+            },
+            order: {
+                id: 'DESC',
+            },
+        });
     }
 
     async checkNonce(id: number, nonce: number) {

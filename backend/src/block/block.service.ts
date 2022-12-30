@@ -67,7 +67,14 @@ export class BlockService {
                 id: 'DESC',
             },
             relations: { from: true, to: true },
-            select: { from: { email: true, name: true }, to: { email: true, name: true } },
+            select: {
+                from: { email: true, name: true, public_key: true },
+                to: { email: true, name: true, public_key: true },
+                description: true,
+                value: true,
+                preHashCode: true,
+                hashCode: true,
+            },
         });
     }
 
@@ -157,6 +164,7 @@ export class BlockService {
     }
 
     async dispersionData() {
+        console.log('dispersionData');
         const blocks = await this.findAllDESC();
 
         const folderName = 'G:\\HaiNamCoin_Data';
@@ -170,5 +178,8 @@ export class BlockService {
             console.error(err);
         }
         await writeFile(path, JSON.stringify(blocks));
+        return {
+            message: 'ok',
+        };
     }
 }

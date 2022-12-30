@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { BlockService } from './block.service';
 import { CreateBlockDto } from './dto/create-block.dto';
 import { UpdateBlockDto } from './dto/update-block.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from '../auth/decorators/custom.decarator';
+import { AuthGuard } from '@nestjs/passport';
 @ApiTags('Block')
 @ApiBearerAuth()
 @Controller('block')
@@ -45,4 +46,17 @@ export class BlockController {
     findOne(@Param('user_id') user_id: string) {
         return this.blockService.findByFormOrTo(+user_id);
     }
+
+    // @Get('/a')
+    // @ApiOperation({ summary: 'Dispersion Data' })
+    // a() {
+    //     // const dispersionData = this.blockService.dispersionData();
+    //     return 'abc';
+    // }
+    //
+    // @Get('/check')
+    // @ApiOperation({ summary: 'Test' })
+    // check() {
+    //     return this.blockService.checkCheatByHash();
+    // }
 }
