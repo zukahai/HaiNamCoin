@@ -64,6 +64,8 @@ export class BlockService {
             order: {
                 id: 'DESC',
             },
+            relations: { from: true, to: true },
+            select: ['id', 'from', 'to', 'value', 'description', 'hashCode', 'preHashCode', 'createdAt'],
         });
     }
 

@@ -32,6 +32,7 @@ export class UserService {
                 id: id,
             },
             relations: { join_confirm_transaction: true, block_from: true, block_to: true },
+            select: ['id', 'email', 'name', 'public_key', 'role'],
         });
     }
 
