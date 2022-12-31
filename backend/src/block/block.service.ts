@@ -52,7 +52,11 @@ export class BlockService {
 
     async findAll() {
         const result = [];
-        const blocks = await this.blockRepository.find();
+        const blocks = await this.blockRepository.find({
+            order: {
+                id: 'DESC',
+            },
+        });
         for (let i = 0; i < blocks.length; i++) {
             const block = await this.findOne(blocks[i].id);
             result.push(block);
@@ -74,6 +78,7 @@ export class BlockService {
                 value: true,
                 preHashCode: true,
                 hashCode: true,
+                createdAt: true,
             },
         });
     }

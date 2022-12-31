@@ -36,9 +36,4 @@ export class JoinConfirmTransactionsController {
     getNumberConfirmTransactionWaiting(@Param('id') id: string) {
         return this.joinConfirmTransactionsService.getNumberJoinConfirmTransaction(+id);
     }
-
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.joinConfirmTransactionsService.remove(+id);
-    }
 }

@@ -26,14 +26,4 @@ export class ConfirmTransactionsController {
     findOne(@Param('id') id: string) {
         return this.confirmTransactionsService.findOne(+id);
     }
-
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateConfirmTransactionDto: UpdateConfirmTransactionDto) {
-        return this.confirmTransactionsService.update(+id, updateConfirmTransactionDto);
-    }
-
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.confirmTransactionsService.remove(+id);
-    }
 }
