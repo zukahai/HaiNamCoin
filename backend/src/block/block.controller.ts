@@ -16,6 +16,14 @@ export class BlockController {
     create(@Body() createBlockDto: CreateBlockDto) {
         return this.blockService.create(createBlockDto);
     }
+    @Get('/dispersion-data')
+    @ApiOperation({ summary: 'Dispersion Data' })
+    dispersionData() {
+        this.blockService.dispersionData();
+        return {
+            message: 'ok',
+        };
+    }
     @Public()
     @Get()
     @ApiOperation({ summary: 'Get all block' })
@@ -46,17 +54,4 @@ export class BlockController {
     findOne(@Param('user_id') user_id: string) {
         return this.blockService.findByFormOrTo(+user_id);
     }
-
-    // @Get('/a')
-    // @ApiOperation({ summary: 'Dispersion Data' })
-    // a() {
-    //     // const dispersionData = this.blockService.dispersionData();
-    //     return 'abc';
-    // }
-    //
-    // @Get('/check')
-    // @ApiOperation({ summary: 'Test' })
-    // check() {
-    //     return this.blockService.checkCheatByHash();
-    // }
 }

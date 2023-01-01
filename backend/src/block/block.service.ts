@@ -183,8 +183,5 @@ export class BlockService {
             console.error(err);
         }
         await writeFile(path, JSON.stringify(blocks));
-        return {
-            message: 'ok',
-        };
     }
 }

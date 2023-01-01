@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
@@ -23,7 +23,7 @@ export class AuthController {
         return this.authService.register(registerDto);
     }
 
-    @Post('get-current-user')
+    @Get('get-current-user')
     @ApiOperation({ summary: 'Get current user' })
     getCurrentUser(@GetCurrentUserId() userId: number) {
         return this.authService.getUserById(userId);
