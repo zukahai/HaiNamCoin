@@ -24,6 +24,7 @@ export class BlockController {
             message: 'ok',
         };
     }
+
     @Public()
     @Get()
     @ApiOperation({ summary: 'Get all block' })
