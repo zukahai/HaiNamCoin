@@ -1,5 +1,14 @@
 {
   "devDependencies": {
     "prettier": "2.8.1"
+  },
+  "dependencies": {
+    "@nestjs/axios": "^1.0.1",
+    "@nestjs/swagger": "^6.1.4",
+    "@nestjs/typeorm": "^9.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "mysql2": "^2.3.3",
+    "typeorm": "^0.3.11"
   }
 }
