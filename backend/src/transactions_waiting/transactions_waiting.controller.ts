@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Query} from '@nestjs/common';
 import { TransactionsWaitingService } from './transactions_waiting.service';
 import { CreateTransactionsWaitingDto } from './dto/create-transactions_waiting.dto';
 import { UpdateTransactionsWaitingDto } from './dto/update-transactions_waiting.dto';
@@ -23,10 +23,10 @@ export class TransactionsWaitingController {
     }
 
     @Public()
-    @Post('status')
+    @Get('by')
     @ApiOperation({ summary: 'Get all transactions waiting by status' })
-    findAllStatus(@Body() statusTransactionsWaitingDto: StatusTransactionsWaitingDto) {
-        return this.transactionsWaitingService.getTransactionsWaiting(statusTransactionsWaitingDto.status);
+    findAllStatus(@Query('status') status: number) {
+        return this.transactionsWaitingService.getTransactionsWaiting(status);
     }
 
     @Get(':id')
