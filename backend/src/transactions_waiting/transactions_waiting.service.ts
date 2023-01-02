@@ -117,6 +117,20 @@ export class TransactionsWaitingService {
     }
 
     async findOne(id: number) {
+
+        let tw = await this.transactionsWaitingRepository.findOne({
+            where: {
+                id: id,
+            },
+            relations: { from: true, to: true, join_confirm_transaction: true, confirm_transactions: true },
+        });
+        const getTime = await this.getTime(id);
+        tw.nonce = (getTime.option == '3') ? tw.nonce : null;
+        tw.permutation_nonce = (getTime.option == '3' || getTime.option == '2') ? tw.permutation_nonce : null;
+        return tw;
+    }
+
+    async findOneFull(id: number) {
         return await this.transactionsWaitingRepository.findOne({
             where: {
                 id: id,
@@ -126,7 +140,7 @@ export class TransactionsWaitingService {
     }
 
     async getTime(id: number) {
-        const tw = await this.findOne(id);
+        const tw = await this.findOneFull(id);
         const sub = new Date().getTime() - tw.createdAt.getTime();
         const time_second = Math.floor(sub / 1000);
         const option = (tw.status == 0) ? ((time_second < 120) ? '1' : '2') : '3';

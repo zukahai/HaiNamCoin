@@ -36,6 +36,7 @@ export class TransactionsWaitingController {
         return this.transactionsWaitingService.getTime(id);
     }
 
+    @Public()
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.transactionsWaitingService.findOne(+id);
