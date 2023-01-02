@@ -50,7 +50,7 @@ export class TransactionsWaitingService {
                 to: user_to,
                 value: createTransactionsWaitingDto.value,
             });
-            const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + new Date(tw.createdAt).getTime() + ' ';
+            const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ';
             const nonce = HashProvider.findNonce(text);
             tw.nonce = nonce.toString();
             tw.permutation_nonce = HashProvider.randomPermutationNoce(nonce).toString();
@@ -71,7 +71,7 @@ export class TransactionsWaitingService {
 
     async getPreTextHash(tw_id: number) {
         const tw = await this.findOne(tw_id);
-        const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + new Date(tw.createdAt).getTime() + ' ';
+        const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ';
         return {
             message: 'ok',
             text: text,
@@ -104,7 +104,7 @@ export class TransactionsWaitingService {
     async checkNonce(id: number, nonce: number) {
         const tw = await this.findOne(id);
         console.log(tw.from);
-        const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + new Date(tw.createdAt).getTime() + ' ' + nonce;
+        const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ' + nonce;
         const hash = HashProvider.hash256(text);
         const message = hash.startsWith(HashProvider.hard) ? 'ok' : 'error';
         return {
@@ -127,7 +127,12 @@ export class TransactionsWaitingService {
         const getTime = await this.getTime(id);
         tw.nonce = (getTime.option == '3') ? tw.nonce : null;
         tw.permutation_nonce = (getTime.option == '3' || getTime.option == '2') ? tw.permutation_nonce : null;
-        return tw;
+        //copy to new object
+        let tw2 = {
+            ...tw,
+            text_question: tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ',
+        };
+        return tw2;
     }
 
     async findOneFull(id: number) {
