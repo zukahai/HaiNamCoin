@@ -18,5 +18,5 @@ export class User {
     password: string;
 
     @Column({ name: 'access_token', type: 'text', comment: 'Access token of the user', nullable: true })
-    accessToken: string;
+    access_token: string;
 }

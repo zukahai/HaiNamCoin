@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { LoginDto } from '../auth/dto/login.dto';
 import { HashProvider } from '../provider/hash.provider';
 import { RegisterDto } from '../auth/dto/register.dto';
+import {ConnectUserDto} from "./dto/connect-user.dto";
 
 @Injectable()
 export class UserService {
@@ -27,6 +28,14 @@ export class UserService {
             },
         });
     }
+
+    async connectUserToHaiNamCoin(id: number, connectUserDto: ConnectUserDto) {
+        const user = await this.findOne(1);
+        // user.access_token = connectUserDto.access_token;
+        // return await this.userRepository.save(user);
+        return "Heee";
+    }
+
 
     async findOneByEmail(email: string) {
         return await this.userRepository.findOne({

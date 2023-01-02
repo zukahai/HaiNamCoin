@@ -7,9 +7,10 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './auth/at-guard/at-guard.guard';
+import { FontsModule } from './fonts/fonts.module';
 
 @Module({
-    imports: [DatabaseModule, UserModule, AuthModule],
+    imports: [DatabaseModule, UserModule, AuthModule, FontsModule],
     controllers: [AppController],
     providers: [
         AppService,

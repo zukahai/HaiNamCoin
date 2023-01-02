@@ -2,8 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import {ApiBearerAuth, ApiOperation, ApiTags} from "@nestjs/swagger";
+import {ConnectUserDto} from "./dto/connect-user.dto";
+import {GetCurrentUserId} from "../decorators/auth/auth.decorator";
 
 @Controller('user')
+@ApiTags('User')
+@ApiBearerAuth()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -15,6 +20,12 @@ export class UserController {
   @Get()
   findAll() {
     return this.userService.findAll();
+  }
+
+  @ApiOperation({summary: 'Connect user to HaiNamCoin'})
+  @Post('connect-hainamcoin')
+  connect(@Body() connectUserDto: ConnectUserDto, @GetCurrentUserId() id: number) {
+    return this.userService.connectUserToHaiNamCoin(id, connectUserDto);
   }
 
   @Get(':id')
