@@ -79,18 +79,25 @@ export class TransactionsWaitingService {
     }
 
     async findAll() {
-        return await this.transactionsWaitingRepository.find();
+        return await this.transactionsWaitingRepository.find({
+            relations: { from: true, to: true },
+            select: {nonce: false, permutation_nonce: false},
+            order: {
+                id: 'DESC',
+            }
+        });
     }
 
     //get all transactionWaiting have status = 0 order by id desc
-    async getTransactionsWaiting() {
+    async getTransactionsWaiting(status: number) {
         return await this.transactionsWaitingRepository.find({
             where: {
-                status: 0,
+                status: status,
             },
             order: {
                 id: 'DESC',
             },
+            relations: { from: true, to: true },
         });
     }
 

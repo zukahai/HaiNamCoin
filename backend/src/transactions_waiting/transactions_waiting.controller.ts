@@ -4,7 +4,8 @@ import { CreateTransactionsWaitingDto } from './dto/create-transactions_waiting.
 import { UpdateTransactionsWaitingDto } from './dto/update-transactions_waiting.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HashProvider } from '../providers/hash.provider';
-import { GetCurrentUserId } from '../auth/decorators/custom.decarator';
+import {GetCurrentUserId, Public} from '../auth/decorators/custom.decarator';
+import {StatusTransactionsWaitingDto} from "./dto/status_transactions_waiting.dto";
 @ApiBearerAuth()
 @ApiTags('Transactions Waiting')
 @Controller('transactions-waiting')
@@ -21,10 +22,11 @@ export class TransactionsWaitingController {
         return this.transactionsWaitingService.findAll();
     }
 
-    @Get('status0')
-    @ApiOperation({ summary: 'Get all transactions waiting have status equal 0' })
-    findAllStatus() {
-        return this.transactionsWaitingService.getTransactionsWaiting();
+    @Public()
+    @Post('status')
+    @ApiOperation({ summary: 'Get all transactions waiting by status' })
+    findAllStatus(@Body() statusTransactionsWaitingDto: StatusTransactionsWaitingDto) {
+        return this.transactionsWaitingService.getTransactionsWaiting(statusTransactionsWaitingDto.status);
     }
 
     @Get(':id')
