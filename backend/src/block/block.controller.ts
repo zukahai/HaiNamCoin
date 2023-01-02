@@ -50,6 +50,7 @@ export class BlockController {
         return this.blockService.checkCheatByHash();
     }
 
+    @Public()
     @Get(':user_id')
     @ApiOperation({ summary: 'Get block by Form or To' })
     findOne(@Param('user_id') user_id: string) {
