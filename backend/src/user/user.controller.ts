@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {Public} from "../auth/decorators/custom.decarator";
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -20,6 +21,7 @@ export class UserController {
         return this.userService.findAll();
     }
 
+    @Public()
     @ApiOperation({ summary: 'InfomationUser user by id' })
     @Get(':id')
     infomationUser(@Param('id') id: string) {

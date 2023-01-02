@@ -121,8 +121,20 @@ export class TransactionsWaitingService {
             where: {
                 id: id,
             },
-            relations: { from: true, to: true, join_confirm_transaction: true },
+            relations: { from: true, to: true, join_confirm_transaction: true, confirm_transactions: true },
         });
+    }
+
+    async getTime(id: number) {
+        const tw = await this.findOne(id);
+        const sub = new Date().getTime() - tw.createdAt.getTime();
+        const time_second = Math.floor(sub / 1000);
+        const option = (tw.status == 0) ? ((time_second < 120) ? '1' : '2') : '3';
+        return {
+            message: 'ok',
+            time_second: time_second,
+            option: option,
+        }
     }
 
     save(transactionWaiting: TransactionsWaiting) {

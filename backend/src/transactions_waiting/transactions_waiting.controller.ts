@@ -29,6 +29,13 @@ export class TransactionsWaitingController {
         return this.transactionsWaitingService.getTransactionsWaiting(status);
     }
 
+    @Public()
+    @Get('time')
+    @ApiOperation({ summary: 'Get second time start transaction' })
+    getTime(@Query('id') id: number) {
+        return this.transactionsWaitingService.getTime(id);
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.transactionsWaitingService.findOne(+id);
