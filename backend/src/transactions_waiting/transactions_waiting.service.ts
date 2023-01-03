@@ -160,11 +160,10 @@ export class TransactionsWaitingService {
         return this.transactionsWaitingRepository.save(transactionWaiting);
     }
 
-    update(id: number, updateTransactionsWaitingDto: UpdateTransactionsWaitingDto) {
-        return `This action updates a #${id} transactionsWaiting`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} transactionsWaiting`;
+    getPercentageFee() {
+        return {
+            message: 'ok',
+            percentage_fee: HashProvider.percentageFee,
+        }
     }
 }

@@ -37,6 +37,13 @@ export class TransactionsWaitingController {
     }
 
     @Public()
+    @Get('percentage-fee')
+    @ApiOperation({ summary: 'Get percentage fee' })
+    getPercentageFee(){
+        return this.transactionsWaitingService.getPercentageFee();
+    }
+
+    @Public()
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.transactionsWaitingService.findOne(+id);
