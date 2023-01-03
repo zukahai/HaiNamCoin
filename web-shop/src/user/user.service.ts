@@ -45,6 +45,7 @@ export class UserService {
         try {
             const response = await this.httpService.request(config).toPromise();
             user.access_token = connectUserDto.access_token;
+            user.hainamcoin_id = response.data.user.id;
             await this.userRepository.save(user);
             if (response.data.user)
                 return response.data;

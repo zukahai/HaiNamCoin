@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Font} from "../../fonts/entities/font.entity";
 
 @Entity({ name: 'users', orderBy: { id: 'ASC' }, synchronize: true })
 export class User {
@@ -17,6 +18,13 @@ export class User {
     @Column({ name: 'password', type: 'text', comment: 'Password of the user' })
     password: string;
 
+    @Column({ name: 'hainamcoin_id', type: 'int', comment: 'Hainamcoin id of the user' })
+    hainamcoin_id: number;
+
     @Column({ name: 'access_token', type: 'text', comment: 'Access token of the user', nullable: true })
     access_token: string;
+
+    @OneToMany(() => Font, (font) => font.user)
+    fonts: Font[];
+
 }
