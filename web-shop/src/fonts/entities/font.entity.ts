@@ -3,11 +3,12 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
-    ManyToOne,
+    ManyToOne, OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import {User} from "../../user/entities/user.entity";
+import {Transaction} from "../../transactions/entities/transaction.entity";
 
 @Entity({ name: 'fonts', orderBy: { id: 'ASC' }, synchronize: true })
 export class Font {
@@ -32,5 +33,8 @@ export class Font {
 
     @UpdateDateColumn({ name: 'updated_at', comment: 'Updated at' })
     updatedAt: Date;
+
+    @OneToMany(() => Transaction, (transaction) => transaction.font)
+    transactions: Transaction[];
 
 }
