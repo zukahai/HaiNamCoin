@@ -32,7 +32,8 @@ export class UserService {
     }
 
     async connectUserToHaiNamCoin(id: number, connectUserDto: ConnectUserDto) {
-
+        console.log(id);
+        const user = await this.findOne(id);
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: `Bearer ${connectUserDto.access_token}`,
@@ -43,17 +44,47 @@ export class UserService {
 
         try {
             const response = await this.httpService.request(config).toPromise();
-            return response.data;
+            user.access_token = connectUserDto.access_token;
+            await this.userRepository.save(user);
+            if (response.data.user)
+                return response.data;
         }
-
         catch (e) {
+            return {
+                message: 'error',
+                error: 'Access token is not correct',
+            }
             console.log(e);
         }
-        // const user = await this.findOne(1);
-        // user.access_token = connectUserDto.access_token;
-        // return await this.userRepository.save(user);
     }
 
+    async checkConnectUserToHaiNamCoin(id: number) {
+        const user = await this.findOne(id);
+        console.log(user);
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: `Bearer ${user.access_token}`,
+            },
+            url:'http://localhost:3000/user/current-user',
+            method: 'GET',
+        }
+
+        try {
+            const response = await this.httpService.request(config).toPromise();
+            if (response.data.user) {
+                return {
+                    message: 'ok',
+                    user: response.data,
+                }
+            }
+        }
+        catch (e) {
+            return {
+                message: 'error',
+                error: 'Connect user to HaiNamCoin failed',
+            }
+        }
+    }
 
     async findOneByEmail(email: string) {
         return await this.userRepository.findOne({

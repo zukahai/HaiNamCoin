@@ -25,7 +25,14 @@ export class UserController {
   @ApiOperation({summary: 'Connect user to HaiNamCoin'})
   @Post('connect-hainamcoin')
   connect(@Body() connectUserDto: ConnectUserDto, @GetCurrentUserId() id: number) {
+    console.log("id333 ", id);
     return this.userService.connectUserToHaiNamCoin(id, connectUserDto);
+  }
+
+  @ApiOperation({summary: 'Check connect to HaiNamCoin'})
+  @Get('check-connect-hainamcoin')
+  checkConnect(@GetCurrentUserId() id: number) {
+    return this.userService.checkConnectUserToHaiNamCoin(id);
   }
 
   @Get(':id')
