@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import {Public} from "../auth/decorators/custom.decarator";
+import {GetCurrentUserId, Public} from "../auth/decorators/custom.decarator";
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -21,6 +21,12 @@ export class UserController {
         return this.userService.findAll();
     }
 
+    @ApiOperation({ summary: 'Get current user' })
+    @Get('current-user')
+    currentUser(@GetCurrentUserId() id: number) {
+        return this.userService.infomationUser(+id);
+    }
+
     @Public()
     @ApiOperation({ summary: 'InfomationUser user by id' })
     @Get(':id')
@@ -28,13 +34,5 @@ export class UserController {
         return this.userService.infomationUser(+id);
     }
 
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.userService.update(+id, updateUserDto);
-    }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.userService.remove(+id);
-    }
 }

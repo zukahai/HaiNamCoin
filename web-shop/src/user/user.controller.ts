@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiBearerAuth, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {ConnectUserDto} from "./dto/connect-user.dto";
-import {GetCurrentUserId} from "../decorators/auth/auth.decorator";
+import {GetCurrentUserId, Public} from "../decorators/auth/auth.decorator";
 
 @Controller('user')
 @ApiTags('User')

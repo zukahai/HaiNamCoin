@@ -8,10 +8,12 @@ import { LoginDto } from '../auth/dto/login.dto';
 import { HashProvider } from '../provider/hash.provider';
 import { RegisterDto } from '../auth/dto/register.dto';
 import {ConnectUserDto} from "./dto/connect-user.dto";
+import {HttpService} from "@nestjs/axios";
+import {AxiosRequestConfig} from "axios";
 
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
+    constructor(@InjectRepository(User) private userRepository: Repository<User>, private readonly  httpService: HttpService) {}
 
     async create(createUserDto: CreateUserDto): Promise<User> {
         return await this.userRepository.save(createUserDto);
@@ -30,10 +32,26 @@ export class UserService {
     }
 
     async connectUserToHaiNamCoin(id: number, connectUserDto: ConnectUserDto) {
-        const user = await this.findOne(1);
+
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: `Bearer ${connectUserDto.access_token}`,
+            },
+            url:'http://localhost:3000/user/current-user',
+            method: 'GET',
+        }
+
+        try {
+            const response = await this.httpService.request(config).toPromise();
+            return response.data;
+        }
+
+        catch (e) {
+            console.log(e);
+        }
+        // const user = await this.findOne(1);
         // user.access_token = connectUserDto.access_token;
         // return await this.userRepository.save(user);
-        return "Heee";
     }
 
 

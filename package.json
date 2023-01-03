@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@nestjs/axios": "^1.0.1"
+  }
+}
