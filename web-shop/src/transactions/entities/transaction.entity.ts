@@ -39,6 +39,9 @@ export class Transaction {
     @Column({ type: 'int', comment: 'Status of the transaction' })
     status: number;
 
+    @Column({ type: 'int', comment: 'type of the transaction' })
+    type: number;
+
     @CreateDateColumn({ name: 'created_at', comment: 'Created at' })
     createdAt: Date;
 

@@ -20,4 +20,9 @@ export class CreateSmartContractDto {
     @ApiProperty({ example: '1', description: 'font_id' })
     font_id: number;
 
+    @IsNotEmpty()
+    @IsNumber()
+    @ApiProperty({ example: '1', description: 'font_id' })
+    type: number;
+
 }

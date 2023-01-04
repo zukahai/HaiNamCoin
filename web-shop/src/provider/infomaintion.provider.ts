@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
-export class InfomaintionProviderProvider {
-    static profit = 0.01;
+export class InfomaintionProvider {
+    static profit = 0.005;
     static hainamcoin_id = 5;
-    static public_key = 'dd8364b999014cb43a2b88f635a1168a4a906be3bd949ab4f54f2a2091618e67'
+    static path_hnc = 'http://localhost:3000';
 }

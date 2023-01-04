@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import {ApiBearerAuth, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {SmartContractService} from "./smart_contract.service";
 import {CreateSmartContractDto} from "./dto/create-smart_contract.dto";
-import {GetCurrentUserId} from "../decorators/auth/auth.decorator";
+import {GetCurrentUserId, Public} from "../decorators/auth/auth.decorator";
 
 @ApiBearerAuth()
 @ApiTags('Smart Contract')
@@ -14,6 +14,13 @@ export class SmartContractController {
   @ApiOperation({ summary: 'Create transaction' })
   create(@Body() createSmartContactDto: CreateSmartContractDto, @GetCurrentUserId() id: number) {
     return this.smartContactService.create(createSmartContactDto, id);
+  }
+
+  @Public()
+  @ApiOperation({ summary: 'Check transaction by id' })
+  @Get('check/:id')
+  check(@Param('id') id: string) {
+    return this.smartContactService.checkTransaction(+id);
   }
 
 }

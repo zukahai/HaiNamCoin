@@ -6,12 +6,16 @@ import {Transaction} from "./entities/transaction.entity";
 import {Repository} from "typeorm";
 import {UserService} from "../user/user.service";
 import {FontsService} from "../fonts/fonts.service";
+import {AxiosRequestConfig} from "axios";
+import {InfomaintionProvider} from "../provider/infomaintion.provider";
+import {HttpService} from "@nestjs/axios";
 
 @Injectable()
 export class TransactionsService {
   constructor(@InjectRepository(Transaction) private smartContactRepository: Repository<Transaction>,
               private readonly userService: UserService,
               private readonly fontService: FontsService,
+              private readonly  httpService: HttpService
   ) {}
 
   async create(createTransactionDto: CreateTransactionDto) {
@@ -22,23 +26,43 @@ export class TransactionsService {
         font: await this.fontService.findOne(createTransactionDto.font_id),
         from: await this.userService.findOne(createTransactionDto.from_id),
         to: await this.userService.findOne(createTransactionDto.to_id),
-        value: createTransactionDto.value
+        value: createTransactionDto.value,
+        type: createTransactionDto.type,
     });
   }
 
   findAll() {
-    return `This action returns all transactions`;
+    return this.smartContactRepository.find({
+        relations: ['from', 'to', 'font']
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
+  async findOne(id: number) {
+    return await this.smartContactRepository.findOne({
+        where: {
+            id: id
+        },
+        relations: ['font', 'from', 'to']
+    })
   }
 
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
-  }
+  async checkTransactionHNC(id: number) {
+      const config: AxiosRequestConfig = {
+          url: InfomaintionProvider.path_hnc + '/transactions-waiting/' + id,
+          method: 'GET',
+      }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+      try {
+          const response = await this.httpService.request(config).toPromise();
+          if (response.data)
+              return response.data;
+      }
+      catch (e) {
+          // console.log(e.response.data);
+          return {
+              message: 'error',
+              error: 'Transaction not found',
+          }
+      }
   }
 }

@@ -6,5 +6,6 @@ export class CreateTransactionDto {
     transaction_id_1: number;
     transaction_id_2: number;
     status: number;
+    type: number;
 
 }
