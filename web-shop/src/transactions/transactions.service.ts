@@ -65,4 +65,8 @@ export class TransactionsService {
           }
       }
   }
+
+  async update(transaction: Transaction) {
+    return await this.smartContactRepository.save(transaction);
+  }
 }

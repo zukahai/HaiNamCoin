@@ -11,12 +11,14 @@ import {TransactionsService} from "../transactions/transactions.service";
 import {AxiosRequestConfig} from "axios/index";
 import {HttpService} from "@nestjs/axios";
 import {InfomaintionProvider} from "../provider/infomaintion.provider";
+import {FontUsersService} from "../font_users/font_users.service";
 
 @Injectable()
 export class SmartContractService {
   constructor(@InjectRepository(Transaction) private smartContactRepository: Repository<Transaction>,
               private readonly userService: UserService,
               private readonly fontService: FontsService,
+              private readonly fonrUserService: FontUsersService,
               private readonly transactionService: TransactionsService,
               private readonly  httpService: HttpService
               ) {}
@@ -31,9 +33,8 @@ export class SmartContractService {
     createTransactionDto.transaction_id_1 = 1;
     createTransactionDto.transaction_id_2 = 2;
 
-    const percentageFee_hnc = await this.getPercentageFee();
-    const value1 = createSmartContactDto.value / (1 - percentageFee_hnc);
-    const value2 = value1 * InfomaintionProvider.profit;
+    const value1 = createSmartContactDto.value / (1 + InfomaintionProvider.profit);
+    const value2 = createSmartContactDto.value - value1;
 
     let checkConnect = await this.userService.checkConnectUserToHaiNamCoin(id);
     if (checkConnect.message === 'error')
@@ -155,11 +156,25 @@ export class SmartContractService {
   }
 
   async checkTransaction(id: number) {
-    const transaction = await this.transactionService.findOne(id);
+    let transaction = await this.transactionService.findOne(id);
     const tw_1 = await this.transactionService.checkTransactionHNC(transaction.transaction_id_1);
     const tw_2 = await this.transactionService.checkTransactionHNC(transaction.transaction_id_2);
     if (transaction) {
       if (tw_1.status === 1 && tw_2.status === 1) {
+        transaction.status = transaction.status + 1;
+        await this.transactionService.update(transaction);
+        if (transaction.status === 1) {
+          const user = await this.userService.findOne(transaction.from.id);
+          let font = await this.fontService.findOne(transaction.font.id);
+          if (transaction.type === 1) {
+            await this.fonrUserService.createByFontUser(user, font);
+          } else if (transaction.type === 2) {
+            let font = await this.fontService.findOne(transaction.font.id);
+            font.user = user;
+            await this.fontService.update(font);
+          }
+
+        }
         return {
           message: 'ok',
         }

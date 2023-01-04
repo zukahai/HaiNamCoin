@@ -7,9 +7,10 @@ import {UserModule} from "../user/user.module";
 import {TransactionsModule} from "../transactions/transactions.module";
 import {FontsModule} from "../fonts/fonts.module";
 import {HttpModule} from "@nestjs/axios";
+import {FontUsersModule} from "../font_users/font_users.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Transaction]), UserModule, TransactionsModule, FontsModule, HttpModule],
+  imports: [TypeOrmModule.forFeature([Transaction]), UserModule, TransactionsModule, FontsModule, FontUsersModule, HttpModule],
   controllers: [SmartContractController],
   providers: [SmartContractService],
   exports: [SmartContractService]

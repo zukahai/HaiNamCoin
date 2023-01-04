@@ -31,14 +31,4 @@ export class FontsController {
   findOne(@Param('id') id: string) {
     return this.fontsService.findOne(+id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFontDto: UpdateFontDto) {
-    return this.fontsService.update(+id, updateFontDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fontsService.remove(+id);
-  }
 }
