@@ -1,6 +1,7 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Font} from "../../fonts/entities/font.entity";
 import {Transaction} from "../../transactions/entities/transaction.entity";
+import {FontUser} from "../../font_users/entities/font_user.entity";
 
 @Entity({ name: 'users', orderBy: { id: 'ASC' }, synchronize: true })
 export class User {
@@ -33,5 +34,8 @@ export class User {
 
     @OneToMany(() => Transaction, (transaction) => transaction.to)
     to: Transaction[];
+
+    @OneToMany(() => FontUser, (font_user) => font_user.user)
+    font_users: FontUser[];
 
 }

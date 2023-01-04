@@ -24,7 +24,7 @@ export class FontsController {
   @Get()
   findAll(@GetCurrentUserId() userId: number) {
     console.log(userId);
-    return this.fontsService.findAll();
+    return this.fontsService.findAll(userId);
   }
 
   @Get(':id')

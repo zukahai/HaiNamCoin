@@ -28,6 +28,7 @@ export class UserService {
             where: {
                 id: id,
             },
+            relations: ['fonts'],
         });
     }
 

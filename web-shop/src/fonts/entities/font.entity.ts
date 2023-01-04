@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import {User} from "../../user/entities/user.entity";
 import {Transaction} from "../../transactions/entities/transaction.entity";
+import {FontUser} from "../../font_users/entities/font_user.entity";
 
 @Entity({ name: 'fonts', orderBy: { id: 'ASC' }, synchronize: true })
 export class Font {
@@ -42,5 +43,8 @@ export class Font {
 
     @OneToMany(() => Transaction, (transaction) => transaction.font)
     transactions: Transaction[];
+
+    @OneToMany(() => FontUser, (font_user) => font_user.font)
+    font_users: FontUser[];
 
 }

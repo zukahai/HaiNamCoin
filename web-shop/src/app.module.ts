@@ -10,9 +10,10 @@ import { AtGuard } from './auth/at-guard/at-guard.guard';
 import { FontsModule } from './fonts/fonts.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { SmartContractModule } from './smart_contract/smart_contract.module';
+import { FontUsersModule } from './font_users/font_users.module';
 
 @Module({
-    imports: [DatabaseModule, UserModule, AuthModule, FontsModule, SmartContractModule, TransactionsModule, SmartContractModule],
+    imports: [DatabaseModule, UserModule, AuthModule, FontsModule, SmartContractModule, TransactionsModule, SmartContractModule, FontUsersModule],
     controllers: [AppController],
     providers: [
         AppService,

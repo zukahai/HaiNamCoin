@@ -14,10 +14,12 @@ export class FontsService {
     return 'This action adds a new font';
   }
 
-  async findAll() {
-    return await this.fontRepository.find({
-        relations: ['user']
-    });
+  async findAll(userId: number) {
+    if (!userId)
+      return await this.fontRepository.find({
+          relations: ['user']
+      });
+    return 'This action returns all fonts';
   }
 
   findOne(id: number) {
