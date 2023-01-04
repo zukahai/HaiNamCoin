@@ -24,6 +24,12 @@ export class Font {
     @Column({ type: 'varchar', length: 255, comment: 'link_download' })
     link_download: string;
 
+    @Column({ type: 'int', comment: 'price' })
+    price: number;
+
+    @Column({ type: 'int', comment: 'price license' })
+    price_license: number;
+
     @ManyToOne(() => User, (user) => user.fonts)
     @JoinColumn({ name: 'user_id' })
     user: User;

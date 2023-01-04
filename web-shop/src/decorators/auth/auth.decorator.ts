@@ -12,7 +12,7 @@ export const GetCurrentUser = createParamDecorator((data: string | undefined, co
 });
 export const GetCurrentUserId = createParamDecorator((_: undefined, context: ExecutionContext): number => {
     const request = context.switchToHttp().getRequest();
-    const user = request.user.payload as JwtPayload;
-    return user.sub;
+    const user = (request.user) ? request.user.payload as JwtPayload : null;
+    return (user) ? user.sub : null;
 });
 export const Public = () => SetMetadata('isPublic', true);

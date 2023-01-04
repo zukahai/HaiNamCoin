@@ -6,7 +6,7 @@ import {ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags} from "@nestj
 import {ApiImplicitFile} from "@nestjs/swagger/dist/decorators/api-implicit-file.decorator";
 import {Express} from "express";
 import {FilesInterceptor} from "@nestjs/platform-express";
-import {Public} from "../decorators/auth/auth.decorator";
+import {GetCurrentUserId, Public} from "../decorators/auth/auth.decorator";
 
 @ApiTags('Fonts')
 @Controller('fonts')
@@ -20,8 +20,10 @@ export class FontsController {
     return this.fontsService.create(createFontDto);
   }
 
+  @Public()
   @Get()
-  findAll() {
+  findAll(@GetCurrentUserId() userId: number) {
+    console.log(userId);
     return this.fontsService.findAll();
   }
 

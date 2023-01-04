@@ -1,4 +1,12 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
 import {User} from "../../user/entities/user.entity";
 import {Font} from "../../fonts/entities/font.entity";
 
@@ -19,8 +27,8 @@ export class Transaction {
     @JoinColumn({ name: 'font_id' })
     font: Font;
 
-    @Column({ type: 'int', comment: 'Price of the font' })
-    price: number;
+    @Column({ type: 'int', comment: 'Value of the font' })
+    value: number;
 
     @Column({ type: 'int', comment: 'Transaction id 1' })
     transaction_id_1: number;
@@ -30,5 +38,11 @@ export class Transaction {
 
     @Column({ type: 'int', comment: 'Status of the transaction' })
     status: number;
+
+    @CreateDateColumn({ name: 'created_at', comment: 'Created at' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ name: 'updated_at', comment: 'Updated at' })
+    updatedAt: Date;
 
 }

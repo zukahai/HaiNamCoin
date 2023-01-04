@@ -8,11 +8,11 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './auth/at-guard/at-guard.guard';
 import { FontsModule } from './fonts/fonts.module';
-import { SmartContactModule } from './smart_contact/smart_contact.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { SmartContractModule } from './smart_contract/smart_contract.module';
 
 @Module({
-    imports: [DatabaseModule, UserModule, AuthModule, FontsModule, SmartContactModule, TransactionsModule],
+    imports: [DatabaseModule, UserModule, AuthModule, FontsModule, SmartContractModule, TransactionsModule, SmartContractModule],
     controllers: [AppController],
     providers: [
         AppService,

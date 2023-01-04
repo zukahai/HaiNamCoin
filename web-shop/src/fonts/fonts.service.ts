@@ -15,11 +15,17 @@ export class FontsService {
   }
 
   async findAll() {
-    return await this.fontRepository.find();
+    return await this.fontRepository.find({
+        relations: ['user']
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} font`;
+    return this.fontRepository.findOne({
+      where: {
+        id: id
+      }
+    });
   }
 
   update(id: number, updateFontDto: UpdateFontDto) {
