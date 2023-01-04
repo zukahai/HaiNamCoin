@@ -23,7 +23,6 @@ export class TransactionsWaitingService {
             };
         }
         if (user_from.private_key != createTransactionsWaitingDto.private_key) {
-            console.log(user_from.private_key);
             return {
                 message: 'error',
                 error: 'Private key is not correct',
@@ -103,7 +102,6 @@ export class TransactionsWaitingService {
 
     async checkNonce(id: number, nonce: number) {
         const tw = await this.findOne(id);
-        console.log(tw.from);
         const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ' + nonce;
         const hash = HashProvider.hash256(text);
         const message = hash.startsWith(HashProvider.hard) ? 'ok' : 'error';

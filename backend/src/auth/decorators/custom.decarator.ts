@@ -12,7 +12,6 @@ export const GetCurrentUser = createParamDecorator((data: string | undefined, co
 });
 export const GetCurrentUserId = createParamDecorator((_: undefined, context: ExecutionContext): number => {
     const request = context.switchToHttp().getRequest();
-    console.log('request.user', request.user);
     const user = request.user as JwtPayload;
     return user.sub;
 });

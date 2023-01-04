@@ -24,11 +24,9 @@ export class JoinConfirmTransactionsService {
             createJoinConfirmTransactionDto.transaction_waiting_id,
         );
         const user_join_confirm_transaction = transaction_waiting.join_confirm_transaction;
-        console.log(user_join_confirm_transaction);
         let joinConfirmTransaction = null;
         for (let i = 0; i < user_join_confirm_transaction.length; i++) {
             const user_join_confirm_transaction_element = await this.findOne(user_join_confirm_transaction[i].id);
-            console.log(user_join_confirm_transaction_element);
             if (
                 user_join_confirm_transaction_element.user.id == user.id &&
                 user_join_confirm_transaction_element.transaction_waiting.id == transaction_waiting.id
@@ -39,7 +37,7 @@ export class JoinConfirmTransactionsService {
         }
 
         if (joinConfirmTransaction != null) {
-            return this.update(joinConfirmTransaction.id);
+            return await this.update(joinConfirmTransaction.id);
         }
 
         return await this.joinConfirmTransactionsRepository.save({
