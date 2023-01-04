@@ -28,7 +28,12 @@ export class FontUsersService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} fontUser`;
+    return this.fontUserRepository.findOne({
+        where: {
+            id: id
+        },
+        relations: ['user', 'font']
+    });
   }
 
   update(id: number, updateFontUserDto: UpdateFontUserDto) {

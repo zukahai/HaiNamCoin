@@ -7,23 +7,68 @@ import {Font} from "./entities/font.entity";
 import {AxiosRequestConfig} from "axios";
 import {InfomaintionProvider} from "../provider/infomaintion.provider";
 import {HttpService} from "@nestjs/axios";
+import {UserService} from "../user/user.service";
+import {FontUsersService} from "../font_users/font_users.service";
 
 @Injectable()
 export class FontsService {
   constructor(@InjectRepository(Font) private fontRepository: Repository<Font>,
-              private readonly  httpService: HttpService) {
+              private readonly  httpService: HttpService,
+              private readonly  userService: UserService,
+              private readonly fontUserService: FontUsersService) {
   }
 
   create(createFontDto: CreateFontDto) {
     return 'This action adds a new font';
   }
 
-  async findAll(userId: number) {
-    if (!userId)
-      return await this.fontRepository.find({
-          relations: ['user']
-      });
-    return 'This action returns all fonts';
+  async findAll() {
+    const fonts = await this.fontRepository.find({
+        relations: ['user']
+    });
+    let fonts_new = [];
+    for (let i = 0; i < fonts.length; i++) {
+        const font_new = {
+            ...fonts[i],
+          options: {
+              value: 0,
+              description: 'Have not bought yet'
+          }
+        }
+        fonts_new.push(font_new);
+    }
+    return fonts_new;
+  }
+
+  async findAllByUser(user_id: number) {
+    const fonts = await this.fontRepository.find({
+      relations: ['user']
+    });
+    let fonts_new = [];
+    let options = [];
+    for (let i = 0; i < fonts.length; i++) {
+      options.push(0);
+    }
+    const user = await this.userService.findOne(user_id);
+    for (let i = 0; i < user.font_users.length; i++) {
+      const font_user = await this.fontUserService.findOne(user.font_users[i].id);
+      options[font_user.font.id] = 1;
+    }
+    for (let i = 0; i < user.fonts.length; i++) {
+      const font = await this.findOne(user.fonts[i].id);
+      options[font.id] = 2;
+    }
+    let description = ['Have not bought yet', 'Have bought', 'License'];
+    for (let i = 0; i < fonts.length; i++) {
+      fonts_new.push({
+        ...fonts[i],
+        options: {
+            value: options[fonts[i].id],
+            description: description[options[fonts[i].id]]
+        }
+      })
+    }
+    return fonts_new;
   }
 
   async findOne(id: number) {

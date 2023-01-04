@@ -22,9 +22,15 @@ export class FontsController {
 
   @Public()
   @Get()
-  findAll(@GetCurrentUserId() userId: number) {
-    console.log(userId);
-    return this.fontsService.findAll(userId);
+  @ApiOperation({ summary: 'Get All font' })
+  findAll() {
+    return this.fontsService.findAll();
+  }
+
+  @Get('user')
+  @ApiOperation({ summary: 'Get All font by user' })
+  findAllByUser(@GetCurrentUserId() userId: number) {
+    return this.fontsService.findAllByUser(userId);
   }
 
   @Get(':id')
