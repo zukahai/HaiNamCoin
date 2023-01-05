@@ -124,7 +124,7 @@ export class SmartContractService {
     try {
       const response = await this.httpService.request(config).toPromise();
       if (response.data.user)
-        return response.data.user;
+        return response.data.user;//
     }
     catch (e) {
       // console.log(e.response.data);
