@@ -98,8 +98,10 @@ export class UserService {
 
     async validateUser(loginDto: LoginDto): Promise<User> {
         const user = await this.findOneByUserName(loginDto.username);
-        if (await HashProvider.comparePassword(loginDto.password, user.password)) {
-            return user;
+        if (user) {
+            if (await HashProvider.comparePassword(loginDto.password, user.password)) {
+                return user;
+            }
         }
         return null;
     }
