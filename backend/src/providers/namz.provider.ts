@@ -19,14 +19,14 @@ export class NamzProvider {
         for (let i = 0; i < str.length; i++) {
             let number = parseInt(str[i], 16) - i;
             while(number <= 57) {
-                if ((number >= 48 && number <= 57) || number == 45) {
+                if ((number >= 48 && number <= 57)) {
                     result += String.fromCharCode(number);
                     break;
                 }
                 number += 16;
+                result += ((95 - number) % 16 == 0 && number > 57) ? '_' : '';
             }
-            if (number > 57)
-                result += '#';
+
         }
         return this.getInput(result);
     }
@@ -36,7 +36,7 @@ export class NamzProvider {
             let temp = str.substring(0, i);
             let flag = true;
             for (let j = 0; j < str.length; j += i) {
-                if (temp != str.substring(j, j + i)) {
+                if (i + j < str.length && temp != str.substring(j, j + i)) {
                     flag = false;
                     break;
                 }

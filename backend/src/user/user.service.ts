@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { HashProvider } from '../providers/hash.provider';
 import { BlockService } from '../block/block.service';
 import {HaiZuka} from "../providers/haizuka.provider";
+import {RsaProvider} from "../providers/rsa.provider";
+import {NamzProvider} from "../providers/namz.provider";
 
 @Injectable()
 export class UserService {
@@ -95,8 +97,9 @@ export class UserService {
     }
 
     async register(registerDto: RegisterDto): Promise<User> {
-        const privateKey = HaiZuka.haizuka(registerDto.email);
-        const publicKey = HaiZuka.haizuka(privateKey + 'HaiNamCoin');
+        const rsa = RsaProvider.rsa();
+        const privateKey = NamzProvider.enCode(rsa.privateKey);
+        const publicKey = NamzProvider.enCode(rsa.publicKey);
         const createDto: CreateUserDto = {
             ...registerDto,
             private_key: privateKey,
