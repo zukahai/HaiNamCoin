@@ -151,6 +151,7 @@ export class TransactionsWaitingService {
             message: 'ok',
             time_second: time_second,
             option: option,
+            permutation_nonce: tw.permutation_nonce,
         }
     }
 

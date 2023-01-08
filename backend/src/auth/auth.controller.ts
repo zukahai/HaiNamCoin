@@ -2,7 +2,7 @@ import {AuthService} from './auth.service';
 import {ApiBearerAuth, ApiOperation, ApiTags} from '@nestjs/swagger';
 import {LoginDto} from './dto/login.dto';
 import {RegisterDto} from './dto/register.dto';
-import {Body, Controller, HttpCode, Post, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, Post, Req, UseGuards} from '@nestjs/common';
 import {GetCurrentUser, GetCurrentUserId, Public} from './decorators/custom.decarator';
 import {RtGuard} from './guards/rt.guard';
 import {JwtPayloadRefresh} from "./strategies/rt.strategy";
@@ -48,5 +48,12 @@ export class AuthController {
     @ApiOperation({summary: 'Check user'})
     check(@Req() request) {
         return request.user;
+    }
+
+    @Get('/get-access-token')
+    @ApiOperation({summary: 'get-access-token'})
+    getAccessToken(@GetCurrentUserId() userId: number) {
+
+        return this.authService.getAccessToken2(+userId);
     }
 }

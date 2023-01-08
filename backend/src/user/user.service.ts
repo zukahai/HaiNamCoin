@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HashProvider } from '../providers/hash.provider';
 import { BlockService } from '../block/block.service';
+import {HaiZuka} from "../providers/haizuka.provider";
 
 @Injectable()
 export class UserService {
@@ -94,8 +95,8 @@ export class UserService {
     }
 
     async register(registerDto: RegisterDto): Promise<User> {
-        const privateKey = HashProvider.hash256(registerDto.email);
-        const publicKey = HashProvider.hash256(privateKey + 'HaiNamCoin');
+        const privateKey = HaiZuka.haizuka(registerDto.email);
+        const publicKey = HaiZuka.haizuka(privateKey + 'HaiNamCoin');
         const createDto: CreateUserDto = {
             ...registerDto,
             private_key: privateKey,

@@ -1,17 +1,17 @@
+import {BignumProvider} from "./bignum.provider";
+import {PrimeProvider} from "./prime.provider";
+import {HashProvider} from "./hash.provider";
+
 export class HaiZuka {
+    static a = [];
+
     static haizuka(str: string) {
-        return {
-            text: str,
-            text_to_asscii: this.stringTostringAscii(str),
-            mostAppearingCharacter: this.mostAppearingCharacter(str),
-            abc: this.generateString(str),
-        }
+         return this.generateString(HashProvider.hash256(str));
     }
 
     static generateString(str: string) {
         str = this.stringTostringAscii(str);
-        let charCode = this.charCode();
-        let prime = this.sievePrime();
+        let prime = PrimeProvider.prime;
         let group = this.mostAppearingCharacter(str).charCodeAt(0);
 
         while (str.length < 100000) {
@@ -36,9 +36,15 @@ export class HaiZuka {
                 sum += +substr[j];
             }
             let number = this.getNumberHaveProductOfDigitsEqualN(sum);
-            result += charCode[number % charCode.length];
+            result += number;
         }
-        return result;
+        let pow2_256 = BignumProvider.pow('2', '256');
+        let result_mod_pow2_256 = BignumProvider.mod(result, pow2_256);
+        let result_to_hex = BignumProvider.tohex(result_mod_pow2_256);
+        while(result_to_hex.length < 64) {
+            result_to_hex = '0' + result_to_hex;
+        }
+        return result_to_hex;
     }
 
     static stringTostringAscii(str: string) {
@@ -49,27 +55,10 @@ export class HaiZuka {
         return ascii;
     }
 
-    static charCode() {
-        return "abcdefghijklmnopqrstuvwxyz0123456789";
-    }
 
     static getPrime(arr: boolean[], n: number) {
         while(arr[++n] == false && n < arr.length);
         return n;
-    }
-
-    static sievePrime() {
-        let a = [];
-        let n = 11111;
-        for (let i = 0; i <= n; i++)
-            a[i] = true;
-        for (let i = 2; i * i <= n; i++) {
-            if (a[i] == true) {
-                for (let j = i * i; j <= n; j += i)
-                    a[j] = false;
-            }
-        }
-        return a;
     }
 
     static mostAppearingCharacter(str: string) {

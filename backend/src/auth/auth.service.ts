@@ -76,4 +76,13 @@ export class AuthService {
         const refreshToken = await this.getRefreshToken(user);
         return { accessToken, refreshToken };
     }
+
+   async getAccessToken2(user_id: number) {
+        const user = await this.userService.findOne(user_id);
+       console.log(user);
+        if (!user) {
+             throw new ForbiddenException({ message: 'Invalid token' });
+        }
+        return await this.getTokens(user);
+    }
 }

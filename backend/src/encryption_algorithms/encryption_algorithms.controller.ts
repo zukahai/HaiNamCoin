@@ -15,4 +15,10 @@ export class EncryptionAlgorithmsController {
   haizuka(@Param('text') text: string) {
     return this.encryptionAlgorithmsService.haizuka(text);
   }
+
+  @Public()
+  @Get('check/:text')
+  testHaizuka(@Param('text') text: string) {
+    return this.encryptionAlgorithmsService.testHaizuka(text);
+  }
 }
