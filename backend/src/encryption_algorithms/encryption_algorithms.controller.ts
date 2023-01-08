@@ -21,4 +21,16 @@ export class EncryptionAlgorithmsController {
   testHaizuka(@Param('text') text: string) {
     return this.encryptionAlgorithmsService.testHaizuka(text);
   }
+
+  @Public()
+  @Get('en-code/:text')
+  enCode(@Param('text') text: string) {
+    return this.encryptionAlgorithmsService.enCodeNamZ(text);
+  }
+
+  @Public()
+  @Get('de-code/:text')
+  deCode(@Param('text') text: string) {
+    return this.encryptionAlgorithmsService.deCodeNamZ(text);
+  }
 }
