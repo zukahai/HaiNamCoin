@@ -47,10 +47,7 @@ export class BignumProvider {
         }
         let result = '0';
         for (let i = b.length - 1; i >= 0; i--) {
-            let mul = '';
-            for (let j = 0; j < +b[i]; j++) {
-                mul = this.sum(mul, sum[+b[i]]);
-            }
+            let mul = sum[+b[i]];
             for (let j = 0; j < b.length - i - 1; j++) {
                 mul += '0';
             }

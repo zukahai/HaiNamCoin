@@ -38,6 +38,7 @@
     "class-validator": "^0.13.2",
     "crypto": "^1.0.1",
     "mysql2": "^2.3.3",
+    "node-rsa": "^1.1.1",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",

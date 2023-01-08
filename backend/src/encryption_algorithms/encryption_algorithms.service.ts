@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import {HaiZuka} from "../providers/haizuka.provider";
-import * as Big from 'big.js';
-import {HashProvider} from "../providers/hash.provider";
-import {BignumProvider} from "../providers/bignum.provider";
 import {RsaProvider} from "../providers/rsa.provider";
 import {NamzProvider} from "../providers/namz.provider";
 
@@ -38,7 +35,7 @@ export class EncryptionAlgorithmsService {
     }
 
     rsa(str: string) {
-        return RsaProvider.randomPrime(1, 10000);
+        return RsaProvider.rsa();
     }
 
 }
