@@ -47,6 +47,7 @@ export class FontsController {
         return this.fontsService.findAllByUser(userId);
     }
 
+    @Public()
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.fontsService.findOne(+id);

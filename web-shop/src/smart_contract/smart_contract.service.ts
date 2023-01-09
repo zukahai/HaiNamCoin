@@ -212,9 +212,24 @@ export class SmartContractService {
     }
     return {
       message: 'error',
-      error: 'Transaction',
+      error: 'An incomplete transaction exists',
       transaction_Waiting_1: tw_1.status,
       transaction_Waiting_2: tw_2.status,
     }
+  }
+
+  async checkTransactionFont(id: number) {
+    let result = []
+    const font = await this.fontService.findOne(id);
+    if (font) {
+      const transaction_waiting = font.transaction_waiting;
+      for (let i = 0; i < transaction_waiting.length; i++) {
+        result.push({
+          id: transaction_waiting[i].id,
+          status: await this.checkTransaction(transaction_waiting[i].id)
+        });
+      }
+    }
+    return result;
   }
 }

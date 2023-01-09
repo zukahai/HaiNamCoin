@@ -23,4 +23,11 @@ export class SmartContractController {
     return this.smartContactService.checkTransaction(+id);
   }
 
+  @Public()
+  @ApiOperation({ summary: 'Check transaction font' })
+  @Get('transaction-font/:id')
+  checkTransactionFont(@Param('id') id: string) {
+    return this.smartContactService.checkTransactionFont(+id);
+  }
+
 }

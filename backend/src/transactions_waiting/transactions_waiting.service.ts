@@ -28,9 +28,7 @@ export class TransactionsWaitingService {
         if (user_from.private_key != createTransactionsWaitingDto.private_key) {
             return {
                 message: 'error',
-                error: 'Private key is not correct',
-                private_key: createTransactionsWaitingDto.private_key,
-                user_private_key: user_from.private_key,
+                error: 'Private key is not correct'
             };
         }
         const user_to = await this.userService.findOne(createTransactionsWaitingDto.to);

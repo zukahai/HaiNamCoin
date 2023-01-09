@@ -9,6 +9,7 @@ import {InfomaintionProvider} from "../provider/infomaintion.provider";
 import {HttpService} from "@nestjs/axios";
 import {UserService} from "../user/user.service";
 import {FontUsersService} from "../font_users/font_users.service";
+import {TransactionsService} from "../transactions/transactions.service";
 
 @Injectable()
 export class FontsService {
@@ -76,17 +77,28 @@ export class FontsService {
       where: {
         id: id
       },
-      relations: ['user', 'font_users']
+      relations: ['user', 'font_users', 'transactions']
     });
+    delete font.user.access_token;
+    delete font.user.password;
     const percentage_fee = await this.getPercentageFee();
     const price = (font.price + InfomaintionProvider.profit * font.price) / (1 - percentage_fee);
     const price_license = (font.price_license + InfomaintionProvider.profit * font.price_license) / (1 - percentage_fee);
+    let transactions = [];
+    for (let i = 0; i < font.transactions.length; i++) {
+      if (font.transactions[i].status === 0) {
+        transactions.push(font.transactions[i]);
+      }
+    }
     const font_new = {
       ...font,
       price_bank: price,
       price_license_bank: price_license,
       quantity_purchased: font.font_users.length,
+      transaction_waiting: transactions
     }
+    delete font_new.font_users;
+    delete font_new.transactions;
     return font_new;
   }
 
