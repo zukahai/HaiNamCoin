@@ -6,6 +6,9 @@ import { TransactionsWaiting } from './entities/transactions_waiting.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { HashProvider } from '../providers/hash.provider';
+import {GenerateSignatureDto} from "./dto/generate-signature.dto";
+import {RsaProvider} from "../providers/rsa.provider";
+import {GetSignatureDto} from "./dto/get-signature.dto";
 
 @Injectable()
 export class TransactionsWaitingService {
@@ -48,6 +51,7 @@ export class TransactionsWaitingService {
                 from: user_from,
                 to: user_to,
                 value: createTransactionsWaitingDto.value,
+                signature: createTransactionsWaitingDto.signature,
             });
             const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ';
             const nonce = HashProvider.findNonce(text);
@@ -159,10 +163,32 @@ export class TransactionsWaitingService {
         return this.transactionsWaitingRepository.save(transactionWaiting);
     }
 
+    async generateSignature(generateSignatureDto: GenerateSignatureDto, userId: number) {
+        const user_from = await this.userService.findOne(userId);
+        const user_to = await this.userService.findOne(generateSignatureDto.to);
+        let text = 'Time: ' + new Date().getTime() + ' | From: ' + user_from.email + ' | To: ' + user_to.email + ' | Value: ' + generateSignatureDto.value;
+        const signature = RsaProvider.encrypt(text, user_from.private_key);
+        return {
+            message: 'ok',
+            text: text,
+            signature: signature,
+        }
+    }
+
     getPercentageFee() {
         return {
             message: 'ok',
             percentage_fee: HashProvider.percentageFee,
+        }
+    }
+
+    getSignature(getSignatureDto: GetSignatureDto) {
+        let publicKey = getSignatureDto.public_key;
+        let signature = getSignatureDto.signature;
+        let data = RsaProvider.decrypt(signature, publicKey);
+        return {
+            message: 'ok',
+            data: data,
         }
     }
 }

@@ -3,10 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../user/entities/user.entity';
 
 export class GetSignatureDto {
-    @ApiProperty({ example: 2, description: 'Id user' })
-    @IsNumber({}, { message: 'To must be a number' })
-    to: number;
+    @ApiProperty({ example: "1234-2324-234", description: 'signature' })
+    signature: string;
 
-    @ApiProperty({ example: 100, description: 'Value' })
-    value: number;
+    @ApiProperty({ example: 'public_key', description: 'public key' })
+    public_key: string;
 }

@@ -105,7 +105,7 @@ export class UserService {
             private_key: privateKey,
             public_key: publicKey,
             role: 'user',
-            isActivated: false,
+            isActivated: true,
         };
         const user = await this.create(createDto);
         if (user) {

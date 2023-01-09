@@ -31,7 +31,7 @@ export class TransactionsWaiting {
     @Column({ type: 'float', comment: 'Amount of block' })
     value: number;
 
-    @Column({ type: 'varchar', comment: 'signature of transaction' })
+    @Column({ type: 'text', comment: 'signature of transaction' })
     signature: string;
 
     @Column({ type: 'int', comment: 'Status of transaction' })

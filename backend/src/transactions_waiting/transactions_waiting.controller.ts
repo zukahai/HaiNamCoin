@@ -1,11 +1,10 @@
 import {Controller, Get, Post, Body, Patch, Param, Delete, Query} from '@nestjs/common';
 import { TransactionsWaitingService } from './transactions_waiting.service';
 import { CreateTransactionsWaitingDto } from './dto/create-transactions_waiting.dto';
-import { UpdateTransactionsWaitingDto } from './dto/update-transactions_waiting.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { HashProvider } from '../providers/hash.provider';
 import {GetCurrentUserId, Public} from '../auth/decorators/custom.decarator';
-import {StatusTransactionsWaitingDto} from "./dto/status_transactions_waiting.dto";
+import {GenerateSignatureDto} from "./dto/generate-signature.dto";
+import {GetSignatureDto} from "./dto/get-signature.dto";
 @ApiBearerAuth()
 @ApiTags('Transactions Waiting')
 @Controller('transactions-waiting')
@@ -41,6 +40,18 @@ export class TransactionsWaitingController {
     @ApiOperation({ summary: 'Get percentage fee' })
     getPercentageFee(){
         return this.transactionsWaitingService.getPercentageFee();
+    }
+
+    @Post('generate-signature')
+    @ApiOperation({ summary: 'Generate signature transaction waiting' })
+    generateSignature(@Body() generateSignatureDto: GenerateSignatureDto, @GetCurrentUserId() userId: number) {
+        return this.transactionsWaitingService.generateSignature(generateSignatureDto, userId);
+    }
+
+    @Post('get-signature')
+    @ApiOperation({ summary: 'Get signature transaction waiting' })
+    getSignature(@Body() getSignatureDto: GetSignatureDto) {
+        return this.transactionsWaitingService.getSignature(getSignatureDto);
     }
 
     @Public()
