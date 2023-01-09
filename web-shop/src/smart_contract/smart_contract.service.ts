@@ -62,6 +62,7 @@ export class SmartContractService {
 
 
   async transaction(from: any, to: any, private_key:string, value: number, access_token: string) {
+    let signature = await this.getSignature(to.id, value, access_token);
     const config: AxiosRequestConfig = {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -71,7 +72,8 @@ export class SmartContractService {
         "to": +to.id,
         "value": +value,
         "private_key": private_key,
-        "public_key": to.public_key
+        "public_key": to.public_key,
+        "signature": signature
       },
       method: 'POST',
     }
@@ -112,6 +114,34 @@ export class SmartContractService {
         error: 'Access token is not correct',
       }
       // console.log(e);
+    }
+  }
+
+  async getSignature(to: any, value: number, access_token: string) {
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+      url:InfomaintionProvider.path_hnc + '/transactions-waiting/generate-signature',
+      data: {
+        "to": 2,
+        "value": 100
+      },
+      method: 'POST',
+    }
+
+    try {
+      const response = await this.httpService.request(config).toPromise();
+      if (response.data) {
+        return response.data.signature;
+      }
+
+    }
+    catch (e) {
+      return {
+        message: 'error',
+        error: 'Access token is not correct',
+      }
     }
   }
 
