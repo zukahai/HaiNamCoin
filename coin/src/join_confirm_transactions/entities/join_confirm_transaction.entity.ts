@@ -25,7 +25,7 @@ export class JoinConfirmTransaction {
     @JoinColumn({ name: 'transaction_waiting_id' })
     transaction_waiting: TransactionsWaiting;
 
-    @Column({ type: 'timestamp', comment: 'Time Join' })
+    @Column({ type: 'timestamp', comment: 'Time Join' ,nullable: true })
     time_join: Date;
 
     @CreateDateColumn({ name: 'created_at', comment: 'Created at' })

@@ -20,7 +20,7 @@ export class User {
     @Column({ name: 'password', type: 'text', comment: 'Password of the user' })
     password: string;
 
-    @Column({ name: 'hainamcoin_id', type: 'int', comment: 'Hainamcoin id of the user' })
+    @Column({ name: 'hainamcoin_id', type: 'int', comment: 'Hainamcoin id of the user', nullable: true })
     hainamcoin_id: number;
 
     @Column({ name: 'access_token', type: 'text', comment: 'Access token of the user', nullable: true })

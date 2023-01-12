@@ -2,8 +2,8 @@ import React, { FunctionComponent } from 'react';
 import { Box, Container, Grid, styled, Typography } from '@mui/material';
 import { Font } from './Font';
 import { ApiService } from '../services/ApiService';
-import { useStateContext } from '../ConTextProvider';
 import { useCookies } from 'react-cookie';
+import { useAuthContext } from '../context/AuthContextProvider';
 interface OwnProps {}
 
 type Props = OwnProps;
@@ -34,10 +34,7 @@ export interface FontI {
     description: string;
 }
 export const Properties: FunctionComponent<Props> = (props) => {
-    const checkBuy = (font: FontI) => {
-        return font.options.value === 1;
-    };
-    const { isLogin } = useStateContext();
+    const { isLogin } = useAuthContext();
     const [accessToken, setAccessToken] = useCookies(['accessToken']);
     const PropertiesGrid = styled(Grid)(({ theme }) => ({
         display: 'flex',
@@ -81,21 +78,13 @@ export const Properties: FunctionComponent<Props> = (props) => {
                     </Typography>
                 </PropertiesTextBox>
 
-                <PropertiesGrid container spacing={5} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid container spacing={2}>
                     {fonts.map((font) => (
-                        <Grid key={Math.random()} item xs={4} sm={4} md={3} sx={{ minWidth: '400px' }}>
-                            <Font
-                                id={font.id}
-                                img={'https://picsum.photos/500/300'}
-                                name={font.name}
-                                price={font.price_license + ''}
-                                priceLicense={font.price_license + ''}
-                                user={font.user}
-                                isBuy={checkBuy(font)}
-                            />
+                        <Grid key={Math.random()} item xs={12} md={4}>
+                            <Font font={font} />
                         </Grid>
                     ))}
-                </PropertiesGrid>
+                </Grid>
             </Container>
         </Box>
     );

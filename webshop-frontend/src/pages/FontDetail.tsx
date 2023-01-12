@@ -10,39 +10,58 @@ import { SendBuyCoin } from '../components/SendBuyCoin';
 import { ApiService } from '../services/ApiService';
 import { useCookies } from 'react-cookie';
 import { Auth } from '../components/Auth';
+const url = import.meta.env.VITE_BACKEND_URL;
 
-interface User {
-    id: string;
-    name: string;
-    email: string;
-}
 export interface FontT {
-    id: string;
+    id: number;
     name: string;
-    price: string;
-    img: string;
-    price_license: string;
-    user: User;
-    totalBuy: number;
+    path_image: string;
+    link_download: string;
+    price: number;
+    price_license: number;
+    createdAt: string;
+    updatedAt: string;
+    user: {
+        id: number;
+        name: string;
+        email: string;
+        username: string;
+        hainamcoin_id: number;
+    };
+    price_bank: number;
+    price_license_bank: number;
+    quantity_purchased: number;
+    transaction_waiting: [];
 }
+
+const initialState: FontT = {
+    id: 0,
+    name: '',
+    path_image: '',
+    link_download: '',
+    price: 0,
+    price_license: 0,
+    createdAt: '',
+    updatedAt: '',
+    user: {
+        id: 0,
+
+        name: '',
+        email: '',
+        username: '',
+        hainamcoin_id: 0,
+    },
+    price_bank: 0,
+    price_license_bank: 0,
+    quantity_purchased: 0,
+    transaction_waiting: [],
+};
 
 type Props = {};
 
 export const FontDetail = (props: Props) => {
     const { id } = useParams();
-    const [font, setFont] = React.useState<FontT>({
-        id: '',
-        name: '',
-        price: '',
-        img: '',
-        price_license: '',
-        user: {
-            id: '',
-            name: '',
-            email: '',
-        },
-        totalBuy: 0,
-    });
+    const [font, setFont] = React.useState<FontT>(initialState);
 
     const [accessToken, setAccessToken] = useCookies(['accessToken']);
     React.useEffect(() => {
@@ -101,7 +120,7 @@ export const FontDetail = (props: Props) => {
                     <CustomBox>
                         <Box sx={{ flex: '1' }}>
                             <img
-                                src={'https://picsum.photos/400/300'}
+                                src={`${url}/fonts/font-image/${font?.path_image}`}
                                 alt="heroImg"
                                 style={{ maxWidth: '80%', marginBottom: '2rem', borderRadius: '10px' }}
                             />
@@ -171,20 +190,20 @@ export const FontDetail = (props: Props) => {
                                 >
                                     Price License: {font?.price_license} HNC
                                 </Typography>
-                                <Typography
-                                    variant={'h6'}
-                                    sx={{
-                                        backgroundColor: '#F5F5F5',
-                                        padding: '0.5rem 1rem',
-                                        borderRadius: '10px',
-                                        color: '#000339',
-                                        fontSize: '16px',
-                                        fontWeight: 'bold',
-                                        minWidth: 'calc(100% / 3 - 1rem)',
-                                    }}
-                                >
-                                    Total Buy: {font?.totalBuy}
-                                </Typography>
+                                {/*<Typography*/}
+                                {/*    variant={'h6'}*/}
+                                {/*    sx={{*/}
+                                {/*        backgroundColor: '#F5F5F5',*/}
+                                {/*        padding: '0.5rem 1rem',*/}
+                                {/*        borderRadius: '10px',*/}
+                                {/*        color: '#000339',*/}
+                                {/*        fontSize: '16px',*/}
+                                {/*        fontWeight: 'bold',*/}
+                                {/*        minWidth: 'calc(100% / 3 - 1rem)',*/}
+                                {/*    }}*/}
+                                {/*>*/}
+                                {/*    Total Buy: {fon}*/}
+                                {/*</Typography>*/}
                             </Box>
 
                             <Button

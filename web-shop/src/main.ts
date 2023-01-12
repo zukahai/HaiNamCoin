@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 async function bootstrap() {
     const port = 2712;
@@ -16,10 +17,12 @@ async function bootstrap() {
         .build();
     const document = SwaggerModule.createDocument(app, config);
     app.useGlobalPipes(new ValidationPipe());
+
     SwaggerModule.setup('api', app, document);
+    //public folder upload file with f
     await app.listen(port);
     console.error(`Application is running on: http://localhost:${port}`);
     console.error(`Swagger is running on: http://localhost:${port}/api`);
 }
 
-bootstrap();
+bootstrap().then();

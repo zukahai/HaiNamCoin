@@ -33,7 +33,6 @@ export class UserService {
     }
 
     async connectUserToHaiNamCoin(id: number, connectUserDto: ConnectUserDto) {
-        console.log(id);
         const user = await this.findOne(id);
         const config: AxiosRequestConfig = {
             headers: {
@@ -51,12 +50,11 @@ export class UserService {
             if (response.data.user)
                 return response.data;
         }
-        catch (e) {
+        catch (e: any) {
             return {
                 message: 'error',
-                error: 'Access token is not correct',
+                error: e.message,
             }
-            console.log(e);
         }
     }
 

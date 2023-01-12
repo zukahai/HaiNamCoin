@@ -12,7 +12,7 @@ import {FontUser} from "../font_users/entities/font_user.entity";
             host: 'localhost',
             port: 3306,
             username: 'root',
-            password: '',
+            password: 'trungdz2004',
             database: 'webshop',
             entities: [User, Font, Transaction, FontUser],
             autoLoadEntities: true,

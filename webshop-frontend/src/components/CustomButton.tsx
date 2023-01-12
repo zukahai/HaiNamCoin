@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Button, styled } from '@mui/material';
 
 interface OwnProps {
+    onClick?: any;
     backgroundColor: string;
     color: string;
     buttonText: string;

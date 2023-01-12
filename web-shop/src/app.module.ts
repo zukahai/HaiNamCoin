@@ -11,9 +11,22 @@ import { FontsModule } from './fonts/fonts.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { SmartContractModule } from './smart_contract/smart_contract.module';
 import { FontUsersModule } from './font_users/font_users.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
-    imports: [DatabaseModule, UserModule, AuthModule, FontsModule, SmartContractModule, TransactionsModule, SmartContractModule, FontUsersModule],
+    imports: [
+        DatabaseModule,
+        UserModule,
+        AuthModule,
+        FontsModule,
+        SmartContractModule,
+        TransactionsModule,
+        SmartContractModule,
+        FontUsersModule,
+        ServeStaticModule.forRoot({
+            rootPath: __dirname + '/uploads',
+        }),
+    ],
     controllers: [AppController],
     providers: [
         AppService,

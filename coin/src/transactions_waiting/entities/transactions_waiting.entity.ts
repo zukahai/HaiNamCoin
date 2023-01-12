@@ -34,13 +34,13 @@ export class TransactionsWaiting {
     @Column({ type: 'text', comment: 'signature of transaction' })
     signature: string;
 
-    @Column({ type: 'int', comment: 'Status of transaction' })
+    @Column({ type: 'int', comment: 'Status of transaction',default: 0 })
     status: number;
 
-    @Column({ type: 'varchar', length: 255, comment: 'nonce of block' })
+    @Column({ type: 'varchar', length: 255, comment: 'nonce of block', default: '', nullable: true })
     nonce: string;
 
-    @Column({ type: 'varchar', length: 255, comment: 'permutation of block nonce ' })
+    @Column({ type: 'varchar', length: 255, comment: 'permutation of block nonce ' , default: '', nullable: true })
     permutation_nonce: string;
 
     @CreateDateColumn({ name: 'created_at', comment: 'Created at' })
