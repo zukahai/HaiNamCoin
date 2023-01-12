@@ -215,6 +215,7 @@ export class ApiService {
                 data: response.data,
             };
         } catch (error: any) {
+            console.log(error);
             return {
                 error: error.response.data.message,
             };
@@ -239,6 +240,7 @@ export class ApiService {
                 data: response.data,
             };
         } catch (error: any) {
+            console.log(error);
             return {
                 error: error.response.data.message,
             };
