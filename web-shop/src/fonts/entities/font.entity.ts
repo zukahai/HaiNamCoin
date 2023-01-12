@@ -3,13 +3,14 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
-    ManyToOne, OneToMany,
+    ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm";
-import {User} from "../../user/entities/user.entity";
-import {Transaction} from "../../transactions/entities/transaction.entity";
-import {FontUser} from "../../font_users/entities/font_user.entity";
+    UpdateDateColumn,
+} from 'typeorm';
+import { User } from '../../user/entities/user.entity';
+import { Transaction } from '../../transactions/entities/transaction.entity';
+import { FontUser } from '../../font_users/entities/font_user.entity';
 
 @Entity({ name: 'fonts', orderBy: { id: 'ASC' }, synchronize: true })
 export class Font {
@@ -19,10 +20,10 @@ export class Font {
     @Column({ type: 'varchar', length: 255, comment: 'Font name' })
     name: string;
 
-    @Column({ type: 'varchar', length: 255, comment: 'path image font' })
+    @Column({ type: 'varchar', length: 255, comment: 'path image font', nullable: true })
     path_image: string;
 
-    @Column({ type: 'varchar', length: 255, comment: 'link_download' })
+    @Column({ type: 'varchar', length: 255, comment: 'link_download', nullable: true })
     link_download: string;
 
     @Column({ type: 'int', comment: 'price' })
@@ -46,5 +47,4 @@ export class Font {
 
     @OneToMany(() => FontUser, (font_user) => font_user.font)
     font_users: FontUser[];
-
 }

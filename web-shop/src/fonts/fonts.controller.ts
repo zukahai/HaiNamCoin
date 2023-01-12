@@ -1,33 +1,35 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseInterceptors,
-  UploadedFiles,
-  HttpException, HttpStatus, UploadedFile
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    UseInterceptors,
+    UploadedFiles,
+    HttpException,
+    HttpStatus,
+    UploadedFile,
+    Res,
 } from '@nestjs/common';
 import { FontsService } from './fonts.service';
 import { CreateFontDto } from './dto/create-font.dto';
 import { UpdateFontDto } from './dto/update-font.dto';
-import {ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiQuery, ApiTags} from "@nestjs/swagger";
-import {ApiImplicitFile} from "@nestjs/swagger/dist/decorators/api-implicit-file.decorator";
-import {Express} from "express";
-import {FileInterceptor, FilesInterceptor} from "@nestjs/platform-express";
-import {GetCurrentUserId, Public} from "../decorators/auth/auth.decorator";
-import {diskStorage} from "multer";
-import {FileUploadDto} from "./dto/FileUploadDto";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator';
+import { Express } from 'express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { GetCurrentUserId, Public } from '../decorators/auth/auth.decorator';
+import { diskStorage } from 'multer';
+import { FileUploadDto } from './dto/FileUploadDto';
 
 @ApiTags('Fonts')
 @Controller('fonts')
 @ApiBearerAuth()
 @ApiTags('Fonts')
 export class FontsController {
-    constructor(private readonly fontsService: FontsService) {
-    }
+    constructor(private readonly fontsService: FontsService) {}
 
     @Post()
     create(@Body() createFontDto: CreateFontDto) {
@@ -36,17 +38,27 @@ export class FontsController {
 
     @Public()
     @Get()
-    @ApiOperation({summary: 'Get All font'})
+    @ApiOperation({ summary: 'Get All font' })
     findAll() {
         return this.fontsService.findAll();
     }
 
     @Get('user')
-    @ApiOperation({summary: 'Get All font by user'})
+    @ApiOperation({ summary: 'Get All font by user' })
     findAllByUser(@GetCurrentUserId() userId: number) {
         return this.fontsService.findAllByUser(userId);
     }
+    @Public()
+    @Get('font-file/:name')
+    seeUploadedFile(@Param('name') file, @Res() res) {
+        return res.sendFile(file, { root: './uploads/fonts' });
+    }
 
+    @Public()
+    @Get('font-image/:name')
+    seeUploadedImage(@Param('name') file, @Res() res) {
+        return res.sendFile(file, { root: './uploads/images' });
+    }
     @Public()
     @Get(':id')
     findOne(@Param('id') id: string) {
@@ -62,19 +74,17 @@ export class FontsController {
                 file: {
                     type: 'string',
                     format: 'binary',
-
-                }
-            }
-        }
+                },
+            },
+        },
     })
     @UseInterceptors(
         FileInterceptor('file', {
-
             storage: diskStorage({
                 destination: './uploads/fonts',
                 filename: (req, file, cb) => {
                     return cb(null, `${Date.now().toString()}-${file.originalname}`);
-                }
+                },
             }),
             fileFilter(
                 req: any,
@@ -100,8 +110,12 @@ export class FontsController {
     )
     @Post('upload-font/:id')
     @ApiOperation({ summary: 'Upload font' })
-    uploadFileFont(@UploadedFile() file: Express.Multer.File, @Param('id') id: string) {
-        console.log(file);
+    uploadFileFont(
+        @UploadedFile() file: Express.Multer.File,
+        @Param('id') id: string,
+        @GetCurrentUserId() userId: number,
+    ) {
+        return this.fontsService.uploadFont(file, id, userId);
     }
 
     @ApiConsumes('multipart/form-data')
@@ -113,19 +127,17 @@ export class FontsController {
                 file: {
                     type: 'string',
                     format: 'binary',
-
-                }
-            }
-        }
+                },
+            },
+        },
     })
     @UseInterceptors(
         FileInterceptor('file', {
-
             storage: diskStorage({
                 destination: './uploads/images',
                 filename: (req, file, cb) => {
                     return cb(null, `${Date.now().toString()}-${file.originalname}`);
-                }
+                },
             }),
             fileFilter(
                 req: any,
@@ -151,15 +163,7 @@ export class FontsController {
     )
     @Post('upload-image/:id')
     @ApiOperation({ summary: 'Upload image' })
-    uploadFile(
-        @UploadedFile() file: Express.Multer.File,
-        @GetCurrentUserId() idUser: number,
-        @Param('id') id: string,
-    ) {
-        console.log(file);
+    uploadFile(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @GetCurrentUserId() userId: number) {
+        return this.fontsService.uploadImage(file, id, userId);
     }
-
-
-
-
 }
