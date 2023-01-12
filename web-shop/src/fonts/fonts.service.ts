@@ -137,10 +137,10 @@ export class FontsService {
 
     async uploadImage(image: Express.Multer.File, id: string, userId: number) {
         const font = await this.findOne(+id);
-
+        console.log(image.path);
         if (font) {
             if (font.user.id === userId) {
-                font.path_image = image.path;
+                font.path_image = image.filename;
             }
         }
         await this.fontRepository.save(font);
@@ -149,9 +149,10 @@ export class FontsService {
 
     async uploadFont(file: Express.Multer.File, id: string, userId: number) {
         const font = await this.findOne(+id);
+
         if (font) {
             if (font.user.id === userId) {
-                font.link_download = file.path;
+                font.link_download = file.filename;
             }
         }
         await this.fontRepository.save(font);

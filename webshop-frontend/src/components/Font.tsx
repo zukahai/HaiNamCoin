@@ -4,7 +4,7 @@ import { CustomButton } from './CustomButton';
 import { useNavigate } from 'react-router-dom';
 import { FontI } from './Properties';
 import Button from '@mui/material/Button';
-
+const url = import.meta.env.VITE_BACKEND_URL;
 interface User {
     name: string;
     email: string;
@@ -43,9 +43,13 @@ export const Font: FunctionComponent<Props> = (props) => {
         navigate(`/font/${id}`);
     };
     return (
-        <FontBox>
+        <FontBox sx={{ boxShadow: 2 }} style={{ minHeight: '580px', maxHeight: '580px' }}>
             <ImgContainer>
-                <img alt="housePhoto" style={{ maxWidth: '100%' }} src={'https://picsum.photos/400/300'} />
+                <img
+                    alt="housePhoto"
+                    style={{ maxWidth: '400px', maxHeight: '400px', width: '100%', height: '100%', objectFit: 'cover' }}
+                    src={`${url}/fonts/font-image/${props.font.path_image}`}
+                />
             </ImgContainer>
 
             <Box sx={{ padding: '1rem' }}>
@@ -84,11 +88,17 @@ export const Font: FunctionComponent<Props> = (props) => {
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                     {props.font.options.value === 2 ? (
-                        <CustomButton backgroundColor={'#000'} color={'#fff'} buttonText={'License'}></CustomButton>
+                        <>
+                            <CustomButton backgroundColor={'#000'} color={'#fff'} buttonText={'License'}></CustomButton>
+                            <Button variant="contained" sx={{ backgroundColor: '#000', color: '#fff' }}>
+                                <a href={`${url}/fonts/font-file/${props.font.link_download}`} download>
+                                    Download
+                                </a>
+                            </Button>
+                        </>
                     ) : props.font.options.value === 1 ? (
                         <Button variant="contained" sx={{ backgroundColor: '#000', color: '#fff' }}>
-                            {' '}
-                            <a href={props.font.link_download} download>
+                            <a href={`${url}/fonts/font-file/${props.font.link_download}`} download>
                                 Download
                             </a>
                         </Button>

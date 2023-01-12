@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import TextField from '@mui/material/TextField';
-import { Box, Button, Card } from '@mui/material';
+import { Box, Button, Card, Typography } from '@mui/material';
 import { ApiService } from '../services/ApiService';
 import { FontT } from '../pages/FontDetail';
 import { useCookies } from 'react-cookie';
@@ -41,6 +41,28 @@ export const SendBuyCoin = (props: Props) => {
     return (
         <Card sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
             {loading && <Box sx={{ display: 'flex', justifyContent: 'center' }}>Loading...</Box>}
+            <Typography sx={{ textAlign: 'center', fontWeight: 'bold' }}>Buy Font {props.font.name}</Typography>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'left',
+                    gap: 2,
+                    fontWeight: 'bold',
+                    backgroundColor: 'primary.main',
+                    color: 'white',
+                    padding: '5px 10px',
+                    borderRadius: '5px',
+                }}
+            >
+                <Typography variant="h6">Type of license:</Typography>
+                <Typography variant="h6" sx={{ ml: 2, fontWeight: 'bold' }}>
+                    {props.type === '1' ? 'Personal' : 'Commercial'}
+                </Typography>
+                <Typography variant="h6" sx={{ ml: 2 }}>
+                    {props.type === '1' ? props.font.price : props.font.price_license} HNC
+                </Typography>
+            </Box>
+
             <TextField
                 label="Private Key"
                 variant="outlined"
