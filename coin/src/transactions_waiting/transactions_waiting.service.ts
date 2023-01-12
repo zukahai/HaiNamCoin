@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTransactionsWaitingDto } from './dto/create-transactions_waiting.dto';
-import { UpdateTransactionsWaitingDto } from './dto/update-transactions_waiting.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionsWaiting } from './entities/transactions_waiting.entity';
 import { Repository } from 'typeorm';
@@ -50,10 +49,13 @@ export class TransactionsWaitingService {
                 to: user_to,
                 value: createTransactionsWaitingDto.value,
                 signature: createTransactionsWaitingDto.signature,
+                status: 0,
             });
             const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ';
             const nonce = HashProvider.findNonce(text);
+            console.log('nonce: ' + nonce);
             tw.nonce = nonce.toString();
+            console.log('nonce: ' + nonce);
             tw.permutation_nonce = HashProvider.randomPermutationNoce(nonce).toString();
             await this.transactionsWaitingRepository.save(tw);
             return {

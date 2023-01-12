@@ -2,8 +2,8 @@ import React, { FunctionComponent } from 'react';
 import { Box, Container, Grid, styled, Typography } from '@mui/material';
 import { Font } from './Font';
 import { ApiService } from '../services/ApiService';
-import { useStateContext } from '../ConTextProvider';
 import { useCookies } from 'react-cookie';
+import {useAuthContext} from "../context/AuthContextProvider";
 interface OwnProps {}
 
 type Props = OwnProps;
@@ -37,7 +37,7 @@ export const Properties: FunctionComponent<Props> = (props) => {
     const checkBuy = (font: FontI) => {
         return font.options.value === 1;
     };
-    const { isLogin } = useStateContext();
+    const { isLogin } = useAuthContext();
     const [accessToken, setAccessToken] = useCookies(['accessToken']);
     const PropertiesGrid = styled(Grid)(({ theme }) => ({
         display: 'flex',

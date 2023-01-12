@@ -15,7 +15,7 @@ import { ConfirmTransactionUser } from '../../confirm_transaction_users/entities
             host: 'localhost',
             port: 3306,
             username: 'root',
-            password: '',
+            password: 'trungdz2004',
             database: 'hainamcoin',
             entities: [
                 User,

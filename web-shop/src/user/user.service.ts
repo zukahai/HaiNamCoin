@@ -39,7 +39,7 @@ export class UserService {
             headers: {
                 Authorization: `Bearer ${connectUserDto.access_token}`,
             },
-            url:'http://localhost:3000/user/current-user',
+            url:'http://localhost: /user/current-user',
             method: 'GET',
         }
 
