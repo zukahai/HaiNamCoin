@@ -2,16 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
+import { ContextProvider } from './ConTextProvider';
 import { CookiesProvider } from 'react-cookie';
 import { ToastContainer } from 'react-toastify';
-import { AuthProvider } from './context/AuthContextProvider';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <CookiesProvider>
-            <AuthProvider>
+            <ContextProvider>
                 <App />
                 <ToastContainer />
-            </AuthProvider>
+            </ContextProvider>
         </CookiesProvider>
     </React.StrictMode>,
 );

@@ -79,10 +79,10 @@ export const Font: FunctionComponent<Props> = (props) => {
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                     <Typography variant="body2" sx={{ fontWeight: '700', color: '#000' }}>
-                        Price: {props.price} HNC
+                        Price: ${props.price}
                     </Typography>
                     <Typography variant="body2" sx={{ fontWeight: '700', color: '#000' }}>
-                        Price License: {props.priceLicense} HNC
+                        Price License: ${props.priceLicense}
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>

@@ -17,9 +17,10 @@ export interface ConfirmTransactionsI {
 export interface TransactionWaitingDetailI extends TransactionI {
     confirm_transactions: ConfirmTransactionsI[];
     text_question: string;
+    signature: string;
 }
 export interface UserI {
-    id: string;
+    id: number;
     name: string;
     email: string;
     public_key: string;
@@ -104,7 +105,7 @@ export class TransactionWaitingService {
         return response.data;
     }
 
-    async createTransaction(value: string, to: string, publicKey: string, privateKey: string) {
+    async createTransaction(value: string, to: string, publicKey: string, privateKey: string, signature: string) {
         const config: AxiosRequestConfig = {
             method: 'post',
             url: this.appUrl + '/transactions-waiting',
@@ -116,6 +117,7 @@ export class TransactionWaitingService {
                 to: +to,
                 public_key: publicKey,
                 private_key: privateKey,
+                signature: signature,
             },
         };
 
@@ -183,6 +185,58 @@ export class TransactionWaitingService {
             return response.data;
         } catch (error: any) {
             return error.response.data;
+        }
+    }
+
+    async getSignature(to: string, value: string) {
+        const config: AxiosRequestConfig = {
+            method: 'post',
+            url: this.appUrl + '/transactions-waiting/generate-signature',
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+            },
+            data: {
+                to: +to,
+                value: +value,
+            },
+        };
+        try {
+            const response = await axios(config);
+            return {
+                success: true,
+                data: response.data,
+            };
+        } catch (error: any) {
+            return {
+                success: false,
+                data: error,
+            };
+        }
+    }
+
+    async checkSignature(publicKey: string, signature: string) {
+        const config: AxiosRequestConfig = {
+            method: 'post',
+            url: this.appUrl + '/transactions-waiting/get-signature',
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+            },
+            data: {
+                public_key: publicKey,
+                signature: signature,
+            },
+        };
+        try {
+            const response = await axios(config);
+            return {
+                success: true,
+                data: response.data,
+            };
+        } catch (error: any) {
+            return {
+                success: false,
+                data: error.response.data,
+            };
         }
     }
 }

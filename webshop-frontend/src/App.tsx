@@ -26,6 +26,7 @@ function App() {
                         path="/"
                         element={
                             <>
+                                <Hero />
                                 <Properties />
                                 <Guide />
                             </>
@@ -34,7 +35,6 @@ function App() {
                 </Routes>
             </BrowserRouter>
             <GetStarted />
-            <></>
             <Footer />
         </>
     );

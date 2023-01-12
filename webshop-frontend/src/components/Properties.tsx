@@ -2,8 +2,8 @@ import React, { FunctionComponent } from 'react';
 import { Box, Container, Grid, styled, Typography } from '@mui/material';
 import { Font } from './Font';
 import { ApiService } from '../services/ApiService';
+import { useStateContext } from '../ConTextProvider';
 import { useCookies } from 'react-cookie';
-import { useAuthContext } from '../context/AuthContextProvider';
 interface OwnProps {}
 
 type Props = OwnProps;
@@ -37,7 +37,7 @@ export const Properties: FunctionComponent<Props> = (props) => {
     const checkBuy = (font: FontI) => {
         return font.options.value === 1;
     };
-    const { isLogin } = useAuthContext();
+    const { isLogin } = useStateContext();
     const [accessToken, setAccessToken] = useCookies(['accessToken']);
     const PropertiesGrid = styled(Grid)(({ theme }) => ({
         display: 'flex',
@@ -83,7 +83,7 @@ export const Properties: FunctionComponent<Props> = (props) => {
 
                 <PropertiesGrid container spacing={5} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {fonts.map((font) => (
-                        <Grid item xs={4} sm={4} md={4} key={font.id}>
+                        <Grid key={Math.random()} item xs={4} sm={4} md={3} sx={{ minWidth: '400px' }}>
                             <Font
                                 id={font.id}
                                 img={'https://picsum.photos/500/300'}

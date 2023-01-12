@@ -4,14 +4,14 @@ import { BlockI, BlockService } from '../../services/blockService';
 import { convertUpdatedTime } from '../utils/date';
 
 type Props = {
-    userId: string;
+    userId: number;
     userEmail: string;
 };
 export const BlockHistory = (props: Props) => {
     const [blockHistory, setBlockHistory] = React.useState<BlockI[]>([]);
     const accessToken = localStorage.getItem('accessToken') ?? '';
     React.useEffect(() => {
-        new BlockService(accessToken).findByUserId(props.userId).then((res: BlockI[]) => {
+        new BlockService(accessToken).findByUserId(props.userId.toString()).then((res: BlockI[]) => {
             setBlockHistory(res);
         });
     }, [props.userId, accessToken]);
