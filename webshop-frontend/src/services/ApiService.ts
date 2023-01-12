@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig} from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 export class ApiService {
     urlApi = import.meta.env.VITE_BACKEND_URL ?? 'http://192.168.1.20:3000';
@@ -36,7 +36,7 @@ export class ApiService {
         try {
             return {
                 data: response.data,
-            }
+            };
         } catch (error: any) {
             return error.response.data.message;
         }
@@ -124,17 +124,24 @@ export class ApiService {
                 access_token: data.access_token,
             },
         };
+
         try {
             const response = await axios(config);
-            console.log(response.data);
-            return response.data;
+            return {
+                data: response.data,
+            };
         } catch (error: any) {
             return error.response.data.message;
         }
     }
 
-    async register(dataRegister: { password: string; name: string; confirmPassword: string; email: string; username: string }) {
-
+    async register(dataRegister: {
+        password: string;
+        name: string;
+        confirmPassword: string;
+        email: string;
+        username: string;
+    }) {
         const config: AxiosRequestConfig = {
             method: 'POST',
             url: `${this.urlApi}/auth/register`,
@@ -144,18 +151,37 @@ export class ApiService {
                 name: dataRegister.name,
                 email: dataRegister.email,
                 confirmPassword: dataRegister.confirmPassword,
-
             },
         };
         try {
             const response = await axios(config);
             return {
                 data: response.data,
-            }
+            };
         } catch (error: any) {
             return {
                 error: error.response.data.message,
-            }
+            };
+        }
+    }
+
+    async getConnectionWallet(accessToken: string) {
+        const config: AxiosRequestConfig = {
+            method: 'GET',
+            url: `${this.urlApi}/user/check-connect-hainamcoin`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        };
+        try {
+            const response = await axios(config);
+            return {
+                data: {
+                    user: { ...response.data.user, totalMoney: response.data.tototalMoney },
+                },
+            };
+        } catch (error: any) {
+            return error.response.data.message;
         }
     }
 }

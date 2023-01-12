@@ -1,8 +1,8 @@
 // @flow
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Box, Card, Container, styled, Typography } from '@mui/material';
+import { Box, Card, Container, Grid, styled, Typography } from '@mui/material';
 import { Header } from '../components/Header';
 import { ApiService } from '../services/ApiService';
 import { toast } from 'react-toastify';
@@ -20,6 +20,11 @@ export const ConnectAccessToken = (props: Props) => {
             gap: theme.spacing(2),
         },
     }));
+
+    const [isConnect, setIsConnect] = React.useState(false);
+    const handelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAccessTokenSend(e.target.value);
+    };
 
     const CustomTextField = styled(TextField)(({ theme }) => ({
         '& .MuiOutlinedInput-root': {
@@ -47,8 +52,11 @@ export const ConnectAccessToken = (props: Props) => {
             const data = await new ApiService().connectWallet(accessToken.accessToken, {
                 access_token: accessTokenSend,
             });
-
-            toast.success('Connect success');
+            if (data.data) {
+                toast.success('Connect successfully');
+            } else {
+                toast.error('Connect fail');
+            }
         } catch (e) {
             console.log(e);
             toast.error('Connect fail');
@@ -67,12 +75,7 @@ export const ConnectAccessToken = (props: Props) => {
             }}
         >
             <Header title={'Connect Access Token'} />
-            <TextField
-                label="Access Token"
-                variant="outlined"
-                onChange={(e) => setAccessTokenSend(e.target.value)}
-                value={accessTokenSend}
-            />
+            <TextField label="Access Token" variant="outlined" onChange={handelChange} value={accessTokenSend} />
             <Box sx={{ display: 'flex' }}>
                 <Button
                     variant={'contained'}
@@ -82,6 +85,69 @@ export const ConnectAccessToken = (props: Props) => {
                     Send
                 </Button>
             </Box>
+        </Box>
+    );
+};
+
+interface PropConnectWalletI {
+    setIsConnect: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+type PropConnectWallet = PropConnectWalletI;
+
+export const ConnectWalletInfo: FunctionComponent<PropConnectWallet> = (props) => {
+    const { setIsConnect } = props;
+    const [accessToken] = useCookies(['accessToken']);
+    const [user, setUser] = React.useState({
+        id: '',
+        name: '',
+        email: '',
+        totalMoney: 0,
+    });
+    React.useEffect(() => {
+        getConnectionWallet().then();
+    }, [accessToken.accessToken]);
+
+    const getConnectionWallet = async () => {
+        try {
+            const data = await new ApiService().getConnectionWallet(accessToken.accessToken);
+            if (data.data.user) {
+                setIsConnect(true);
+            } else {
+                setIsConnect(false);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    return (
+        <Box sx={{ py: 10 }}>
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                    <TextField label="ID" variant="outlined" disabled={true} value={user.id} sx={{ width: '100%' }} />
+                    <TextField
+                        label="Name"
+                        variant="outlined"
+                        disabled={true}
+                        value={user.name}
+                        sx={{ width: '100%' }}
+                    />
+                    <TextField
+                        label="Email"
+                        variant="outlined"
+                        disabled={true}
+                        value={user.email}
+                        sx={{ width: '100%' }}
+                    />
+                    <TextField
+                        label="Total Money"
+                        variant="outlined"
+                        disabled={true}
+                        value={user.totalMoney}
+                        sx={{ width: '100%' }}
+                    />
+                </Grid>
+            </Grid>
         </Box>
     );
 };
