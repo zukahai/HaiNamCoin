@@ -43,11 +43,11 @@ export const Font: FunctionComponent<Props> = (props) => {
         navigate(`/font/${id}`);
     };
     return (
-        <FontBox sx={{ boxShadow: 2 }} style={{ minHeight: '580px', maxHeight: '580px' }}>
+        <FontBox sx={{ boxShadow: 2 }} style={{ height: '100%', borderRadius: '10px' }}>
             <ImgContainer>
                 <img
                     alt="housePhoto"
-                    style={{ maxWidth: '400px', maxHeight: '400px', width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{ maxWidth: '400px', maxHeight: '400px', width: '100%', height: '100%' }}
                     src={`${url}/fonts/font-image/${props.font.path_image}`}
                 />
             </ImgContainer>
