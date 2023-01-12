@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Box, styled, Typography } from '@mui/material';
+import { Box, Link, styled, Typography } from '@mui/material';
 import { CustomButton } from './CustomButton';
 import { useNavigate } from 'react-router-dom';
 import { FontI } from './Properties';
@@ -91,16 +91,24 @@ export const Font: FunctionComponent<Props> = (props) => {
                         <>
                             <CustomButton backgroundColor={'#000'} color={'#fff'} buttonText={'License'}></CustomButton>
                             <Button variant="contained" sx={{ backgroundColor: '#000', color: '#fff' }}>
-                                <a href={`${url}/fonts/font-file/${props.font.link_download}`} download>
+                                <Link
+                                    href={`${url}/fonts/font-file/${props.font.link_download}`}
+                                    download
+                                    sx={{ color: '#fff', textDecoration: 'none', padding: '0.2rem' }}
+                                >
                                     Download
-                                </a>
+                                </Link>
                             </Button>
                         </>
                     ) : props.font.options.value === 1 ? (
                         <Button variant="contained" sx={{ backgroundColor: '#000', color: '#fff' }}>
-                            <a href={`${url}/fonts/font-file/${props.font.link_download}`} download>
+                            <Link
+                                href={`${url}/fonts/font-file/${props.font.link_download}`}
+                                download
+                                sx={{ color: '#fff', textDecoration: 'none', padding: '0.2rem' }}
+                            >
                                 Download
-                            </a>
+                            </Link>
                         </Button>
                     ) : (
                         <Box
