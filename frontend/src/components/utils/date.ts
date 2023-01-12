@@ -9,3 +9,30 @@ export const convertUpdatedTime = (time: string): string => {
     const second = date.getSeconds();
     return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
 };
+export const validateSignatureCheck = (signature: string) => {
+    const data = {
+        time: '',
+        from: '',
+        to: '',
+        value: '',
+    };
+    signature = 'Time: 1673454692328 | From: hnc00002@gmail.com | To: hnc00006@gmail.com | Value: 12';
+    const arr = signature.split('|');
+    arr.forEach((item) => {
+        const dataArr = item.split(':');
+        if (dataArr[0].trim() === 'Time') {
+            data.time = dataArr[1].trim();
+            data.time = convertUpdatedTime(data.time);
+        }
+        if (dataArr[0].trim() === 'From') {
+            data.from = dataArr[1].trim();
+        }
+        if (dataArr[0].trim() === 'To') {
+            data.to = dataArr[1].trim();
+        }
+        if (dataArr[0].trim() === 'Value') {
+            data.value = dataArr[1].trim();
+        }
+    });
+    return data;
+};

@@ -1,16 +1,32 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Box, styled, Typography } from '@mui/material';
+import {
+    Box,
+    Container,
+    Drawer,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    styled,
+    Typography,
+} from '@mui/material';
+import logoImg from '../media/logo.png';
 import { CustomButton } from './CustomButton';
 import MenuIcon from '@mui/icons-material/Menu';
-
+import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
+import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import HomeIcon from '@mui/icons-material/Home';
+import ContactsIcon from '@mui/icons-material/Contacts';
 import { Link } from 'react-router-dom';
-import { useAuthContext } from '../context/AuthContextProvider';
+import { useStateContext } from '../ConTextProvider';
 interface OwnProps {}
 
 type Props = OwnProps;
 
 export const Navbar: FunctionComponent<Props> = (props) => {
-    const { user, isLogin } = useAuthContext();
+    const { isLogin, user } = useStateContext();
     const [mobileMenu, setMobileMenu] = useState({
         left: false,
     });

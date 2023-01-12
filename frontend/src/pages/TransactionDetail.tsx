@@ -10,6 +10,7 @@ import { FormResult } from '../components/Transaction/FormResult';
 import { Question } from '../components/Transaction/Question';
 import { FormCheckNonce } from '../components/Transaction/FormCheckNonce';
 import { useCookies } from 'react-cookie';
+import { CheckSignature } from '../components/Transaction/CheckSignature';
 type Props = {};
 function callAfterInterval(id: any, accessToken: string) {
     new TransactionWaitingService(accessToken).joinConfirmTransaction(id).then((data) => {});
@@ -60,6 +61,9 @@ export const TransactionDetail: React.FC = (props: Props) => {
                             <p className="text-gray-700 text-base font-bold mb-2">
                                 Email: {dataTransaction.from.email}
                             </p>
+                            <p className="text-gray-700 text-base font-bold mb-2">
+                                Public Key: {dataTransaction.from.public_key}
+                            </p>
                         </div>
                         <div className="mb-4 px-4 py-2 bg-gray-100 rounded-lg">
                             <label className="block text-gray-700 text-sm font-bold mb-2">To:</label>
@@ -76,6 +80,12 @@ export const TransactionDetail: React.FC = (props: Props) => {
                             <label className="block text-gray-700 text-sm font-bold mb-2">Time:</label>
                             <p className="text-gray-700 text-base font-bold mb-2 color-red">
                                 {convertUpdatedTime(dataTransaction.createdAt)}
+                            </p>
+                        </div>
+                        <div className="mb-4 px-4 py-2 bg-gray-100 rounded-lg">
+                            <label className="block text-gray-700 text-sm font-bold mb-2">Signature:</label>
+                            <p className="text-gray-700 text-base font-bold mb-2 color-red">
+                                {dataTransaction.signature}
                             </p>
                         </div>
                     </div>
@@ -114,6 +124,10 @@ export const TransactionDetail: React.FC = (props: Props) => {
 
                             <div className={'bg-white rounded-lg shadow-lg mt-10 text-center mb-10 '}>
                                 <FormCheckNonce idTransactionWaiting={dataTransaction.id}></FormCheckNonce>
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow-lg mt-10 text-center mb-10">
+                                <CheckSignature publicKey={dataTransaction.from.public_key} />
                             </div>
 
                             <div className={'bg-white rounded-lg shadow-lg mt-10 text-center mb-10 '}>

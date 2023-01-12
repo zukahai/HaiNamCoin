@@ -30,15 +30,20 @@ export const Login: React.FC = () => {
         event.preventDefault();
         setLoading(true);
         setTimeout(async () => {
-            const data = await authService.login(email, password);
+            try {
+                const data = await authService.login(email, password);
 
-            if (data.error) {
-                setError(data.error);
-                toast.error(data.error);
-            } else {
-                setAccessToken('accessToken', data.data.accessToken, { path: '/' });
-                setIsLogin(true);
-                navigate('/block');
+                if (data.error) {
+                    setError(data.error);
+                    toast.error(data.error);
+                } else {
+                    setAccessToken('accessToken', data.data.accessToken, { path: '/' });
+                    setIsLogin(true);
+                    navigate('/block');
+                }
+            } catch (error) {
+                toast.error('Login failed');
+                setLoading(false);
             }
         }, 1000);
     };

@@ -32,13 +32,9 @@ export class ApiService {
         };
         const response = await axios(config);
         try {
-            return {
-                data: response.data,
-            };
+            return response.data;
         } catch (error: any) {
-            return {
-                error: error.response.data.message,
-            };
+            return error.response.data.message;
         }
     }
     async getAllFonts(accessToken: string) {
@@ -121,28 +117,8 @@ export class ApiService {
         };
         try {
             const response = await axios(config);
-            return {
-                data: response.data,
-            };
-        } catch (error: any) {
-            return {
-                error: error.response.data.message,
-            };
-        }
-    }
-    async checkConnectWallet(accessToken: string) {
-        const config: AxiosRequestConfig = {
-            method: 'GET',
-            url: `${this.urlApi}/user/check-connect-hainamcoin`,
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        };
-        try {
-            const response = await axios(config);
-            return {
-                data: response.data,
-            };
+            console.log(response.data);
+            return response.data;
         } catch (error: any) {
             return error.response.data.message;
         }
