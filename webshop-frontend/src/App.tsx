@@ -9,7 +9,7 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Navbar } from './components/Navbar';
 import { FontDetail } from './pages/FontDetail';
-import { ConnectAccessToken } from './pages/ConnectAccessToken';
+import { ConnectWallet } from './pages/ConnectWallet';
 import { Logout } from './pages/Logout';
 function App() {
     return (
@@ -21,12 +21,11 @@ function App() {
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/font/:id" element={<FontDetail />} />
-                    <Route path="/connect-wallet" element={<ConnectAccessToken />} />
+                    <Route path="/connect-wallet" element={<ConnectWallet />} />
                     <Route
                         path="/"
                         element={
                             <>
-                                <Hero />
                                 <Properties />
                                 <Guide />
                             </>

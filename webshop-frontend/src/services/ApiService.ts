@@ -175,9 +175,10 @@ export class ApiService {
         };
         try {
             const response = await axios(config);
+
             return {
                 data: {
-                    user: { ...response.data.user, totalMoney: response.data.tototalMoney },
+                    user: { ...response.data.user.user, totalMoney: response.data.user.totalMoney },
                 },
             };
         } catch (error: any) {

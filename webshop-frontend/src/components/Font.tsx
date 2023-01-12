@@ -2,19 +2,16 @@ import React, { FunctionComponent } from 'react';
 import { Box, styled, Typography } from '@mui/material';
 import { CustomButton } from './CustomButton';
 import { useNavigate } from 'react-router-dom';
+import { FontI } from './Properties';
+import Button from '@mui/material/Button';
 
 interface User {
     name: string;
     email: string;
 }
+
 interface OwnProps {
-    id: number;
-    name: string;
-    price: string;
-    img: string;
-    priceLicense: string;
-    user: User;
-    isBuy?: boolean;
+    font: FontI;
 }
 
 type Props = OwnProps;
@@ -48,7 +45,7 @@ export const Font: FunctionComponent<Props> = (props) => {
     return (
         <FontBox>
             <ImgContainer>
-                <img src={props.img} alt="housePhoto" style={{ maxWidth: '100%' }} />
+                <img alt="housePhoto" style={{ maxWidth: '100%' }} src={'https://picsum.photos/400/300'} />
             </ImgContainer>
 
             <Box sx={{ padding: '1rem' }}>
@@ -64,34 +61,41 @@ export const Font: FunctionComponent<Props> = (props) => {
                         }}
                     >
                         <Typography
-                            onClick={() => toDetail(props.id.toString())}
+                            onClick={() => toDetail(props.font.id.toString())}
                             variant="body2"
                             sx={{ fontWeight: '700' }}
                         >
-                            {props.name}
+                            {props.font.name}
                         </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                         <Typography variant="body2" sx={{ fontWeight: '700' }}>
-                            {props.user.name}
+                            {props.font.user.name}
                         </Typography>
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                     <Typography variant="body2" sx={{ fontWeight: '700', color: '#000' }}>
-                        Price: ${props.price}
+                        Price: ${props.font.price}
                     </Typography>
                     <Typography variant="body2" sx={{ fontWeight: '700', color: '#000' }}>
-                        Price License: ${props.priceLicense}
+                        Price License: ${props.font.price_license}
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                    {props.isBuy ? (
-                        <CustomButton backgroundColor={'#000'} color={'#fff'} buttonText={'Download'}></CustomButton>
+                    {props.font.options.value === 2 ? (
+                        <CustomButton backgroundColor={'#000'} color={'#fff'} buttonText={'License'}></CustomButton>
+                    ) : props.font.options.value === 1 ? (
+                        <Button variant="contained" sx={{ backgroundColor: '#000', color: '#fff' }}>
+                            {' '}
+                            <a href={props.font.link_download} download>
+                                Download
+                            </a>
+                        </Button>
                     ) : (
                         <Box
                             onClick={() => {
-                                toDetail(props.id.toString());
+                                toDetail(props.font.id.toString());
                             }}
                         >
                             <CustomButton backgroundColor={'#000'} color={'#fff'} buttonText={'Buy Now'}></CustomButton>

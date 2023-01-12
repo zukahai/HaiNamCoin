@@ -2,20 +2,20 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {Box, CircularProgress, Container, styled, Typography} from '@mui/material';
-import {Header} from '../components/Header';
-import {ApiService} from '../services/ApiService';
-import {useCookies} from 'react-cookie';
-import {toast} from 'react-toastify';
-import {useNavigate} from 'react-router-dom';
-import {useAuthContext} from "../context/AuthContextProvider";
+import { Box, CircularProgress, Container, styled, Typography } from '@mui/material';
+import { Header } from '../components/Header';
+import { ApiService } from '../services/ApiService';
+import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../context/AuthContextProvider';
 
 type Props = {};
 console.log(import.meta.env.VITE_BACKEND_URL);
 export const Login = (props: Props) => {
-    const {setIsLogin} = useAuthContext();
+    const { setIsLogin } = useAuthContext();
 
-    const CustomContainer = styled(Container)(({theme}) => ({
+    const CustomContainer = styled(Container)(({ theme }) => ({
         display: 'flex',
         flexDirection: 'column',
         gap: theme.spacing(5),
@@ -24,7 +24,7 @@ export const Login = (props: Props) => {
         },
     }));
 
-    const CustomTextField = styled(TextField)(({theme}) => ({
+    const CustomTextField = styled(TextField)(({ theme }) => ({
         '& .MuiOutlinedInput-root': {
             '& fieldset': {
                 borderColor: '#E5E5E5',
@@ -35,7 +35,7 @@ export const Login = (props: Props) => {
         },
     }));
 
-    const CustomButton = styled(Button)(({theme}) => ({
+    const CustomButton = styled(Button)(({ theme }) => ({
         backgroundColor: '#000',
         padding: '0.5rem 1.25rem',
         color: '#fff',
@@ -56,7 +56,7 @@ export const Login = (props: Props) => {
             ...dataLogin,
             [e.target.name]: e.target.value,
         });
-    }
+    };
     const [loading, setLoading] = React.useState(false);
     const handelSubmit = async () => {
         setLoading(true);
@@ -76,9 +76,9 @@ export const Login = (props: Props) => {
         }
     };
     return (
-        <Box sx={{py: 10}}>
-            <Header title={'Login'}/>
-            <Box sx={{display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '400px', margin: '0 auto'}}>
+        <Box sx={{ py: 10 }}>
+            <Header title={'Login'} />
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '400px', margin: '0 auto' }}>
                 <TextField
                     fullWidth
                     id="outlined-basic"
@@ -94,6 +94,7 @@ export const Login = (props: Props) => {
                     label="Password"
                     variant="outlined"
                     name={'password'}
+                    type={'password'}
                     value={dataLogin.password}
                     onChange={handelChange}
                 />
