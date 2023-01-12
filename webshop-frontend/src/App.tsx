@@ -11,6 +11,7 @@ import { Navbar } from './components/Navbar';
 import { FontDetail } from './pages/FontDetail';
 import { ConnectWallet } from './pages/ConnectWallet';
 import { Logout } from './pages/Logout';
+import { CreateFont } from './pages/CreateFont';
 function App() {
     return (
         <>
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/font/:id" element={<FontDetail />} />
                     <Route path="/connect-wallet" element={<ConnectWallet />} />
+                    <Route path="/create-font" element={<CreateFont />} />
                     <Route
                         path="/"
                         element={

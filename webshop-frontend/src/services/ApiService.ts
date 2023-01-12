@@ -185,4 +185,87 @@ export class ApiService {
             return error.response.data.message;
         }
     }
+
+    async createFont(
+        name: string,
+        description: string,
+        price: number,
+        priceLicense: number,
+        id: number,
+        accessToken: any,
+    ) {
+        const config: AxiosRequestConfig = {
+            method: 'POST',
+            url: `${this.urlApi}/fonts`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+            data: {
+                name,
+                description,
+                price,
+                priceLicense,
+                userId: +id,
+            },
+        };
+        console.log(config);
+        try {
+            const response = await axios(config);
+            return {
+                data: response.data,
+            };
+        } catch (error: any) {
+            return {
+                error: error.response.data.message,
+            };
+        }
+    }
+
+    async uploadFont(id: any, file: File | null, accessToken: string) {
+        const formData = new FormData();
+        formData.append('file', file as Blob);
+        const config: AxiosRequestConfig = {
+            method: 'POST',
+            url: `${this.urlApi}/fonts/upload-font/${id}`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'multipart/form-data',
+            },
+            data: formData,
+        };
+        try {
+            const response = await axios(config);
+            return {
+                data: response.data,
+            };
+        } catch (error: any) {
+            return {
+                error: error.response.data.message,
+            };
+        }
+    }
+
+    async uploadImage(id: any, image: File | null, accessToken: string) {
+        const formData = new FormData();
+        formData.append('file', image as Blob);
+        const config: AxiosRequestConfig = {
+            method: 'POST',
+            url: `${this.urlApi}/fonts/upload-image/${id}`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'multipart/form-data',
+            },
+            data: formData,
+        };
+        try {
+            const response = await axios(config);
+            return {
+                data: response.data,
+            };
+        } catch (error: any) {
+            return {
+                error: error.response.data.message,
+            };
+        }
+    }
 }

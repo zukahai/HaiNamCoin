@@ -1,7 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import { Header } from '../components/Header';
 import TextField from '@mui/material/TextField';
-import { Box } from '@mui/material';
+import { Box, FormControlLabel, Typography } from '@mui/material';
+import { ApiService } from '../services/ApiService';
+import { useAuthContext } from '../context/AuthContextProvider';
+import { useCookies } from 'react-cookie';
+import Button from '@mui/material/Button';
+import { toast } from 'react-toastify';
 
 interface OwnProps {}
 
@@ -14,6 +19,9 @@ export const CreateFont: FunctionComponent<Props> = (props) => {
     const [file, setFile] = React.useState<File | null>(null);
     const [image, setImage] = React.useState<File | null>(null);
     const [priceLicense, setPriceLicense] = React.useState(0);
+    const { user } = useAuthContext();
+
+    console.log(user);
     const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
     };
@@ -40,11 +48,35 @@ export const CreateFont: FunctionComponent<Props> = (props) => {
         setPriceLicense(parseInt(event.target.value));
     };
 
-    const handleSubmit = () => {};
+    const [accessToken] = useCookies(['accessToken']);
+
+    const handleSubmit = async () => {
+        const data = await new ApiService().createFont(
+            name,
+            description,
+            price,
+            priceLicense,
+            user.id,
+            accessToken.accessToken,
+        );
+        if (data.data) {
+            const fontDownload = await new ApiService().uploadFont(data.data.id, file, accessToken.accessToken);
+            const fontImage = await new ApiService().uploadImage(data.data.id, image, accessToken.accessToken);
+            if (fontDownload.data && fontImage.data) {
+                toast.success('Create font successfully');
+            } else {
+                toast.error('Create font failed');
+            }
+        } else {
+            console.log(data);
+            toast.error('Create font failed');
+        }
+    };
     return (
         <Box sx={{ py: 10 }}>
             <Header title={'Login'} />
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '400px', margin: '0 auto' }}>
+                <Typography variant={'h4'}>Create Font</Typography>
                 <TextField
                     fullWidth
                     id="outlined-basic"
@@ -70,6 +102,7 @@ export const CreateFont: FunctionComponent<Props> = (props) => {
                     variant="outlined"
                     name={'price'}
                     value={price}
+                    type={'number'}
                     onChange={handleChangePrice}
                 />
                 <TextField
@@ -99,7 +132,9 @@ export const CreateFont: FunctionComponent<Props> = (props) => {
                     type={'file'}
                     onChange={handleChangeImage}
                 />
-                <button onClick={handleSubmit}>Submit</button>
+                <Button variant="contained" onClick={handleSubmit}>
+                    Create
+                </Button>
             </Box>
         </Box>
     );

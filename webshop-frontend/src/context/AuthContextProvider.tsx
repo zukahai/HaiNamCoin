@@ -1,13 +1,11 @@
-import React, {createContext, useContext, useState} from 'react';
-import {useCookies} from 'react-cookie';
-import {ApiService} from "../services/ApiService";
-
+import React, { createContext, useContext, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { ApiService } from '../services/ApiService';
 
 type PropsUser = {
     children: React.ReactNode;
 };
 type User = {
-
     id: number;
     name: string;
     email: string;
@@ -35,20 +33,16 @@ const initialUser: User = {
     access_token: '',
     fonts: [],
     font_users: [],
-
 };
 
 export const AuthContext = createContext<State>({
     user: initialUser,
-    setUser(user: User): void {
-    },
+    setUser(user: User): void {},
     isLogin: false,
-    setIsLogin(isLogin: boolean): void {
-    },
-    setDefault(): void {
-    },
+    setIsLogin(isLogin: boolean): void {},
+    setDefault(): void {},
 });
-export const AuthProvider = ({children}: PropsUser) => {
+export const AuthProvider = ({ children }: PropsUser) => {
     const [accessToken] = useCookies(['accessToken']);
     const authService = new ApiService();
     const [isLogin, setIsLogin] = useState(false);
@@ -57,13 +51,14 @@ export const AuthProvider = ({children}: PropsUser) => {
     const setDefault = () => {
         setUser(initialUser);
         setIsLogin(false);
-    }
+    };
     React.useEffect(() => {
         if (accessToken.accessToken) {
             authService.getCurrentUser(accessToken.accessToken).then((res) => {
                 if (res.data) {
                     const totalMoney = res.data.totalMoney;
-                    setUser({...res.data.user, totalMoney});
+
+                    setUser({ ...res.data, totalMoney });
                     setIsLogin(true);
                 } else {
                     setIsLogin(false);
@@ -72,7 +67,10 @@ export const AuthProvider = ({children}: PropsUser) => {
             });
         }
     }, [isLogin, setIsLogin, accessToken.accessToken]);
-    return <AuthContext.Provider
-        value={{user, setUser, isLogin, setIsLogin, setDefault}}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={{ user, setUser, isLogin, setIsLogin, setDefault }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 export const useAuthContext = () => useContext(AuthContext);

@@ -1,15 +1,11 @@
 import React, { FunctionComponent, useState } from 'react';
-import {
-    Box,
-    styled,
-    Typography,
-} from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
 
 import { CustomButton } from './CustomButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { Link } from 'react-router-dom';
-import {useAuthContext} from "../context/AuthContextProvider";
+import { useAuthContext } from '../context/AuthContextProvider';
 
 interface OwnProps {}
 
@@ -115,6 +111,9 @@ export const Navbar: FunctionComponent<Props> = (props) => {
                     <NavLink variant={'body2'}>{user.name}</NavLink>
                     <Link to={'/connect-wallet'}>
                         <NavLink variant={'body2'}> Connect Wallet</NavLink>
+                    </Link>
+                    <Link to={'/create-font'}>
+                        <NavLink variant={'body2'}> Create Font</NavLink>
                     </Link>
                     <Link to={'/logout'}>
                         <NavLink variant={'body2'}> Logout</NavLink>
