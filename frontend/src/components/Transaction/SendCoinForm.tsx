@@ -82,6 +82,7 @@ export const SendCoinForm = (props: Props) => {
             {loading ? (
                 <div className="flex justify-center items-center h-screen">
                     <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+                    <div className="text-2xl font-bold text-gray-900">Transaction is processing...</div>
                 </div>
             ) : (
                 <form className="flex flex-col">

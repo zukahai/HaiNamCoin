@@ -13,7 +13,7 @@ import { useAuthContext } from '../context/AuthContextProvider';
 type Props = {};
 console.log(import.meta.env.VITE_BACKEND_URL);
 export const Login = (props: Props) => {
-    const { setIsLogin } = useAuthContext();
+    const { setIsLogin, isLogin } = useAuthContext();
 
     const CustomContainer = styled(Container)(({ theme }) => ({
         display: 'flex',
@@ -46,6 +46,7 @@ export const Login = (props: Props) => {
     }));
     const navigate = useNavigate();
     const [accessToken, setAccessToken] = useCookies(['accessToken']);
+    const [loading, setLoading] = React.useState(false);
     const [dataLogin, setDataLogin] = React.useState({
         username: '',
         password: '',
@@ -57,7 +58,6 @@ export const Login = (props: Props) => {
             [e.target.name]: e.target.value,
         });
     };
-    const [loading, setLoading] = React.useState(false);
     const handelSubmit = async () => {
         setLoading(true);
         try {
@@ -75,33 +75,46 @@ export const Login = (props: Props) => {
             setLoading(false);
         }
     };
+    React.useEffect(() => {
+        if (isLogin) {
+            navigate('/');
+        }
+    }, []);
     return (
         <Box sx={{ py: 10 }}>
             <Header title={'Login'} />
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '400px', margin: '0 auto' }}>
-                <TextField
-                    fullWidth
-                    id="outlined-basic"
-                    label="Username "
-                    variant="outlined"
-                    name={'username'}
-                    value={dataLogin.username}
-                    onChange={handelChange}
-                />
-                <TextField
-                    fullWidth
-                    id="outlined-basic"
-                    label="Password"
-                    variant="outlined"
-                    name={'password'}
-                    type={'password'}
-                    value={dataLogin.password}
-                    onChange={handelChange}
-                />
-                <CustomButton onClick={handelSubmit} fullWidth variant="contained">
-                    Login
-                </CustomButton>
-            </Box>
+            {loading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <CircularProgress />
+                </Box>
+            ) : (
+                <>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '400px', margin: '0 auto' }}>
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            label="Username "
+                            variant="outlined"
+                            name={'username'}
+                            value={dataLogin.username}
+                            onChange={handelChange}
+                        />
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            label="Password"
+                            variant="outlined"
+                            name={'password'}
+                            type={'password'}
+                            value={dataLogin.password}
+                            onChange={handelChange}
+                        />
+                        <CustomButton onClick={handelSubmit} fullWidth variant="contained">
+                            Login
+                        </CustomButton>
+                    </Box>
+                </>
+            )}
         </Box>
     );
 };

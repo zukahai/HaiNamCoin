@@ -11,9 +11,9 @@ export const LogOut = (props: Props) => {
     const [accessToken, setAccessToken, removeCookie] = useCookies(['accessToken']);
     const { setIsLogin } = useAuthContext();
     React.useEffect(() => {
-        navigate('/login');
         removeCookie('accessToken');
         setIsLogin(false);
+        navigate('/login');
     }, [navigate, setIsLogin]);
     return (
         <div>

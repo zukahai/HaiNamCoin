@@ -53,9 +53,10 @@ export const Register: React.FC = () => {
             return;
         }
 
-        const data = await authService.register(email, username, name, password);
+        const data = await authService.register(email, username, name, password, passwordConfirm);
         if (data.error) {
             setError(data.error);
+            console.log(data);
         } else {
             toast.success('Register success');
             setTimeout(() => {

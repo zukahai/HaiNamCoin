@@ -5,10 +5,10 @@ import {
     JoinColumn,
     ManyToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm";
-import {User} from "../../user/entities/user.entity";
-import {Font} from "../../fonts/entities/font.entity";
+    UpdateDateColumn,
+} from 'typeorm';
+import { User } from '../../user/entities/user.entity';
+import { Font } from '../../fonts/entities/font.entity';
 
 @Entity({ name: 'transactions', orderBy: { id: 'ASC' }, synchronize: true })
 export class Transaction {
@@ -36,7 +36,7 @@ export class Transaction {
     @Column({ type: 'int', comment: 'Transaction id 2' })
     transaction_id_2: number;
 
-    @Column({ type: 'int', comment: 'Status of the transaction' })
+    @Column({ type: 'int', comment: 'Status of the transaction', default: 0 })
     status: number;
 
     @Column({ type: 'int', comment: 'type of the transaction' })
@@ -47,5 +47,4 @@ export class Transaction {
 
     @UpdateDateColumn({ name: 'updated_at', comment: 'Updated at' })
     updatedAt: Date;
-
 }
