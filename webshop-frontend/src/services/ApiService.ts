@@ -270,4 +270,22 @@ export class ApiService {
             };
         }
     }
+
+    async checkSmartContract(id: string) {
+        const config: AxiosRequestConfig = {
+            method: 'GET',
+            url: `${this.urlApi}/smart-contract/transaction-font/${id}`,
+        };
+        try {
+            const response = await axios(config);
+            return {
+                data: response.data,
+            };
+        } catch (error: any) {
+            console.log(error);
+            return {
+                error: error.response.data.message,
+            };
+        }
+    }
 }

@@ -16,7 +16,6 @@ export const validateSignatureCheck = (signature: string) => {
         to: '',
         value: '',
     };
-    signature = 'Time: 1673454692328 | From: hnc00002@gmail.com | To: hnc00006@gmail.com | Value: 12';
     const arr = signature.split('|');
     arr.forEach((item) => {
         const dataArr = item.split(':');

@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import * as fs from 'fs';
 import { writeFile } from 'fs/promises';
-import {HaiZuka} from "../providers/haizuka.provider";
+import { HaiZuka } from '../providers/haizuka.provider';
 
 // import crypto from 'crypto';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -173,7 +173,7 @@ export class BlockService {
         console.log('dispersionData');
         const blocks = await this.findAllDESC();
 
-        const folderName = 'G:\\HaiNamCoin_Data';
+        const folderName = 'D:\\HaiNamCoin_Data';
         const fileName = 'transactions.json';
         const path = folderName + '\\' + fileName;
         try {
