@@ -21,7 +21,7 @@ export const validateSignatureCheck = (signature: string) => {
         const dataArr = item.split(':');
         if (dataArr[0].trim() === 'Time') {
             data.time = dataArr[1].trim();
-            data.time = convertUpdatedTime(data.time);
+            return data.time;
         }
         if (dataArr[0].trim() === 'From') {
             data.from = dataArr[1].trim();

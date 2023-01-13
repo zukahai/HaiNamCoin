@@ -23,11 +23,17 @@ export const CheckSignature: FunctionComponent<Props> = (props) => {
     const handleSignatureChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setSignature(e.target.value);
     };
+    const convertTime = (time: string | undefined) => {
+        const date = new Date();
+        date.setTime(Number(time));
+        return date.toLocaleString();
+    };
     const handleSubmit = () => {
         setLoading(true);
         new TransactionWaitingService(accessToken.accessToken)
             .checkSignature(props.publicKey, signature)
             .then((res) => {
+                console.log(res);
                 setResult(validateSignatureCheck(res.data.data));
                 setLoading(false);
             })
@@ -69,7 +75,7 @@ export const CheckSignature: FunctionComponent<Props> = (props) => {
                                     <div className="mb-4 px-4 py-2 bg-gray-100 rounded-lg">
                                         <label className="block text-gray-700 text-sm font-bold mb-2">Time:</label>
                                         <p className="text-gray-700 text-base font-bold mb-2 color-red">
-                                            {convertUpdatedTime(result?.time)}
+                                            {convertTime(result?.time)}
                                         </p>
                                     </div>
 
