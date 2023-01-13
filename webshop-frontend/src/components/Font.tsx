@@ -89,7 +89,11 @@ export const Font: FunctionComponent<Props> = (props) => {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                     {props.font.options.value === 2 ? (
                         <>
-                            <CustomButton backgroundColor={'#000'} color={'#fff'} buttonText={'License'}></CustomButton>
+                            <CustomButton
+                                backgroundColor={'#565b28'}
+                                color={'#fff'}
+                                buttonText={'License'}
+                            ></CustomButton>
                             <Button variant="contained" sx={{ backgroundColor: '#000', color: '#fff' }}>
                                 <Link
                                     href={`${url}/fonts/font-file/${props.font.link_download}`}
@@ -116,7 +120,11 @@ export const Font: FunctionComponent<Props> = (props) => {
                                 toDetail(props.font.id.toString());
                             }}
                         >
-                            <CustomButton backgroundColor={'#000'} color={'#fff'} buttonText={'Buy Now'}></CustomButton>
+                            <CustomButton
+                                backgroundColor={'#6e2828'}
+                                color={'#fff'}
+                                buttonText={'Buy Now'}
+                            ></CustomButton>
                         </Box>
                     )}
                 </Box>
