@@ -59,6 +59,11 @@ const initialState: FontT = {
 
 type Props = {};
 
+const intervalSmartContract = async (id: string) => {
+    const api = new ApiService().checkSmartContract(id);
+    const response = await api;
+};
+
 export const FontDetail = (props: Props) => {
     const { id } = useParams();
     const [font, setFont] = React.useState<FontT>(initialState);
@@ -68,7 +73,12 @@ export const FontDetail = (props: Props) => {
         if (id) {
             new ApiService().getFontById(accessToken.accessToken, id).then((res) => {
                 setFont(res);
+                console.log(res);
             });
+            const interval = setInterval(() => {
+                intervalSmartContract(id).then((r) => console.log(r));
+            }, 2000);
+            return () => clearInterval(interval);
         }
     }, []);
     const [isEnterPrivateKey, setIsEnterPrivateKey] = React.useState(false);

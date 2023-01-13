@@ -22,7 +22,7 @@ export const Block = (props: Props) => {
         <div className={'m-2 md:m10 p-2 md:p-10 bg-white rounded-2xl max-w-screen-2xl'}>
             <Header category={'Main'} title={'Lịch sử giao dịch'} />
             <div className={'overflow-x-auto'}>
-                <table className={'table-auto  relative'}>
+                <table className={'table-auto w-full'}>
                     <thead>
                         <tr>
                             <th className={'px-4 py-2'}>From</th>

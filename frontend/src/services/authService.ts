@@ -40,7 +40,7 @@ export class AuthService {
         }
     }
 
-    async register(email: string, username: string, name: string, password: string) {
+    async register(email: string, username: string, name: string, password: string, passwordConfirm: string) {
         const config: AxiosRequestConfig = {
             method: 'post',
             url: this.appUrl + '/register',
@@ -49,6 +49,7 @@ export class AuthService {
                 username,
                 name,
                 password,
+                passwordConfirm,
             },
         };
         try {

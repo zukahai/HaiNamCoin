@@ -24,7 +24,7 @@ export const TransactionDetail: React.FC = (props: Props) => {
     React.useEffect(() => {
         const interval = setInterval(() => {
             callAfterInterval(id, accessToken.accessToken);
-        }, 2000);
+        }, 500);
         return () => clearInterval(interval);
     }, [id, accessToken]);
 

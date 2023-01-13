@@ -25,7 +25,7 @@ export const ConfirmTransactions = (props: Props) => {
                         <tr>
                             <th className={'px-4 py-2'}>Nonce</th>
                             <th className={'px-4 py-2'}>Time</th>
-                            <th className={'px-4 py-2'}>Action for result</th>
+                            {props.status === 0 && <th className={'px-4 py-2'}>Action for result</th>}
                         </tr>
                     </thead>
                     <tbody>

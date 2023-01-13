@@ -81,7 +81,9 @@ export const Navbar: FunctionComponent<Props> = (props) => {
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <CustomMenuIcon onClick={() => setMobileMenu({ left: true })} />
                     <Typography variant="h6" fontWeight="bold" color="#4F5361">
-                        HaiNamCoin
+                        <Link to="/" style={{ textDecoration: 'none', color: '#4F5361' }}>
+                            Web Font Shop
+                        </Link>
                     </Typography>
                 </Box>
 

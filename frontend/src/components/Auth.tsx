@@ -8,9 +8,11 @@ export const Auth = (props: Props) => {
     const { isLogin } = useAuthContext();
     const navigate = useNavigate();
     React.useEffect(() => {
-        if (!isLogin) {
-            navigate('/login');
-        }
+        setTimeout(() => {
+            if (!isLogin) {
+                navigate('/login');
+            }
+        }, 2000);
     }, [isLogin, navigate]);
     return <div></div>;
 };

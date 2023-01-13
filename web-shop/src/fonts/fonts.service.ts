@@ -83,7 +83,7 @@ export class FontsService {
             where: {
                 id: id,
             },
-            relations: ['user', 'font_users', 'transactions'],
+            relations: { font_users: true, user: true, transactions: true },
         });
         delete font.user.access_token;
         delete font.user.password;
