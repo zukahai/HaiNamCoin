@@ -1,12 +1,12 @@
-import {BignumProvider} from "./bignum.provider";
-import {PrimeProvider} from "./prime.provider";
-import {HashProvider} from "./hash.provider";
+import { BignumProvider } from './bignum.provider';
+import { PrimeProvider } from './prime.provider';
+import { HashProvider } from './hash.provider';
 
 export class HaiZuka {
     static a = [];
 
-    static haizuka(str: string) {
-         return this.generateString(HashProvider.hash256(str));
+    static async haizuka(str: string) {
+        return this.generateString(await HashProvider.hash256(str));
     }
 
     static generateString(str: string) {
@@ -15,7 +15,7 @@ export class HaiZuka {
         let group = this.mostAppearingCharacter(str).charCodeAt(0);
 
         while (str.length < 100000) {
-            let newStr = "";
+            let newStr = '';
             for (let i = 1; i <= 4; i++) {
                 for (let j = 0; j + i <= str.length; j++) {
                     newStr += this.getPrime(prime, +str.substring(j, j + i));
@@ -23,14 +23,14 @@ export class HaiZuka {
             }
             str = this.reverseString(newStr);
         }
-        let stringByLastColumn = "";
+        let stringByLastColumn = '';
         for (let i = str.length - 1; i >= 0; i -= group) {
             stringByLastColumn += str[i];
         }
-        let result = "";
+        let result = '';
         let quantity = Math.floor(str.length / 64);
         for (let i = 0; i <= 63; i++) {
-            let substr = str.substring(i * quantity, (i + 1) * quantity)
+            let substr = str.substring(i * quantity, (i + 1) * quantity);
             let sum = 0;
             for (let j = 0; j < substr.length; j++) {
                 sum += +substr[j];
@@ -41,23 +41,22 @@ export class HaiZuka {
         let pow2_256 = BignumProvider.pow('2', '256');
         let result_mod_pow2_256 = BignumProvider.mod(result, pow2_256);
         let result_to_hex = BignumProvider.tohex(result_mod_pow2_256);
-        while(result_to_hex.length < 64) {
+        while (result_to_hex.length < 64) {
             result_to_hex = '0' + result_to_hex;
         }
         return result_to_hex;
     }
 
     static stringTostringAscii(str: string) {
-        let ascii = "";
+        let ascii = '';
         for (let i = 0; i < str.length; i++) {
             ascii += str[i].charCodeAt(0);
         }
         return ascii;
     }
 
-
     static getPrime(arr: boolean[], n: number) {
-        while(arr[++n] == false && n < arr.length);
+        while (arr[++n] == false && n < arr.length);
         return n;
     }
 
@@ -87,13 +86,13 @@ export class HaiZuka {
 
     static getNumberHaveProductOfDigitsEqualN(n: number) {
         let n_backup = n;
-        let result = "";
+        let result = '';
         for (let k = 9; k >= 2; k--) {
             while (n % k == 0) {
                 result = k + result;
                 n = n / k;
             }
         }
-        return (n == 1) ? +result : n_backup;
+        return n == 1 ? +result : n_backup;
     }
 }

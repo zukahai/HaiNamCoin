@@ -5,9 +5,9 @@ import { TransactionsWaiting } from './entities/transactions_waiting.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { HashProvider } from '../providers/hash.provider';
-import {GenerateSignatureDto} from "./dto/generate-signature.dto";
-import {RsaProvider} from "../providers/rsa.provider";
-import {GetSignatureDto} from "./dto/get-signature.dto";
+import { GenerateSignatureDto } from './dto/generate-signature.dto';
+import { RsaProvider } from '../providers/rsa.provider';
+import { GetSignatureDto } from './dto/get-signature.dto';
 
 @Injectable()
 export class TransactionsWaitingService {
@@ -27,7 +27,7 @@ export class TransactionsWaitingService {
         if (user_from.private_key != createTransactionsWaitingDto.private_key) {
             return {
                 message: 'error',
-                error: 'Private key is not correct'
+                error: 'Private key is not correct',
             };
         }
         const user_to = await this.userService.findOne(createTransactionsWaitingDto.to);
@@ -51,11 +51,14 @@ export class TransactionsWaitingService {
                 signature: createTransactionsWaitingDto.signature,
                 status: 0,
             });
+            // 3845783458.2342374 to 3845783458
+            // 3.123456 to 3.1234
+            tw = await this.findOne(tw.id);
             const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ';
-            const nonce = HashProvider.findNonce(text);
+            const nonce = await HashProvider.findNonce(text);
+            console.log(await this.checkNonce(tw.id, nonce));
             console.log('nonce: ' + nonce);
             tw.nonce = nonce.toString();
-            console.log('nonce: ' + nonce);
             tw.permutation_nonce = HashProvider.randomPermutationNoce(nonce).toString();
             await this.transactionsWaitingRepository.save(tw);
             return {
@@ -84,10 +87,10 @@ export class TransactionsWaitingService {
     async findAll() {
         return await this.transactionsWaitingRepository.find({
             relations: { from: true, to: true },
-            select: {nonce: false, permutation_nonce: false},
+            select: { nonce: false, permutation_nonce: false },
             order: {
                 id: 'DESC',
-            }
+            },
         });
     }
 
@@ -106,8 +109,9 @@ export class TransactionsWaitingService {
 
     async checkNonce(id: number, nonce: number) {
         const tw = await this.findOne(id);
-        const text = tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ' + nonce;
-        const hash = HashProvider.hash256(text);
+        const text =
+            tw.from.id + ' ' + tw.to.id + ' ' + tw.value + ' ' + new Date(tw.createdAt).getTime() + ' ' + nonce;
+        const hash = await HashProvider.hash256(text);
         const message = hash.startsWith(HashProvider.hard) ? 'ok' : 'error';
         return {
             message: message,
@@ -119,7 +123,6 @@ export class TransactionsWaitingService {
     }
 
     async findOne(id: number) {
-
         let tw = await this.transactionsWaitingRepository.findOne({
             where: {
                 id: id,
@@ -127,8 +130,8 @@ export class TransactionsWaitingService {
             relations: { from: true, to: true, join_confirm_transaction: true, confirm_transactions: true },
         });
         const getTime = await this.getTime(id);
-        tw.nonce = (getTime.option == '3') ? tw.nonce : null;
-        tw.permutation_nonce = (getTime.option == '3' || getTime.option == '2') ? tw.permutation_nonce : null;
+        tw.nonce = getTime.option == '3' ? tw.nonce : null;
+        tw.permutation_nonce = getTime.option == '3' || getTime.option == '2' ? tw.permutation_nonce : null;
         //copy to new object
         let tw2 = {
             ...tw,
@@ -150,13 +153,13 @@ export class TransactionsWaitingService {
         const tw = await this.findOneFull(id);
         const sub = new Date().getTime() - tw.createdAt.getTime();
         const time_second = Math.floor(sub / 1000);
-        const option = (tw.status == 0) ? ((time_second < 120) ? '1' : '2') : '3';
+        const option = tw.status == 0 ? (time_second < 120 ? '1' : '2') : '3';
         return {
             message: 'ok',
             time_second: time_second,
             option: option,
             permutation_nonce: tw.permutation_nonce,
-        }
+        };
     }
 
     save(transactionWaiting: TransactionsWaiting) {
@@ -166,20 +169,28 @@ export class TransactionsWaitingService {
     async generateSignature(generateSignatureDto: GenerateSignatureDto, userId: number) {
         const user_from = await this.userService.findOne(userId);
         const user_to = await this.userService.findOne(generateSignatureDto.to);
-        let text = 'Time: ' + new Date().getTime() + ' | From: ' + user_from.email + ' | To: ' + user_to.email + ' | Value: ' + generateSignatureDto.value;
+        let text =
+            'Time: ' +
+            new Date().getTime() +
+            ' | From: ' +
+            user_from.email +
+            ' | To: ' +
+            user_to.email +
+            ' | Value: ' +
+            generateSignatureDto.value;
         const signature = RsaProvider.encrypt(text, user_from.private_key);
         return {
             message: 'ok',
             text: text,
             signature: signature,
-        }
+        };
     }
 
     getPercentageFee() {
         return {
             message: 'ok',
             percentage_fee: HashProvider.percentageFee,
-        }
+        };
     }
 
     getSignature(getSignatureDto: GetSignatureDto) {
@@ -189,6 +200,6 @@ export class TransactionsWaitingService {
         return {
             message: 'ok',
             data: data,
-        }
+        };
     }
 }

@@ -127,7 +127,6 @@ export class FontsService {
             const response = await this.httpService.request(config).toPromise();
             if (response.data) return response.data.percentage_fee;
         } catch (e) {
-            console.log(e);
             return {
                 message: 'error',
                 error: 'Not get percentage fee',
@@ -137,7 +136,6 @@ export class FontsService {
 
     async uploadImage(image: Express.Multer.File, id: string, userId: number) {
         const font = await this.findOne(+id);
-        console.log(image.path);
         if (font) {
             if (font.user.id === userId) {
                 font.path_image = image.filename;

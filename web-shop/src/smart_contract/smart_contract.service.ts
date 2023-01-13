@@ -12,7 +12,7 @@ import { AxiosRequestConfig } from 'axios/index';
 import { HttpService } from '@nestjs/axios';
 import { InfomaintionProvider } from '../provider/infomaintion.provider';
 import { FontUsersService } from '../font_users/font_users.service';
-
+import axios from 'axios';
 @Injectable()
 export class SmartContractService {
     constructor(
@@ -90,8 +90,9 @@ export class SmartContractService {
         };
 
         try {
-            const response = await this.httpService.request(config).toPromise();
+            const response = await axios.request(config);
             if (response.data) {
+                console.log('h', response.data.data);
                 const transaction_id = response.data.data.id;
                 return transaction_id;
             }
@@ -178,7 +179,6 @@ export class SmartContractService {
             const response = await this.httpService.request(config).toPromise();
             if (response.data) return response.data.percentage_fee;
         } catch (e) {
-            console.log(e);
             return {
                 message: 'error',
                 error: 'Not get percentage fee',
@@ -188,7 +188,6 @@ export class SmartContractService {
 
     async checkTransaction(id: number) {
         let transaction = await this.transactionService.findOne(id);
-        console.log('transaction ', transaction);
         const tw_1 = await this.transactionService.checkTransactionHNC(transaction.transaction_id_1);
         const tw_2 = await this.transactionService.checkTransactionHNC(transaction.transaction_id_2);
         if (transaction) {

@@ -1,24 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import {HaiZuka} from "../providers/haizuka.provider";
-import {RsaProvider} from "../providers/rsa.provider";
-import {NamzProvider} from "../providers/namz.provider";
+import { HaiZuka } from '../providers/haizuka.provider';
+import { RsaProvider } from '../providers/rsa.provider';
+import { NamzProvider } from '../providers/namz.provider';
 
 @Injectable()
 export class EncryptionAlgorithmsService {
-
     haizuka(str: string) {
         return HaiZuka.haizuka(str);
     }
 
-    testHaizuka(start: string) {
+    async testHaizuka(start: string) {
         let n = 0;
         while (true) {
-            let hash = HaiZuka.haizuka(n + '');
+            let hash = await HaiZuka.haizuka(n + '');
             if (hash.startsWith(start)) {
                 return {
                     n: n,
-                    hash: hash
-                }
+                    hash: hash,
+                };
             }
             n++;
         }
@@ -37,5 +36,4 @@ export class EncryptionAlgorithmsService {
     rsa(str: string) {
         return RsaProvider.rsa();
     }
-
 }

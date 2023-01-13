@@ -13,15 +13,17 @@ export class HashProvider {
         return await bcrypt.compare(password, hash);
     }
 
-    static hash256(text: string): string {
+    static async hash256(text: string): Promise<string> {
         return crypto.createHash('sha256').update(text).digest('hex');
     }
 
-    static findNonce(text: string): number {
+    static async findNonce(text: string) {
         let nonce = 0;
         while (true) {
-            const hash = this.hash256(text + nonce);
+            const hash = await this.hash256(text + nonce);
             if (hash.startsWith(this.hard)) {
+                console.log('HASH: ' + hash);
+                console.log('NONCE: ', text + nonce);
                 return nonce;
             }
             nonce++;

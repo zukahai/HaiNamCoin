@@ -37,7 +37,7 @@ export class BlockService {
             to: userTo,
             preHashCode: hash,
             description: createBlockDto.description,
-            hashCode: HaiZuka.haizuka(text),
+            hashCode: await HaiZuka.haizuka(text),
             value: createBlockDto.value,
         });
     }
@@ -104,7 +104,7 @@ export class BlockService {
         for (let i = 0; i < blocks.length; i++) {
             const block = await this.findOne(blocks[i].id);
             const text = block.from.id + block.to.id + block.value + new Date(block.createdAt).toTimeString() + preHash;
-            const hash = HaiZuka.haizuka(text);
+            const hash = await HaiZuka.haizuka(text);
             if (hash !== block.hashCode) {
                 return {
                     message: 'Cheat',
